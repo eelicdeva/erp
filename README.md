@@ -35,7 +35,7 @@
 18. 连接池监视：监视当前系统数据库连接池状态，可进行分析SQL找出系统性能瓶颈。
 
 ## 在线体验
-
+online: https://eelic.org/erp
 文档地址：http://doc.ruoyi.vip
 
 ## 演示图
