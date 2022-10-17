@@ -5,8 +5,8 @@
 
 ## 平台简介
 
-* 本仓库为基于RuoYi-Vue v3.8.3 的单应用版本。
-* 配套前端代码地址[RuoYi-Vue3](https://github.com/yangzongzhuan/RuoYi-Vue3)，技术栈（[Vue3](https://v3.cn.vuejs.org) + [Element Plus](https://element-plus.org/zh-CN) + [Vite](https://cn.vitejs.dev)）。
+* 本仓库为基于RuoYi-Vue v3.8.4 的单应用版本。
+* 配套前端代码地址[RuoYi-Vue3]()，技术栈（[Vue3](https://v3.cn.vuejs.org) + [Element Plus](https://element-plus.org/zh-CN) + [Vite](https://cn.vitejs.dev)）。
 * 前端采用Vue、Element UI。
 * 后端采用Spring Boot、Spring Security、Redis & Jwt。
 * 权限认证使用Jwt，支持多终端认证系统。
