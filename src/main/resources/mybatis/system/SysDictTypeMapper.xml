@@ -14,13 +14,17 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result property="updateBy"   column="update_by"   />
 		<result property="updateTime" column="update_time" />
 	</resultMap>
-	
+
+	<sql id="case">
+		case (#{langUser})
+	</sql>
+
 	<sql id="selectDictTypeVo">
 		select dict_id,
-		case (select user_lang from sys_user where user_id = #{userId})
-		when 0 then (select dict_name_en from sys_dict_type where dict_id = d.dict_id)
-		when 1 then (select dict_name from sys_dict_type where dict_id = d.dict_id)
-		when 2 then (select dict_name_id from sys_dict_type where dict_id = d.dict_id)
+		<include refid="case"/>
+		when "en" then (select dict_name_en from sys_dict_type where dict_id = d.dict_id)
+		when "zh" then (select dict_name from sys_dict_type where dict_id = d.dict_id)
+		when "id" then (select dict_name_id from sys_dict_type where dict_id = d.dict_id)
 		end as dict_name, dict_type, status, create_by, create_time, remark
 		from sys_dict_type d
     </sql>
@@ -48,11 +52,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	    </where>
 	</select>
 	
-	<select id="selectDictTypeAll" resultMap="SysDictTypeResult">
+	<select id="selectDictTypeAll" parameterType="String" resultMap="SysDictTypeResult">
 		<include refid="selectDictTypeVo"/>
 	</select>
 	
-	<select id="selectDictTypeById" parameterType="Long" resultMap="SysDictTypeResult">
+	<select id="selectDictTypeById" resultMap="SysDictTypeResult">
 		<include refid="selectDictTypeVo"/>
 		where dict_id = #{dictId}
 	</select>

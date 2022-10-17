@@ -57,7 +57,7 @@ public class SysRoleServiceImpl implements ISysRoleService
     @DataScope(deptAlias = "d")
     public List<SysRole> selectRoleList(SysRole role)
     {
-        return roleMapper.selectRoleList(role, SecurityUtils.getUserId());
+        return roleMapper.selectRoleList(role, SecurityUtils.getLoginUser().getLangUser());
     }
 
     /**
@@ -69,7 +69,7 @@ public class SysRoleServiceImpl implements ISysRoleService
     @Override
     public List<SysRole> selectRolesByUserId(Long userId)
     {
-        List<SysRole> userRoles = roleMapper.selectRolePermissionByUserId(userId);
+        List<SysRole> userRoles = roleMapper.selectRolePermissionByUserId(userId, SecurityUtils.getLoginUser().getLangUser());
         List<SysRole> roles = selectRoleAll();
         for (SysRole role : roles)
         {
@@ -94,7 +94,7 @@ public class SysRoleServiceImpl implements ISysRoleService
     @Override
     public Set<String> selectRolePermissionByUserId(Long userId)
     {
-        List<SysRole> perms = roleMapper.selectRolePermissionByUserId(userId);
+        List<SysRole> perms = roleMapper.selectRolePermissionByUserId(userId, SecurityUtils.getLoginUser().getLangUser());
         Set<String> permsSet = new HashSet<>();
         for (SysRole perm : perms)
         {
@@ -138,7 +138,7 @@ public class SysRoleServiceImpl implements ISysRoleService
     @Override
     public SysRole selectRoleById(Long roleId)
     {
-        return roleMapper.selectRoleById(roleId,SecurityUtils.getUserId());
+        return roleMapper.selectRoleById(roleId,SecurityUtils.getLoginUser().getLangUser());
     }
 
     /**
@@ -169,7 +169,7 @@ public class SysRoleServiceImpl implements ISysRoleService
     public String checkRoleKeyUnique(SysRole role)
     {
         Long roleId = StringUtils.isNull(role.getRoleId()) ? -1L : role.getRoleId();
-        SysRole info = roleMapper.checkRoleKeyUnique(role.getRoleKey(),SecurityUtils.getUserId());
+        SysRole info = roleMapper.checkRoleKeyUnique(role.getRoleKey(),SecurityUtils.getLoginUser().getLangUser());
         if (StringUtils.isNotNull(info) && info.getRoleId().longValue() != roleId.longValue())
         {
             return UserConstants.NOT_UNIQUE;
@@ -256,15 +256,8 @@ public class SysRoleServiceImpl implements ISysRoleService
     @Transactional
     public int updateRole(SysRole role)
     {
-        try {
-            role.setRoleNameId(translate("auto", "id",role.getRoleName()));
-            role.setRoleNameEn(translate("auto", "en",role.getRoleName()));
-            role.setRoleName(translate("auto", "zh-CN",role.getRoleName()));
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
         // 修改角色信息
-        roleMapper.updateRole(role);
+        roleMapper.updateRole(role, SecurityUtils.getLoginUser().getLangUser());
         // 删除角色与菜单关联
         roleMenuMapper.deleteRoleMenuByRoleId(role.getRoleId());
         return insertRoleMenu(role);
@@ -279,14 +272,7 @@ public class SysRoleServiceImpl implements ISysRoleService
     @Override
     public int updateRoleStatus(SysRole role)
     {
-        try {
-            role.setRoleNameId(translate("auto", "id",role.getRoleName()));
-            role.setRoleNameEn(translate("auto", "en",role.getRoleName()));
-            role.setRoleName(translate("auto", "zh-CN",role.getRoleName()));
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-        return roleMapper.updateRole(role);
+        return roleMapper.updateRole(role, SecurityUtils.getLoginUser().getLangUser());
     }
 
     /**
@@ -299,15 +285,8 @@ public class SysRoleServiceImpl implements ISysRoleService
     @Transactional
     public int authDataScope(SysRole role)
     {
-        try {
-            role.setRoleNameId(translate("auto", "id",role.getRoleName()));
-            role.setRoleNameEn(translate("auto", "en",role.getRoleName()));
-            role.setRoleName(translate("auto", "zh-CN",role.getRoleName()));
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
         // 修改角色信息
-        roleMapper.updateRole(role);
+        roleMapper.updateRole(role, SecurityUtils.getLoginUser().getLangUser());
         // 删除角色与部门关联
         roleDeptMapper.deleteRoleDeptByRoleId(role.getRoleId());
         // 新增角色和部门信息（数据权限）

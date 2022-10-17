@@ -1,15 +1,18 @@
 package com.ruoyi.project.system.service.impl;
 
+
 import java.util.List;
 
 import com.ruoyi.common.utils.SecurityUtils;
+import com.ruoyi.common.utils.ServletUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.ruoyi.project.system.domain.SysNotice;
 import com.ruoyi.project.system.mapper.SysNoticeMapper;
 import com.ruoyi.project.system.service.ISysNoticeService;
+import org.springframework.web.util.WebUtils;
 
-import static com.ruoyi.common.translator.Translator.translate;
+import static com.ruoyi.common.translator.Translator.*;
 
 /**
  * 公告 服务层实现
@@ -29,9 +32,9 @@ public class SysNoticeServiceImpl implements ISysNoticeService
      * @return 公告信息
      */
     @Override
-    public SysNotice selectNoticeById(Long noticeId)
+    public SysNotice selectNoticeById(Long noticeId, String langUser)
     {
-        return noticeMapper.selectNoticeById(noticeId, SecurityUtils.getUserId());
+        return noticeMapper.selectNoticeById(noticeId, langUser);
     }
 
     /**
@@ -41,9 +44,9 @@ public class SysNoticeServiceImpl implements ISysNoticeService
      * @return 公告集合
      */
     @Override
-    public List<SysNotice> selectNoticeList(SysNotice notice)
+    public List<SysNotice> selectNoticeList(SysNotice notice, String langUser)
     {
-        return noticeMapper.selectNoticeList(notice,SecurityUtils.getUserId());
+        return noticeMapper.selectNoticeList(notice, langUser);
     }
 
     /**
@@ -56,14 +59,14 @@ public class SysNoticeServiceImpl implements ISysNoticeService
     public int insertNotice(SysNotice notice)
     {
         try {
-            notice.setNoticeTitleId(translate("auto", "id",notice.getNoticeTitle()));
-            notice.setNoticeTitleEn(translate("auto", "en",notice.getNoticeTitle()));
-            notice.setNoticeTitle(translate("auto", "zh-CN",notice.getNoticeTitle()));
-
+            return noticeMapper.insertNotice(notice, translateAll(notice.getNoticeTitle()));
         } catch (Exception e) {
-            throw new RuntimeException(e);
+           try{
+               return noticeMapper.insertNotice(notice, translateOffline(notice.getNoticeTitle()));
+           } catch (Exception e2) {
+               throw new RuntimeException(e);
+           }
         }
-        return noticeMapper.insertNotice(notice);
     }
 
     /**
@@ -73,17 +76,9 @@ public class SysNoticeServiceImpl implements ISysNoticeService
      * @return 结果
      */
     @Override
-    public int updateNotice(SysNotice notice)
+    public int updateNotice(SysNotice notice, String langUser)
     {
-        try {
-            notice.setNoticeTitleId(translate("auto", "id",notice.getNoticeTitle()));
-            notice.setNoticeTitleEn(translate("auto", "en",notice.getNoticeTitle()));
-            notice.setNoticeTitle(translate("auto", "zh-CN",notice.getNoticeTitle()));
-
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-        return noticeMapper.updateNotice(notice);
+        return noticeMapper.updateNotice(notice, langUser);
     }
 
     /**

@@ -223,4 +223,17 @@ public class TokenService
     {
         return Constants.LOGIN_TOKEN_KEY + uuid;
     }
+
+
+    /**
+     * author deva
+     *
+     * for refresh data (example: data language)
+     * @param loginUser 登录信息
+     */
+    public void refreshData(LoginUser loginUser)
+    {
+        String userKey = getTokenKey(loginUser.getToken());
+        redisCache.setCacheObject(userKey, loginUser, expireTime, TimeUnit.MINUTES);
+    }
 }

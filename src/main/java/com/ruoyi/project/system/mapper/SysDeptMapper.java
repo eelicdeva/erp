@@ -17,7 +17,7 @@ public interface SysDeptMapper
      * @param dept 部门信息
      * @return 部门信息集合
      */
-    public List<SysDept> selectDeptList(@Param("d") SysDept dept, @Param("userId") Long userId);
+    public List<SysDept> selectDeptList(@Param("d") SysDept dept, @Param("langUser") String langUser);
 
     /**
      * 根据角色ID查询部门树信息
@@ -34,7 +34,7 @@ public interface SysDeptMapper
      * @param deptId 部门ID
      * @return 部门信息
      */
-    public SysDept selectDeptById(@Param("deptId") Long deptId, @Param("userId") Long userId);
+    public SysDept selectDeptById(@Param("deptId") Long deptId, @Param("langUser") String langUser);
 
     /**
      * 根据ID查询所有子部门
@@ -91,7 +91,7 @@ public interface SysDeptMapper
      * @param dept 部门信息
      * @return 结果
      */
-    public int updateDept(SysDept dept);
+    public int updateDept(@Param("d") SysDept dept, @Param("langUser") String langUser);
 
     /**
      * 修改所在部门正常状态

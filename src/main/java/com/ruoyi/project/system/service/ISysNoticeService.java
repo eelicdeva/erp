@@ -16,7 +16,7 @@ public interface ISysNoticeService
      * @param noticeId 公告ID
      * @return 公告信息
      */
-    public SysNotice selectNoticeById(Long noticeId);
+    public SysNotice selectNoticeById(Long noticeId, String langUser);
 
     /**
      * 查询公告列表
@@ -24,7 +24,7 @@ public interface ISysNoticeService
      * @param notice 公告信息
      * @return 公告集合
      */
-    public List<SysNotice> selectNoticeList(SysNotice notice);
+    public List<SysNotice> selectNoticeList(SysNotice notice, String langUser);
 
     /**
      * 新增公告
@@ -40,7 +40,7 @@ public interface ISysNoticeService
      * @param notice 公告信息
      * @return 结果
      */
-    public int updateNotice(SysNotice notice);
+    public int updateNotice(SysNotice notice, String langUser);
 
     /**
      * 删除公告信息

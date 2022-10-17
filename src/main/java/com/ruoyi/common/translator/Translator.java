@@ -167,6 +167,25 @@ public class Translator {
         return result;
     }
 
+    public static String[] translateAll(String word) throws Exception {
+        String[] myStringArray = new String[3];
+        myStringArray[0] = translate("auto", "zh-CN",word);
+        myStringArray[1] = translate("auto", "en",word);
+        myStringArray[2] = translate("auto", "id",word);
+        return myStringArray;
+    }
+
+    public static String[] translateOffline(String word) {
+        String[] myStringArray = new String[3];
+        myStringArray[0] = word;
+        myStringArray[1] = word;
+        myStringArray[2] = word;
+        return myStringArray;
+    }
+
+
+
+
 
 
 }

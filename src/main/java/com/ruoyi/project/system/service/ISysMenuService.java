@@ -19,7 +19,7 @@ public interface ISysMenuService
      * @param userId 用户ID
      * @return 菜单列表
      */
-    public List<SysMenu> selectMenuList(Long userId);
+    public List<SysMenu> selectMenuList(Long userId, String langUser);
 
     /**
      * 根据用户查询系统菜单列表
@@ -28,7 +28,7 @@ public interface ISysMenuService
      * @param userId 用户ID
      * @return 菜单列表
      */
-    public List<SysMenu> selectMenuList(SysMenu menu, Long userId);
+    public List<SysMenu> selectMenuList(SysMenu menu, Long userId, String LangUser);
 
     /**
      * 根据用户ID查询权限
@@ -44,7 +44,7 @@ public interface ISysMenuService
      * @param userId 用户ID
      * @return 菜单列表
      */
-    public List<SysMenu> selectMenuTreeByUserId(Long userId);
+    public List<SysMenu> selectMenuTreeByUserId(Long userId, String LangUser);
 
     /**
      * 根据角色ID查询菜单树信息
@@ -84,7 +84,7 @@ public interface ISysMenuService
      * @param menuId 菜单ID
      * @return 菜单信息
      */
-    public SysMenu selectMenuById(Long menuId, Long UserId);
+    public SysMenu selectMenuById(Long menuId, String langUser);
 
     /**
      * 是否存在菜单子节点
@@ -116,7 +116,7 @@ public interface ISysMenuService
      * @param menu 菜单信息
      * @return 结果
      */
-    public int updateMenu(SysMenu menu);
+    public int updateMenu(SysMenu menu, String langUser);
 
     /**
      * 删除菜单管理信息

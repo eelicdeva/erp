@@ -22,24 +22,20 @@
 		<result property="updateTime" column="update_time" />
 	</resultMap>
 
+	<sql id="case">
+		case (#{langUser})
+	</sql>
+
 	<sql id="selectDeptName">
-		case (select user_lang from sys_user where user_id = #{userId})
-		when 0 then (select dept_name_en from sys_dept where dept_id = d.dept_id)
-		when 1 then (select dept_name from sys_dept where dept_id = d.dept_id)
-		when 2 then (select dept_name_id from sys_dept where dept_id = d.dept_id)
+		<include refid="case"/>
+		when "en" then (select dept_name_en from sys_dept where dept_id = d.dept_id)
+		when "zh" then (select dept_name from sys_dept where dept_id = d.dept_id)
+		when "id" then (select dept_name_id from sys_dept where dept_id = d.dept_id)
 		end as dept_name
 	</sql>
 
-	<sql id="selectLeader">
-		case (select user_lang from sys_user where user_id = #{userId})
-		when 0 then (select leader_en from sys_dept where dept_id = d.dept_id)
-		when 1 then (select leader from sys_dept where dept_id = d.dept_id)
-		when 2 then (select leader_id from sys_dept where dept_id = d.dept_id)
-		end as leader
-	</sql>
-
 	<sql id="selectDeptVo">
-		select d.dept_id, d.parent_id, d.ancestors, <include refid="selectDeptName"/>, d.order_num, <include refid="selectLeader"/>, d.phone, d.email, d.status, d.del_flag, d.create_by, d.create_time
+		select d.dept_id, d.parent_id, d.ancestors, <include refid="selectDeptName"/>, d.order_num, d.leader, d.phone, d.email, d.status, d.del_flag, d.create_by, d.create_time
 		from sys_dept d
 	</sql>
 
@@ -77,7 +73,7 @@
 		order by d.parent_id, d.order_num
 	</select>
 
-	<select id="selectDeptById" parameterType="Long" resultMap="SysDeptResult">
+	<select id="selectDeptById" resultMap="SysDeptResult">
 		<include refid="selectDeptVo"/>
 		where dept_id = #{deptId}
 	</select>
@@ -140,20 +136,31 @@
 	<update id="updateDept" parameterType="SysDept">
 		update sys_dept
 		<set>
-			<if test="parentId != null and parentId != 0">parent_id = #{parentId},</if>
-			<if test="deptName != null and deptName != ''">dept_name = #{deptName},</if>
-			<if test="deptNameEn != null and deptNameEn != ''">dept_name_en = #{deptNameEn},</if>
-			<if test="deptNameId != null and deptNameId != ''">dept_name_id = #{deptNameId},</if>
-			<if test="ancestors != null and ancestors != ''">ancestors = #{ancestors},</if>
-			<if test="orderNum != null">order_num = #{orderNum},</if>
-			<if test="leader != null">leader = #{leader},</if>
-			<if test="phone != null">phone = #{phone},</if>
-			<if test="email != null">email = #{email},</if>
-			<if test="status != null and status != ''">status = #{status},</if>
-			<if test="updateBy != null and updateBy != ''">update_by = #{updateBy},</if>
+			<if test="d.parentId != null and d.parentId != 0">parent_id = #{d.parentId},</if>
+			<if test="d.deptName != null and d.deptName != ''">
+				dept_name_en = <include refid="case"/>
+				when "en" then #{d.deptName}
+				else dept_name_en
+				end,
+				dept_name = <include refid="case"/>
+				when "zh" then #{d.deptName}
+				else dept_name
+				end,
+				dept_name_id = <include refid="case"/>
+				when "id" then #{d.deptName}
+				else dept_name_id
+				end,
+			</if>
+			<if test="d.ancestors != null and d.ancestors != ''">ancestors = #{d.ancestors},</if>
+			<if test="d.orderNum != null">order_num = #{d.orderNum},</if>
+			<if test="d.leader != null">leader = #{d.leader},</if>
+			<if test="d.phone != null">phone = #{d.phone},</if>
+			<if test="d.email != null">email = #{d.email},</if>
+			<if test="d.status != null and d.status != ''">status = #{d.status},</if>
+			<if test="d.updateBy != null and d.updateBy != ''">update_by = #{d.updateBy},</if>
 			update_time = sysdate()
 		</set>
-		where dept_id = #{deptId}
+		where dept_id = #{d.deptId}
 	</update>
 
 	<update id="updateDeptChildren" parameterType="java.util.List">

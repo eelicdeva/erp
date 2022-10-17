@@ -27,6 +27,11 @@ public class LoginBody
      */
     private String uuid;
 
+
+    private String lang;
+
+
+
     public String getUsername()
     {
         return username;
@@ -65,5 +70,13 @@ public class LoginBody
     public void setUuid(String uuid)
     {
         this.uuid = uuid;
+    }
+
+    public String getLang() {
+        return lang;
+    }
+
+    public void setLang(String lang) {
+        this.lang = lang;
     }
 }

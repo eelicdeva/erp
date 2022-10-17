@@ -38,7 +38,7 @@ public class SysPostServiceImpl implements ISysPostService
     @Override
     public List<SysPost> selectPostList(SysPost post)
     {
-        return postMapper.selectPostList(post,SecurityUtils.getUserId());
+        return postMapper.selectPostList(post,SecurityUtils.getLoginUser().getLangUser());
     }
 
     /**
@@ -49,7 +49,7 @@ public class SysPostServiceImpl implements ISysPostService
     @Override
     public List<SysPost> selectPostAll()
     {
-        return postMapper.selectPostAll(SecurityUtils.getUserId());
+        return postMapper.selectPostAll(SecurityUtils.getLoginUser().getLangUser());
     }
 
     /**
@@ -61,7 +61,7 @@ public class SysPostServiceImpl implements ISysPostService
     @Override
     public SysPost selectPostById(Long postId)
     {
-        return postMapper.selectPostById(postId,SecurityUtils.getUserId());
+        return postMapper.selectPostById(postId,SecurityUtils.getLoginUser().getLangUser());
     }
 
     /**
@@ -104,7 +104,7 @@ public class SysPostServiceImpl implements ISysPostService
     public String checkPostCodeUnique(SysPost post)
     {
         Long postId = StringUtils.isNull(post.getPostId()) ? -1L : post.getPostId();
-        SysPost info = postMapper.checkPostCodeUnique(post.getPostCode(),SecurityUtils.getUserId());
+        SysPost info = postMapper.checkPostCodeUnique(post.getPostCode(),SecurityUtils.getLoginUser().getLangUser());
         if (StringUtils.isNotNull(info) && info.getPostId().longValue() != postId.longValue())
         {
             return UserConstants.NOT_UNIQUE;
@@ -185,14 +185,7 @@ public class SysPostServiceImpl implements ISysPostService
     @Override
     public int updatePost(SysPost post)
     {
-        try {
-            post.setPostNameId(translate("auto", "id",post.getPostName()));
-            post.setPostNameEn(translate("auto", "en",post.getPostName()));
-            post.setPostName(translate("auto", "zh-CN",post.getPostName()));
 
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-        return postMapper.updatePost(post);
+        return postMapper.updatePost(post, SecurityUtils.getLoginUser().getLangUser());
     }
 }

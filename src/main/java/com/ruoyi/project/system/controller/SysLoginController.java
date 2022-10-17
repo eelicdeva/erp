@@ -3,7 +3,10 @@ package com.ruoyi.project.system.controller;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
+
+import com.ruoyi.common.utils.ServletUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -18,9 +21,9 @@ import com.ruoyi.project.system.domain.SysMenu;
 import com.ruoyi.project.system.domain.SysUser;
 import com.ruoyi.project.system.service.ISysMenuService;
 import org.springframework.web.util.WebUtils;
-
 import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
+
+
 
 /**
  * 登录验证
@@ -39,6 +42,7 @@ public class SysLoginController
     @Autowired
     private SysPermissionService permissionService;
 
+
     /**
      * 登录方法
      * 
@@ -49,9 +53,25 @@ public class SysLoginController
     public AjaxResult login(@RequestBody LoginBody loginBody)
     {
         AjaxResult ajax = AjaxResult.success();
+
+        String langUser = loginBody.getLang();
+
+        if(!langUser.isEmpty()) {
+            if(langUser.equals("en")){
+                LocaleContextHolder.setLocale(Locale.ENGLISH);
+            }
+            if(langUser.equals("zh")){
+                LocaleContextHolder.setLocale(Locale.CHINA);
+            }
+            if(langUser.equals("id")){
+                Locale localeIndo = new Locale("in", "ID");
+                LocaleContextHolder.setLocale(localeIndo);
+
+            }
+        }
         // 生成令牌
         String token = loginService.login(loginBody.getUsername(), loginBody.getPassword(), loginBody.getCode(),
-                loginBody.getUuid());
+                loginBody.getUuid(), loginBody.getLang());
         ajax.put(Constants.TOKEN, token);
         return ajax;
     }
@@ -82,12 +102,14 @@ public class SysLoginController
      * @return 路由信息
      */
     @GetMapping("getRouters")
-    public AjaxResult getRouters(HttpServletRequest request)
+    public AjaxResult getRouters()
     {
-        Cookie language = WebUtils.getCookie(request, "lang");
+
         Long userId = SecurityUtils.getUserId();
-        loginService.updateLang(language.getValue(),userId);
-        List<SysMenu> menus = menuService.selectMenuTreeByUserId(userId);
+        List<SysMenu> menus = menuService.selectMenuTreeByUserId(userId, SecurityUtils.getLoginUser().getLangUser());
         return AjaxResult.success(menuService.buildMenus(menus));
     }
+
+
+
 }

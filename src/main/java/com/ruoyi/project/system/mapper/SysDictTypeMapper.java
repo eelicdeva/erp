@@ -19,14 +19,14 @@ public interface SysDictTypeMapper
      * @param dictType 字典类型信息
      * @return 字典类型集合信息
      */
-    public List<SysDictType> selectDictTypeList(@Param("d") SysDictType dictType,@Param("userId") Long userId);
+    public List<SysDictType> selectDictTypeList(@Param("d") SysDictType dictType, @Param("langUser") String langUser);
 
     /**
      * 根据所有字典类型
      * 
      * @return 字典类型集合信息
      */
-    public List<SysDictType> selectDictTypeAll(Long userId);
+    public List<SysDictType> selectDictTypeAll(String langUser);
 
     /**
      * 根据字典类型ID查询信息
@@ -34,7 +34,7 @@ public interface SysDictTypeMapper
      * @param dictId 字典类型ID
      * @return 字典类型
      */
-    public SysDictType selectDictTypeById(Long dictId, Long userId);
+    public SysDictType selectDictTypeById(@Param("dictId") Long dictId, @Param("langUser") String langUser);
 
     /**
      * 根据字典类型查询信息
@@ -42,7 +42,7 @@ public interface SysDictTypeMapper
      * @param dictType 字典类型
      * @return 字典类型
      */
-    public SysDictType selectDictTypeByType(String dictType, Long userId);
+    public SysDictType selectDictTypeByType(String dictType, String langUser);
 
     /**
      * 通过字典ID删除字典信息
@@ -82,5 +82,5 @@ public interface SysDictTypeMapper
      * @param dictType 字典类型
      * @return 结果
      */
-    public SysDictType checkDictTypeUnique(@Param("dictType") String dictType, @Param("userId") Long userId);
+    public SysDictType checkDictTypeUnique(@Param("dictType") String dictType, @Param("langUser") String langUser);
 }

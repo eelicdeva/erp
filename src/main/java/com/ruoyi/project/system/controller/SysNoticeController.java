@@ -1,6 +1,10 @@
 package com.ruoyi.project.system.controller;
 
 import java.util.List;
+
+import com.ruoyi.common.utils.SecurityUtils;
+import com.ruoyi.common.utils.ServletUtils;
+import com.ruoyi.framework.security.LoginUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
@@ -19,6 +23,7 @@ import com.ruoyi.framework.web.domain.AjaxResult;
 import com.ruoyi.framework.web.page.TableDataInfo;
 import com.ruoyi.project.system.domain.SysNotice;
 import com.ruoyi.project.system.service.ISysNoticeService;
+import org.springframework.web.util.WebUtils;
 
 /**
  * 公告 信息操作处理
@@ -40,7 +45,7 @@ public class SysNoticeController extends BaseController
     public TableDataInfo list(SysNotice notice)
     {
         startPage();
-        List<SysNotice> list = noticeService.selectNoticeList(notice);
+        List<SysNotice> list = noticeService.selectNoticeList(notice, getLoginUser().getLangUser());
         return getDataTable(list);
     }
 
@@ -51,7 +56,7 @@ public class SysNoticeController extends BaseController
     @GetMapping(value = "/{noticeId}")
     public AjaxResult getInfo(@PathVariable Long noticeId)
     {
-        return AjaxResult.success(noticeService.selectNoticeById(noticeId));
+        return AjaxResult.success(noticeService.selectNoticeById(noticeId, getLoginUser().getLangUser()));
     }
 
     /**
@@ -75,7 +80,7 @@ public class SysNoticeController extends BaseController
     public AjaxResult edit(@Validated @RequestBody SysNotice notice)
     {
         notice.setUpdateBy(getUsername());
-        return toAjax(noticeService.updateNotice(notice));
+        return toAjax(noticeService.updateNotice(notice, getLoginUser().getLangUser()));
     }
 
     /**

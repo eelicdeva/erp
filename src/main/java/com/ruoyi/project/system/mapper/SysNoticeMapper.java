@@ -17,7 +17,7 @@ public interface SysNoticeMapper
      * @param noticeId 公告ID
      * @return 公告信息
      */
-    public SysNotice selectNoticeById(Long noticeId, Long userId);
+    public SysNotice selectNoticeById(Long noticeId, @Param("langUser") String langUser);
 
     /**
      * 查询公告列表
@@ -25,15 +25,15 @@ public interface SysNoticeMapper
      * @param notice 公告信息
      * @return 公告集合
      */
-    public List<SysNotice> selectNoticeList(@Param("n") SysNotice notice,@Param("userId") Long UserId);
+    public List<SysNotice> selectNoticeList(@Param("n") SysNotice notice,@Param("langUser") String langUser);
 
     /**
      * 新增公告
-     * 
+     *
      * @param notice 公告信息
      * @return 结果
      */
-    public int insertNotice(SysNotice notice);
+    public int insertNotice(@Param("n")SysNotice notice, @Param("noticeCat")String[] noticeCat);
 
     /**
      * 修改公告
@@ -41,7 +41,7 @@ public interface SysNoticeMapper
      * @param notice 公告信息
      * @return 结果
      */
-    public int updateNotice(SysNotice notice);
+    public int updateNotice(@Param("n") SysNotice notice, @Param("langUser") String langUser);
 
     /**
      * 批量删除公告

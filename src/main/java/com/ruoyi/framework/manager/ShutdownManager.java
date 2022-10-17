@@ -32,7 +32,7 @@ public class ShutdownManager
         {
 //            "====关闭后台任务任务线程池===="
 //      "====Close background task task thread pool===="
-            logger.info(MessageUtils.message("close.background"));
+            logger.info(" ==== Close background task thread pool ====");
             AsyncManager.me().shutdown();
         }
         catch (Exception e)

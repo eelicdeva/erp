@@ -54,7 +54,7 @@ public class SysDictTypeServiceImpl implements ISysDictTypeService
     @Override
     public List<SysDictType> selectDictTypeList(SysDictType dictType)
     {
-        return dictTypeMapper.selectDictTypeList(dictType, SecurityUtils.getUserId());
+        return dictTypeMapper.selectDictTypeList(dictType, SecurityUtils.getLoginUser().getLangUser());
     }
 
     /**
@@ -65,7 +65,7 @@ public class SysDictTypeServiceImpl implements ISysDictTypeService
     @Override
     public List<SysDictType> selectDictTypeAll()
     {
-        return dictTypeMapper.selectDictTypeAll(SecurityUtils.getUserId());
+        return dictTypeMapper.selectDictTypeAll(SecurityUtils.getLoginUser().getLangUser());
     }
 
     /**
@@ -100,7 +100,7 @@ public class SysDictTypeServiceImpl implements ISysDictTypeService
     @Override
     public SysDictType selectDictTypeById(Long dictId)
     {
-        return dictTypeMapper.selectDictTypeById(dictId,SecurityUtils.getUserId());
+        return dictTypeMapper.selectDictTypeById(dictId,SecurityUtils.getLoginUser().getLangUser());
     }
 
     /**
@@ -112,7 +112,7 @@ public class SysDictTypeServiceImpl implements ISysDictTypeService
     @Override
     public SysDictType selectDictTypeByType(String dictType)
     {
-        return dictTypeMapper.selectDictTypeByType(dictType, SecurityUtils.getUserId());
+        return dictTypeMapper.selectDictTypeByType(dictType, SecurityUtils.getLoginUser().getLangUser());
     }
 
     /**
@@ -212,7 +212,7 @@ public class SysDictTypeServiceImpl implements ISysDictTypeService
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-        SysDictType oldDict = dictTypeMapper.selectDictTypeById(dict.getDictId(),SecurityUtils.getUserId());
+        SysDictType oldDict = dictTypeMapper.selectDictTypeById(dict.getDictId(),SecurityUtils.getLoginUser().getLangUser());
         dictDataMapper.updateDictDataType(oldDict.getDictType(), dict.getDictType());
         int row = dictTypeMapper.updateDictType(dict);
         if (row > 0)
@@ -233,7 +233,7 @@ public class SysDictTypeServiceImpl implements ISysDictTypeService
     public String checkDictTypeUnique(SysDictType dict)
     {
         Long dictId = StringUtils.isNull(dict.getDictId()) ? -1L : dict.getDictId();
-        SysDictType dictType = dictTypeMapper.checkDictTypeUnique(dict.getDictType(),SecurityUtils.getUserId());
+        SysDictType dictType = dictTypeMapper.checkDictTypeUnique(dict.getDictType(),SecurityUtils.getLoginUser().getLangUser());
         if (StringUtils.isNotNull(dictType) && dictType.getDictId().longValue() != dictId.longValue())
         {
             return UserConstants.NOT_UNIQUE;

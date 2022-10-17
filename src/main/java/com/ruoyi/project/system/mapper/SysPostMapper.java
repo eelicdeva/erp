@@ -17,14 +17,14 @@ public interface SysPostMapper
      * @param post 岗位信息
      * @return 岗位数据集合
      */
-    public List<SysPost> selectPostList(@Param("p") SysPost post, @Param("userId") Long userId);
+    public List<SysPost> selectPostList(@Param("p") SysPost post, @Param("langUser") String langUser);
 
     /**
      * 查询所有岗位
      * 
      * @return 岗位列表
      */
-    public List<SysPost> selectPostAll(Long userId);
+    public List<SysPost> selectPostAll(String langUser);
 
     /**
      * 通过岗位ID查询岗位信息
@@ -32,7 +32,7 @@ public interface SysPostMapper
      * @param postId 岗位ID
      * @return 角色对象信息
      */
-    public SysPost selectPostById(Long postId, Long userId);
+    public SysPost selectPostById(@Param("postId") Long postId, @Param("langUser") String langUser);
 
     /**
      * 根据用户ID获取岗位选择框列表
@@ -49,7 +49,7 @@ public interface SysPostMapper
      * @param userId
      * @return 结果
      */
-    public List<SysPost> selectPostsByUserName(@Param("userName")String userName, @Param("userId")Long userId);
+    public List<SysPost> selectPostsByUserName(@Param("userName")String userName, @Param("langUser") String langUser);
 
     /**
      * 删除岗位信息
@@ -73,7 +73,7 @@ public interface SysPostMapper
      * @param post 岗位信息
      * @return 结果
      */
-    public int updatePost(SysPost post);
+    public int updatePost(@Param("p") SysPost post, @Param("langUser") String langUser);
 
     /**
      * 新增岗位信息
@@ -97,5 +97,5 @@ public interface SysPostMapper
      * @param postCode 岗位编码
      * @return 结果
      */
-    public SysPost checkPostCodeUnique(@Param("postCode") String postCode, @Param("userId")Long userId);
+    public SysPost checkPostCodeUnique(@Param("postCode") String postCode, @Param("langUser") String langUser);
 }

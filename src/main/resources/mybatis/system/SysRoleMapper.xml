@@ -20,13 +20,17 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result property="updateTime"         column="update_time"           />
 		<result property="remark"             column="remark"                />
 	</resultMap>
-	
+
+	<sql id="case">
+		case (#{langUser})
+	</sql>
+
 	<sql id="selectRoleVo">
 	    select distinct r.role_id,
-		case (select user_lang from sys_user where user_id = #{userId})
-		when 0 then (select role_name_en from sys_role where role_id = r.role_id)
-		when 1 then (select role_name from sys_role where role_id = r.role_id)
-		when 2 then (select role_name_id from sys_role  where role_id = r.role_id)
+		<include refid="case"/>
+		when "en" then (select role_name_en from sys_role where role_id = r.role_id)
+		when "zh" then (select role_name from sys_role where role_id = r.role_id)
+		when "id" then (select role_name_id from sys_role  where role_id = r.role_id)
 		end as role_name,
 		r.role_key, r.role_sort, r.data_scope, r.menu_check_strictly, r.dept_check_strictly, r.status, r.del_flag, r.create_time, r.remark
         from sys_role r
@@ -63,7 +67,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		order by r.role_sort
 	</select>
     
-	<select id="selectRolePermissionByUserId" parameterType="Long" resultMap="SysRoleResult">
+	<select id="selectRolePermissionByUserId" resultMap="SysRoleResult">
 		<include refid="selectRoleVo"/>
 		WHERE r.del_flag = '0' and ur.user_id = #{userId}
 	</select>
@@ -80,7 +84,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	    where u.user_id = #{userId}
 	</select>
 	
-	<select id="selectRoleById" parameterType="Long" resultMap="SysRoleResult">
+	<select id="selectRoleById" resultMap="SysRoleResult">
 		<include refid="selectRoleVo"/>
 		where r.role_id = #{roleId}
 	</select>
@@ -139,20 +143,31 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<update id="updateRole" parameterType="SysRole">
  		update sys_role
  		<set>
- 			<if test="roleName != null and roleName != ''">role_name = #{roleName},</if>
-			<if test="roleNameEn != null and roleNameEn != ''">role_name_en = #{roleNameEn},</if>
-			<if test="roleNameId != null and roleNameId != ''">role_name_id = #{roleNameId},</if>
- 			<if test="roleKey != null and roleKey != ''">role_key = #{roleKey},</if>
- 			<if test="roleSort != null and roleSort != ''">role_sort = #{roleSort},</if>
- 			<if test="dataScope != null and dataScope != ''">data_scope = #{dataScope},</if>
- 			<if test="menuCheckStrictly != null">menu_check_strictly = #{menuCheckStrictly},</if>
- 			<if test="deptCheckStrictly != null">dept_check_strictly = #{deptCheckStrictly},</if>
- 			<if test="status != null and status != ''">status = #{status},</if>
- 			<if test="remark != null">remark = #{remark},</if>
- 			<if test="updateBy != null and updateBy != ''">update_by = #{updateBy},</if>
+			<if test="r.roleName != null and r.roleName != ''">
+				role_name_en = <include refid="case"/>
+				when "en" then #{r.roleName}
+				else role_name_en
+				end,
+				role_name = <include refid="case"/>
+				when "zh" then #{r.roleName}
+				else role_name
+				end,
+				role_name_id = <include refid="case"/>
+				when "id" then #{r.roleName}
+				else role_name_id
+				end,
+			</if>
+ 			<if test="r.roleKey != null and r.roleKey != ''">role_key = #{r.roleKey},</if>
+ 			<if test="r.roleSort != null and r.roleSort != ''">role_sort = #{r.roleSort},</if>
+ 			<if test="r.dataScope != null and r.dataScope != ''">data_scope = #{r.dataScope},</if>
+ 			<if test="r.menuCheckStrictly != null">menu_check_strictly = #{r.menuCheckStrictly},</if>
+ 			<if test="r.deptCheckStrictly != null">dept_check_strictly = #{r.deptCheckStrictly},</if>
+ 			<if test="r.status != null and r.status != ''">status = #{r.status},</if>
+ 			<if test="r.remark != null">remark = #{r.remark},</if>
+ 			<if test="r.updateBy != null and r.updateBy != ''">update_by = #{r.updateBy},</if>
  			update_time = sysdate()
  		</set>
- 		where role_id = #{roleId}
+ 		where role_id = #{r.roleId}
 	</update>
 	
 	<delete id="deleteRoleById" parameterType="Long">

@@ -18,7 +18,7 @@ public interface SysRoleMapper
      * @param userId
      * @return 角色数据集合信息
      */
-    public List<SysRole> selectRoleList(@Param("r") SysRole role, @Param("userId")Long userId );
+    public List<SysRole> selectRoleList(@Param("r") SysRole role, @Param("langUser") String langUser );
 
     /**
      * 根据用户ID查询角色
@@ -26,14 +26,14 @@ public interface SysRoleMapper
      * @param userId 用户ID
      * @return 角色列表
      */
-    public List<SysRole> selectRolePermissionByUserId(Long userId);
+    public List<SysRole> selectRolePermissionByUserId(@Param("userId") Long userId, @Param("langUser") String langUser);
 
     /**
      * 查询所有角色
      * 
      * @return 角色列表
      */
-    public List<SysRole> selectRoleAll(Long userId);
+    public List<SysRole> selectRoleAll(String langUser);
 
     /**
      * 根据用户ID获取角色选择框列表
@@ -49,7 +49,7 @@ public interface SysRoleMapper
      * @param roleId 角色ID
      * @return 角色对象信息
      */
-    public SysRole selectRoleById(Long roleId,Long userId);
+    public SysRole selectRoleById(@Param("roleId") Long roleId, @Param("langUser") String langUser);
 
     /**
      * 根据用户ID查询角色
@@ -57,7 +57,7 @@ public interface SysRoleMapper
      * @param userName 用户名
      * @return 角色列表
      */
-    public List<SysRole> selectRolesByUserName(@Param("userName")String userName, @Param("userId")Long userId);
+    public List<SysRole> selectRolesByUserName(@Param("userName")String userName, @Param("langUser") String langUser);
 
     /**
      * 校验角色名称是否唯一
@@ -73,7 +73,7 @@ public interface SysRoleMapper
      * @param roleKey 角色权限
      * @return 角色信息
      */
-    public SysRole checkRoleKeyUnique(@Param("roleKey") String roleKey,@Param("userId") Long userId);
+    public SysRole checkRoleKeyUnique(@Param("roleKey") String roleKey, @Param("langUser") String langUser);
 
     /**
      * 修改角色信息
@@ -81,7 +81,7 @@ public interface SysRoleMapper
      * @param role 角色信息
      * @return 结果
      */
-    public int updateRole(SysRole role);
+    public int updateRole(@Param("r") SysRole role, @Param("langUser") String langUser);
 
     /**
      * 新增角色信息

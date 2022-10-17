@@ -1,12 +1,15 @@
 package com.ruoyi.project.system.controller;
 
 import java.util.List;
+import java.util.Locale;
 import java.util.stream.Collectors;
 import javax.servlet.http.HttpServletResponse;
 
 import com.ruoyi.common.utils.MessageUtils;
+import com.ruoyi.framework.security.service.TokenService;
 import org.apache.commons.lang3.ArrayUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -50,6 +53,9 @@ public class SysUserController extends BaseController
 
     @Autowired
     private ISysPostService postService;
+
+    @Autowired
+    private TokenService tokenService;
 
     /**
      * 获取用户列表
@@ -241,5 +247,28 @@ public class SysUserController extends BaseController
         userService.checkUserDataScope(userId);
         userService.insertUserAuth(userId, roleIds);
         return success();
+    }
+
+
+    @PutMapping("/setLang")
+    public void setLang(String lang){
+        if(!lang.isEmpty()) {
+            if(lang.equals("en")){
+                LocaleContextHolder.setLocale(Locale.ENGLISH);
+                getLoginUser().setLangUser(lang);
+                tokenService.refreshData(getLoginUser());
+            }
+            if(lang.equals("zh")){
+                LocaleContextHolder.setLocale(Locale.CHINA);
+                getLoginUser().setLangUser(lang);
+                tokenService.refreshData(getLoginUser());
+            }
+            if(lang.equals("id")){
+                Locale localeIndo = new Locale("in", "ID");
+                LocaleContextHolder.setLocale(localeIndo);
+                getLoginUser().setLangUser(lang);
+                tokenService.refreshData(getLoginUser());
+            }
+        }
     }
 }

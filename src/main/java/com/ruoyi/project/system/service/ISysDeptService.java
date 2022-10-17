@@ -17,7 +17,7 @@ public interface ISysDeptService
      * @param dept 部门信息
      * @return 部门信息集合
      */
-    public List<SysDept> selectDeptList(SysDept dept);
+    public List<SysDept> selectDeptList(SysDept dept, String langUser);
 
     /**
      * 构建前端所需要树结构
@@ -49,7 +49,7 @@ public interface ISysDeptService
      * @param deptId 部门ID
      * @return 部门信息
      */
-    public SysDept selectDeptById(Long deptId);
+    public SysDept selectDeptById(Long deptId, String langUser);
 
     /**
      * 根据ID查询所有子部门（正常状态）

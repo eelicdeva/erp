@@ -133,7 +133,7 @@ public class SysUserServiceImpl implements ISysUserService
     @Override
     public String selectUserRoleGroup(String userName)
     {
-        List<SysRole> list = roleMapper.selectRolesByUserName(userName,SecurityUtils.getUserId());
+        List<SysRole> list = roleMapper.selectRolesByUserName(userName,SecurityUtils.getLoginUser().getLangUser());
         if (CollectionUtils.isEmpty(list))
         {
             return StringUtils.EMPTY;
@@ -150,7 +150,7 @@ public class SysUserServiceImpl implements ISysUserService
     @Override
     public String selectUserPostGroup(String userName)
     {
-        List<SysPost> list = postMapper.selectPostsByUserName(userName,SecurityUtils.getUserId());
+        List<SysPost> list = postMapper.selectPostsByUserName(userName,SecurityUtils.getLoginUser().getLangUser());
         if (CollectionUtils.isEmpty(list))
         {
             return StringUtils.EMPTY;

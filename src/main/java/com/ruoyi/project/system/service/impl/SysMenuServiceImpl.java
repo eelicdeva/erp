@@ -53,9 +53,9 @@ public class SysMenuServiceImpl implements ISysMenuService
      * @return 菜单列表
      */
     @Override
-    public List<SysMenu> selectMenuList(Long userId)
+    public List<SysMenu> selectMenuList(Long userId, String langUser)
     {
-        return selectMenuList(new SysMenu(), userId);
+        return selectMenuList(new SysMenu(), userId, langUser);
     }
 
     /**
@@ -65,18 +65,18 @@ public class SysMenuServiceImpl implements ISysMenuService
      * @return 菜单列表
      */
     @Override
-    public List<SysMenu> selectMenuList(SysMenu menu, Long userId)
+    public List<SysMenu> selectMenuList(SysMenu menu, Long userId, String langUser)
     {
         List<SysMenu> menuList = null;
         // 管理员显示所有菜单信息
         if (SysUser.isAdmin(userId))
         {
-            menuList = menuMapper.selectMenuList(menu,userId);
+            menuList = menuMapper.selectMenuList(menu,langUser);
         }
         else
         {
             menu.getParams().put("userId", userId);
-            menuList = menuMapper.selectMenuListByUserId(menu,userId);
+            menuList = menuMapper.selectMenuListByUserId(menu,userId,langUser);
         }
         return menuList;
     }
@@ -109,16 +109,16 @@ public class SysMenuServiceImpl implements ISysMenuService
      * @return 菜单列表
      */
     @Override
-    public List<SysMenu> selectMenuTreeByUserId(Long userId)
+    public List<SysMenu> selectMenuTreeByUserId(Long userId, String langUser)
     {
         List<SysMenu> menus = null;
         if (SecurityUtils.isAdmin(userId))
         {
-            menus = menuMapper.selectMenuTreeAll(userId);
+            menus = menuMapper.selectMenuTreeAll(langUser);
         }
         else
         {
-            menus = menuMapper.selectMenuTreeByUserId(userId);
+            menus = menuMapper.selectMenuTreeByUserId(userId, langUser);
         }
         return getChildPerms(menus, 0);
     }
@@ -132,7 +132,7 @@ public class SysMenuServiceImpl implements ISysMenuService
     @Override
     public List<Long> selectMenuListByRoleId(Long roleId)
     {
-        SysRole role = roleMapper.selectRoleById(roleId,SecurityUtils.getUserId());
+        SysRole role = roleMapper.selectRoleById(roleId,SecurityUtils.getLoginUser().getLangUser());
         return menuMapper.selectMenuListByRoleId(roleId, role.isMenuCheckStrictly());
     }
 
@@ -246,9 +246,9 @@ public class SysMenuServiceImpl implements ISysMenuService
      * @return 菜单信息
      */
     @Override
-    public SysMenu selectMenuById(Long menuId, Long userId)
+    public SysMenu selectMenuById(Long menuId, String langUser)
     {
-        return menuMapper.selectMenuById(menuId,userId);
+        return menuMapper.selectMenuById(menuId,langUser);
     }
 
     /**
@@ -303,16 +303,9 @@ public class SysMenuServiceImpl implements ISysMenuService
      * @return 结果
      */
     @Override
-    public int updateMenu(SysMenu menu)
+    public int updateMenu(SysMenu menu, String langUser)
     {
-        try {
-            menu.setMenuNameId(translate("auto", "id",menu.getMenuName()));
-            menu.setMenuNameEn(translate("auto", "en",menu.getMenuName()));
-            menu.setMenuName(translate("auto", "zh-CN",menu.getMenuName()));
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-        return menuMapper.updateMenu(menu);
+        return menuMapper.updateMenu(menu, langUser);
     }
 
     /**

@@ -42,7 +42,7 @@ public class SysMenuController extends BaseController
     @GetMapping("/list")
     public AjaxResult list(SysMenu menu)
     {
-        List<SysMenu> menus = menuService.selectMenuList(menu, getUserId());
+        List<SysMenu> menus = menuService.selectMenuList(menu, getUserId(), getLoginUser().getLangUser());
         return AjaxResult.success(menus);
     }
 
@@ -53,7 +53,7 @@ public class SysMenuController extends BaseController
     @GetMapping(value = "/{menuId}")
     public AjaxResult getInfo(@PathVariable Long menuId)
     {
-        return AjaxResult.success(menuService.selectMenuById(menuId,getUserId()));
+        return AjaxResult.success(menuService.selectMenuById(menuId,getLoginUser().getLangUser()));
     }
 
     /**
@@ -62,7 +62,7 @@ public class SysMenuController extends BaseController
     @GetMapping("/treeselect")
     public AjaxResult treeselect(SysMenu menu)
     {
-        List<SysMenu> menus = menuService.selectMenuList(menu, getUserId());
+        List<SysMenu> menus = menuService.selectMenuList(menu, getUserId(), getLoginUser().getLangUser());
         return AjaxResult.success(menuService.buildMenuTreeSelect(menus));
     }
 
@@ -72,7 +72,7 @@ public class SysMenuController extends BaseController
     @GetMapping(value = "/roleMenuTreeselect/{roleId}")
     public AjaxResult roleMenuTreeselect(@PathVariable("roleId") Long roleId)
     {
-        List<SysMenu> menus = menuService.selectMenuList(getUserId());
+        List<SysMenu> menus = menuService.selectMenuList(getUserId(), getLoginUser().getLangUser());
         AjaxResult ajax = AjaxResult.success();
         ajax.put("checkedKeys", menuService.selectMenuListByRoleId(roleId));
         ajax.put("menus", menuService.buildMenuTreeSelect(menus));
@@ -125,7 +125,7 @@ public class SysMenuController extends BaseController
             return AjaxResult.error(MessageUtils.message("modify.menu") + menu.getMenuName() + MessageUtils.message("failed.parent.menu"));
         }
         menu.setUpdateBy(getUsername());
-        return toAjax(menuService.updateMenu(menu));
+        return toAjax(menuService.updateMenu(menu,getLoginUser().getLangUser()));
     }
 
     /**

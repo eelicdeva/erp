@@ -59,6 +59,7 @@ public class Constants
      */
     public static final String LOGIN_FAIL = "Error";
 
+
     /**
      * 验证码 redis key
      */

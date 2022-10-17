@@ -44,7 +44,7 @@ public class SysDeptController extends BaseController
     @GetMapping("/list")
     public AjaxResult list(SysDept dept)
     {
-        List<SysDept> depts = deptService.selectDeptList(dept);
+        List<SysDept> depts = deptService.selectDeptList(dept, getLoginUser().getLangUser());
         return AjaxResult.success(depts);
     }
 
@@ -55,7 +55,7 @@ public class SysDeptController extends BaseController
     @GetMapping("/list/exclude/{deptId}")
     public AjaxResult excludeChild(@PathVariable(value = "deptId", required = false) Long deptId)
     {
-        List<SysDept> depts = deptService.selectDeptList(new SysDept());
+        List<SysDept> depts = deptService.selectDeptList(new SysDept(), getLoginUser().getLangUser());
         Iterator<SysDept> it = depts.iterator();
         while (it.hasNext())
         {
@@ -77,7 +77,7 @@ public class SysDeptController extends BaseController
     public AjaxResult getInfo(@PathVariable Long deptId)
     {
         deptService.checkDeptDataScope(deptId);
-        return AjaxResult.success(deptService.selectDeptById(deptId));
+        return AjaxResult.success(deptService.selectDeptById(deptId, getLoginUser().getLangUser()));
     }
 
     /**
@@ -86,7 +86,7 @@ public class SysDeptController extends BaseController
     @GetMapping("/treeselect")
     public AjaxResult treeselect(SysDept dept)
     {
-        List<SysDept> depts = deptService.selectDeptList(dept);
+        List<SysDept> depts = deptService.selectDeptList(dept, getLoginUser().getLangUser());
         return AjaxResult.success(deptService.buildDeptTreeSelect(depts));
     }
 
@@ -96,7 +96,7 @@ public class SysDeptController extends BaseController
     @GetMapping(value = "/roleDeptTreeselect/{roleId}")
     public AjaxResult roleDeptTreeselect(@PathVariable("roleId") Long roleId)
     {
-        List<SysDept> depts = deptService.selectDeptList(new SysDept());
+        List<SysDept> depts = deptService.selectDeptList(new SysDept(), getLoginUser().getLangUser());
         AjaxResult ajax = AjaxResult.success();
         ajax.put("checkedKeys", deptService.selectDeptListByRoleId(roleId));
         ajax.put("depts", deptService.buildDeptTreeSelect(depts));

@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import com.ruoyi.common.utils.MessageUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.ruoyi.common.constant.UserConstants;
@@ -45,9 +47,9 @@ public class SysDeptServiceImpl implements ISysDeptService
      */
     @Override
     @DataScope(deptAlias = "d")
-    public List<SysDept> selectDeptList(SysDept dept)
+    public List<SysDept> selectDeptList(SysDept dept, String langUser)
     {
-        return deptMapper.selectDeptList(dept,SecurityUtils.getUserId());
+        return deptMapper.selectDeptList(dept, langUser);
     }
 
     /**
@@ -103,7 +105,7 @@ public class SysDeptServiceImpl implements ISysDeptService
     @Override
     public List<Long> selectDeptListByRoleId(Long roleId)
     {
-        SysRole role = roleMapper.selectRoleById(roleId,SecurityUtils.getUserId());
+        SysRole role = roleMapper.selectRoleById(roleId,SecurityUtils.getLoginUser().getLangUser());
         return deptMapper.selectDeptListByRoleId(roleId, role.isDeptCheckStrictly());
     }
 
@@ -114,9 +116,9 @@ public class SysDeptServiceImpl implements ISysDeptService
      * @return 部门信息
      */
     @Override
-    public SysDept selectDeptById(Long deptId)
+    public SysDept selectDeptById(Long deptId, String langUser)
     {
-        return deptMapper.selectDeptById(deptId,SecurityUtils.getUserId());
+        return deptMapper.selectDeptById(deptId,langUser);
     }
 
     /**
@@ -187,10 +189,10 @@ public class SysDeptServiceImpl implements ISysDeptService
         {
             SysDept dept = new SysDept();
             dept.setDeptId(deptId);
-            List<SysDept> depts = SpringUtils.getAopProxy(this).selectDeptList(dept);
+            List<SysDept> depts = SpringUtils.getAopProxy(this).selectDeptList(dept, SecurityUtils.getLoginUser().getLangUser() );
             if (StringUtils.isEmpty(depts))
             {
-                throw new ServiceException("没有权限访问部门数据！");
+                throw new ServiceException(MessageUtils.message("no.access.dept.data"));
             }
         }
     }
@@ -204,12 +206,12 @@ public class SysDeptServiceImpl implements ISysDeptService
     @Override
     public int insertDept(SysDept dept)
     {
-        SysDept info = deptMapper.selectDeptById(dept.getParentId(),SecurityUtils.getUserId());
+        SysDept info = deptMapper.selectDeptById(dept.getParentId(),SecurityUtils.getLoginUser().getLangUser());
         // 如果父节点不为正常状态,则不允许新增子节点
         // If the parent node is not in a normal state, no new child nodes are allowed
         if (!UserConstants.DEPT_NORMAL.equals(info.getStatus()))
         {
-            throw new ServiceException("部门停用，不允许新增");
+            throw new ServiceException(MessageUtils.message("dept.disabled"));
         }
         dept.setAncestors(info.getAncestors() + "," + dept.getParentId());
         try {
@@ -237,8 +239,8 @@ public class SysDeptServiceImpl implements ISysDeptService
     @Override
     public int updateDept(SysDept dept)
     {
-        SysDept newParentDept = deptMapper.selectDeptById(dept.getParentId(),SecurityUtils.getUserId());
-        SysDept oldDept = deptMapper.selectDeptById(dept.getDeptId(),SecurityUtils.getUserId());
+        SysDept newParentDept = deptMapper.selectDeptById(dept.getParentId(),SecurityUtils.getLoginUser().getLangUser());
+        SysDept oldDept = deptMapper.selectDeptById(dept.getDeptId(),SecurityUtils.getLoginUser().getLangUser());
         if (StringUtils.isNotNull(newParentDept) && StringUtils.isNotNull(oldDept))
         {
             String newAncestors = newParentDept.getAncestors() + "," + newParentDept.getDeptId();
@@ -246,20 +248,8 @@ public class SysDeptServiceImpl implements ISysDeptService
             dept.setAncestors(newAncestors);
             updateDeptChildren(dept.getDeptId(), newAncestors, oldAncestors);
         }
-        try {
-            dept.setDeptNameId(translate("auto", "id",dept.getDeptName()));
-            dept.setDeptNameEn(translate("auto", "en",dept.getDeptName()));
-            dept.setDeptName(translate("auto", "zh-CN",dept.getDeptName()));
 
-            if (dept.getLeader() != null && dept.getLeader() != "" ) {
-                dept.setLeaderId(translate("auto", "id", dept.getLeader()));
-                dept.setLeaderEn(translate("auto", "en", dept.getLeader()));
-                dept.setLeader(translate("auto", "zh-CN", dept.getLeader()));
-            }
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-        int result = deptMapper.updateDept(dept);
+        int result = deptMapper.updateDept(dept, SecurityUtils.getLoginUser().getLangUser());
         if (UserConstants.DEPT_NORMAL.equals(dept.getStatus()) && StringUtils.isNotEmpty(dept.getAncestors())
                 && !StringUtils.equals("0", dept.getAncestors()))
         {
