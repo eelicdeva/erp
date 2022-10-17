@@ -2,6 +2,7 @@ package com.ruoyi.project.system.mapper;
 
 import java.util.List;
 import com.ruoyi.project.system.domain.SysRole;
+import org.apache.ibatis.annotations.Param;
 
 /**
  * 角色表 数据层
@@ -12,11 +13,12 @@ public interface SysRoleMapper
 {
     /**
      * 根据条件分页查询角色数据
-     * 
-     * @param role 角色信息
+     *
+     * @param role   角色信息
+     * @param userId
      * @return 角色数据集合信息
      */
-    public List<SysRole> selectRoleList(SysRole role);
+    public List<SysRole> selectRoleList(@Param("r") SysRole role, @Param("userId")Long userId );
 
     /**
      * 根据用户ID查询角色
@@ -31,7 +33,7 @@ public interface SysRoleMapper
      * 
      * @return 角色列表
      */
-    public List<SysRole> selectRoleAll();
+    public List<SysRole> selectRoleAll(Long userId);
 
     /**
      * 根据用户ID获取角色选择框列表
@@ -47,7 +49,7 @@ public interface SysRoleMapper
      * @param roleId 角色ID
      * @return 角色对象信息
      */
-    public SysRole selectRoleById(Long roleId);
+    public SysRole selectRoleById(Long roleId,Long userId);
 
     /**
      * 根据用户ID查询角色
@@ -55,7 +57,7 @@ public interface SysRoleMapper
      * @param userName 用户名
      * @return 角色列表
      */
-    public List<SysRole> selectRolesByUserName(String userName);
+    public List<SysRole> selectRolesByUserName(@Param("userName")String userName, @Param("userId")Long userId);
 
     /**
      * 校验角色名称是否唯一
@@ -71,7 +73,7 @@ public interface SysRoleMapper
      * @param roleKey 角色权限
      * @return 角色信息
      */
-    public SysRole checkRoleKeyUnique(String roleKey);
+    public SysRole checkRoleKeyUnique(@Param("roleKey") String roleKey,@Param("userId") Long userId);
 
     /**
      * 修改角色信息

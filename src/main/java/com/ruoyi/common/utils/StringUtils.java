@@ -248,7 +248,13 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils
      * 通常使用：format("this is {} for {}", "a", "b") -> this is a for b<br>
      * 转义{}： format("this is \\{} for {}", "a", "b") -> this is \{} for a<br>
      * 转义\： format("this is \\\\{} for {}", "a", "b") -> this is \a for b<br>
-     * 
+     * formatted text, {} means placeholder<br>
+     * This method simply replaces the placeholders {} with the parameters in order <br>
+     * If you want to output {}, use \\ to escape {, if you want to output the \ before {}, use double escape character \\\\<br>
+     * Example: <br>
+     * Usually used: format("this is {} for {}", "a", "b") -> this is a for b<br>
+     * Escape {}: format("this is \\{} for {}", "a", "b") -> this is \{} for a<br>
+     * Escape \: format("this is \\\\{} for {}", "a", "b") -> this is \a for b<br>
      * @param template 文本模板，被替换的部分用 {} 表示
      * @param params 参数值
      * @return 格式化后的文本
@@ -322,32 +328,6 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils
         }
 
         return list;
-    }
-
-    /**
-     * 判断给定的set列表中是否包含数组array 判断给定的数组array中是否包含给定的元素value
-     *
-     * @param set 给定的集合
-     * @param array 给定的数组
-     * @return boolean 结果
-     */
-    public static boolean containsAny(Collection<String> collection, String... array)
-    {
-        if (isEmpty(collection) || isEmpty(array))
-        {
-            return false;
-        }
-        else
-        {
-            for (String str : array)
-            {
-                if (collection.contains(str))
-                {
-                    return true;
-                }
-            }
-            return false;
-        }
     }
 
     /**

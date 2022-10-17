@@ -1,6 +1,5 @@
 package com.ruoyi.project.system.domain;
 
-import java.util.Set;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -25,6 +24,10 @@ public class SysRole extends BaseEntity
     /** 角色名称 */
     @Excel(name = "角色名称")
     private String roleName;
+
+    private String roleNameEn;
+
+    private String roleNameId;
 
     /** 角色权限 */
     @Excel(name = "角色权限")
@@ -59,9 +62,6 @@ public class SysRole extends BaseEntity
 
     /** 部门组（数据权限） */
     private Long[] deptIds;
-
-    /** 角色菜单权限 */
-    private Set<String> permissions;
 
     public SysRole()
     {
@@ -103,6 +103,22 @@ public class SysRole extends BaseEntity
     public void setRoleName(String roleName)
     {
         this.roleName = roleName;
+    }
+
+    public String getRoleNameEn() {
+        return roleNameEn;
+    }
+
+    public void setRoleNameEn(String roleNameEn) {
+        this.roleNameEn = roleNameEn;
+    }
+
+    public String getRoleNameId() {
+        return roleNameId;
+    }
+
+    public void setRoleNameId(String roleNameId) {
+        this.roleNameId = roleNameId;
     }
 
     @NotBlank(message = "权限字符不能为空")
@@ -207,17 +223,7 @@ public class SysRole extends BaseEntity
     {
         this.deptIds = deptIds;
     }
-
-    public Set<String> getPermissions()
-    {
-        return permissions;
-    }
-
-    public void setPermissions(Set<String> permissions)
-    {
-        this.permissions = permissions;
-    }
-
+    
     @Override
     public String toString() {
         return new ToStringBuilder(this,ToStringStyle.MULTI_LINE_STYLE)

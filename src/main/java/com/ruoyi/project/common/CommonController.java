@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import com.ruoyi.common.utils.MessageUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,7 +52,8 @@ public class CommonController
         {
             if (!FileUtils.checkAllowDownload(fileName))
             {
-                throw new Exception(StringUtils.format("文件名称({})非法，不允许下载。 ", fileName));
+//                "文件名称({})非法，不允许下载。 "
+                throw new Exception(StringUtils.format(MessageUtils.message("illegal.file"), fileName));
             }
             String realFileName = System.currentTimeMillis() + fileName.substring(fileName.indexOf("_") + 1);
             String filePath = RuoYiConfig.getDownloadPath() + fileName;
@@ -65,7 +68,8 @@ public class CommonController
         }
         catch (Exception e)
         {
-            log.error("下载文件失败", e);
+//            "下载文件失败"
+            log.error(MessageUtils.message("download.failed"), e);
         }
     }
 
@@ -143,7 +147,8 @@ public class CommonController
         {
             if (!FileUtils.checkAllowDownload(resource))
             {
-                throw new Exception(StringUtils.format("资源文件({})非法，不允许下载。 ", resource));
+//                资源文件({})非法，不允许下载。
+                throw new Exception(StringUtils.format(MessageUtils.message("illegal.resource"), resource));
             }
             // 本地资源路径
             String localPath = RuoYiConfig.getProfile();
@@ -157,7 +162,8 @@ public class CommonController
         }
         catch (Exception e)
         {
-            log.error("下载文件失败", e);
+//            "下载文件失败"
+            log.error(MessageUtils.message("download.failed"), e);
         }
     }
 }

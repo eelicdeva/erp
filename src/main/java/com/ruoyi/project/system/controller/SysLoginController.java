@@ -1,6 +1,7 @@
 package com.ruoyi.project.system.controller;
 
 import java.util.List;
+import java.util.Locale;
 import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,6 +17,10 @@ import com.ruoyi.framework.web.domain.AjaxResult;
 import com.ruoyi.project.system.domain.SysMenu;
 import com.ruoyi.project.system.domain.SysUser;
 import com.ruoyi.project.system.service.ISysMenuService;
+import org.springframework.web.util.WebUtils;
+
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * 登录验证
@@ -77,9 +82,11 @@ public class SysLoginController
      * @return 路由信息
      */
     @GetMapping("getRouters")
-    public AjaxResult getRouters()
+    public AjaxResult getRouters(HttpServletRequest request)
     {
+        Cookie language = WebUtils.getCookie(request, "lang");
         Long userId = SecurityUtils.getUserId();
+        loginService.updateLang(language.getValue(),userId);
         List<SysMenu> menus = menuService.selectMenuTreeByUserId(userId);
         return AjaxResult.success(menuService.buildMenus(menus));
     }

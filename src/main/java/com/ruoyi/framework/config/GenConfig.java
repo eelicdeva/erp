@@ -5,23 +5,27 @@ import org.springframework.stereotype.Component;
 
 /**
  * 读取代码生成相关配置
- * 
+ * Read code generation related configuration
  * @author ruoyi
  */
 @Component
 @ConfigurationProperties(prefix = "gen")
 public class GenConfig
 {
-    /** 作者 */
+    /** 作者
+    ** author */
     public static String author;
 
-    /** 生成包路径 */
+    /** 生成包路径
+     *  build package path */
     public static String packageName;
 
-    /** 自动去除表前缀，默认是true */
+    /** 自动去除表前缀，默认是true
+     *  Automatically remove table prefix, default is true */
     public static boolean autoRemovePre;
 
-    /** 表前缀(类名不会包含表前缀) */
+    /** 表前缀(类名不会包含表前缀)
+     *  Table prefix (the class name will not contain the table prefix) */
     public static String tablePrefix;
 
     public static String getAuthor()

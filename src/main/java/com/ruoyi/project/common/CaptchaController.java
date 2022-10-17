@@ -12,7 +12,6 @@ import org.springframework.util.FastByteArrayOutputStream;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.google.code.kaptcha.Producer;
-import com.ruoyi.common.constant.CacheConstants;
 import com.ruoyi.common.constant.Constants;
 import com.ruoyi.common.utils.sign.Base64;
 import com.ruoyi.common.utils.uuid.IdUtils;
@@ -51,21 +50,22 @@ public class CaptchaController
     public AjaxResult getCode(HttpServletResponse response) throws IOException
     {
         AjaxResult ajax = AjaxResult.success();
-        boolean captchaEnabled = configService.selectCaptchaEnabled();
-        ajax.put("captchaEnabled", captchaEnabled);
-        if (!captchaEnabled)
+        boolean captchaOnOff = configService.selectCaptchaOnOff();
+        ajax.put("captchaOnOff", captchaOnOff);
+        if (!captchaOnOff)
         {
             return ajax;
         }
 
         // 保存验证码信息
         String uuid = IdUtils.simpleUUID();
-        String verifyKey = CacheConstants.CAPTCHA_CODE_KEY + uuid;
+        String verifyKey = Constants.CAPTCHA_CODE_KEY + uuid;
 
         String capStr = null, code = null;
         BufferedImage image = null;
 
         // 生成验证码
+        // generate verification code
         if ("math".equals(captchaType))
         {
             String capText = captchaProducerMath.createText();
@@ -81,6 +81,7 @@ public class CaptchaController
 
         redisCache.setCacheObject(verifyKey, code, Constants.CAPTCHA_EXPIRATION, TimeUnit.MINUTES);
         // 转换流信息写出
+        // Convert stream information to write out
         FastByteArrayOutputStream os = new FastByteArrayOutputStream();
         try
         {

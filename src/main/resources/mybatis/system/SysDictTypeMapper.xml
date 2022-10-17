@@ -16,27 +16,34 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</resultMap>
 	
 	<sql id="selectDictTypeVo">
-        select dict_id, dict_name, dict_type, status, create_by, create_time, remark 
-		from sys_dict_type
+		select dict_id,
+		case (select user_lang from sys_user where user_id = #{userId})
+		when 0 then (select dict_name_en from sys_dict_type where dict_id = d.dict_id)
+		when 1 then (select dict_name from sys_dict_type where dict_id = d.dict_id)
+		when 2 then (select dict_name_id from sys_dict_type where dict_id = d.dict_id)
+		end as dict_name, dict_type, status, create_by, create_time, remark
+		from sys_dict_type d
     </sql>
 
 	<select id="selectDictTypeList" parameterType="SysDictType" resultMap="SysDictTypeResult">
 	    <include refid="selectDictTypeVo"/>
 		<where>
-		    <if test="dictName != null and dictName != ''">
-				AND dict_name like concat('%', #{dictName}, '%')
+		    <if test="d.dictName != null and d.dictName != ''">
+				AND dict_name like concat('%', #{d.dictName}, '%')
+				OR dict_name_en like concat('%', #{d.dictName}, '%')
+				OR dict_name_id like concat('%', #{d.dictName}, '%')
 			</if>
-			<if test="status != null and status != ''">
-				AND status = #{status}
+			<if test="d.status != null and d.status != ''">
+				AND status = #{d.status}
 			</if>
-			<if test="dictType != null and dictType != ''">
-				AND dict_type like concat('%', #{dictType}, '%')
+			<if test="d.dictType != null and d.dictType != ''">
+				AND dict_type like concat('%', #{d.dictType}, '%')
 			</if>
-			<if test="params.beginTime != null and params.beginTime != ''"><!-- 开始时间检索 -->
-				and date_format(create_time,'%y%m%d') &gt;= date_format(#{params.beginTime},'%y%m%d')
+			<if test="d.params.beginTime != null and d.params.beginTime != ''"><!-- 开始时间检索 -->
+				and date_format(create_time,'%y%m%d') &gt;= date_format(#{d.params.beginTime},'%y%m%d')
 			</if>
-			<if test="params.endTime != null and params.endTime != ''"><!-- 结束时间检索 -->
-				and date_format(create_time,'%y%m%d') &lt;= date_format(#{params.endTime},'%y%m%d')
+			<if test="d.params.endTime != null and d.params.endTime != ''"><!-- 结束时间检索 -->
+				and date_format(create_time,'%y%m%d') &lt;= date_format(#{d.params.endTime},'%y%m%d')
 			</if>
 	    </where>
 	</select>
@@ -55,7 +62,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		where dict_type = #{dictType}
 	</select>
 	
-	<select id="checkDictTypeUnique" parameterType="String" resultMap="SysDictTypeResult">
+	<select id="checkDictTypeUnique" resultMap="SysDictTypeResult">
 		<include refid="selectDictTypeVo"/>
 		where dict_type = #{dictType} limit 1
 	</select>
@@ -75,6 +82,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
  		update sys_dict_type
  		<set>
  			<if test="dictName != null and dictName != ''">dict_name = #{dictName},</if>
+			<if test="dictNameEn != null and dictNameEn != ''">dict_name_en = #{dictNameEn},</if>
+			<if test="dictNameId != null and dictNameId != ''">dict_name_id = #{dictNameId},</if>
  			<if test="dictType != null and dictType != ''">dict_type = #{dictType},</if>
  			<if test="status != null">status = #{status},</if>
  			<if test="remark != null">remark = #{remark},</if>
@@ -87,6 +96,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
  	<insert id="insertDictType" parameterType="SysDictType">
  		insert into sys_dict_type(
  			<if test="dictName != null and dictName != ''">dict_name,</if>
+			<if test="dictNameEn != null and dictNameEn != ''">dict_name_en,</if>
+			<if test="dictNameId != null and dictNameId != ''">dict_name_id,</if>
  			<if test="dictType != null and dictType != ''">dict_type,</if>
  			<if test="status != null">status,</if>
  			<if test="remark != null and remark != ''">remark,</if>
@@ -94,6 +105,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
  			create_time
  		)values(
  			<if test="dictName != null and dictName != ''">#{dictName},</if>
+			<if test="dictNameEn != null and dictNameEn != ''">#{dictNameEn},</if>
+			<if test="dictNameId != null and dictNameId != ''">#{dictNameId},</if>
  			<if test="dictType != null and dictType != ''">#{dictType},</if>
  			<if test="status != null">#{status},</if>
  			<if test="remark != null and remark != ''">#{remark},</if>

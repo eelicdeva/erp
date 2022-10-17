@@ -38,6 +38,11 @@ public class Threads
      * 如果超时, 则调用shutdownNow, 取消在workQueue中Pending的任务,并中断所有阻塞函数.
      * 如果仍然超時，則強制退出.
      * 另对在shutdown时线程本身被调用中断做了处理.
+     * Stop the thread pool
+     * Use shutdown first, stop accepting new tasks and try to complete all existing tasks.
+     * If it times out, call shutdownNow, cancel the Pending task in the workQueue, and interrupt all blocking functions.
+     * If it still times out, force quit.
+     * In addition, the thread itself is interrupted by the call during shutdown.
      */
     public static void shutdownAndAwaitTermination(ExecutorService pool)
     {

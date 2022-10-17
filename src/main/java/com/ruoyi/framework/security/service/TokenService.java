@@ -7,7 +7,6 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-import com.ruoyi.common.constant.CacheConstants;
 import com.ruoyi.common.constant.Constants;
 import com.ruoyi.common.utils.ServletUtils;
 import com.ruoyi.common.utils.StringUtils;
@@ -58,6 +57,7 @@ public class TokenService
     public LoginUser getLoginUser(HttpServletRequest request)
     {
         // 获取请求携带的令牌
+        // Get the token carried by the request
         String token = getToken(request);
         if (StringUtils.isNotEmpty(token))
         {
@@ -221,6 +221,6 @@ public class TokenService
 
     private String getTokenKey(String uuid)
     {
-        return CacheConstants.LOGIN_TOKEN_KEY + uuid;
+        return Constants.LOGIN_TOKEN_KEY + uuid;
     }
 }

@@ -1,11 +1,17 @@
 package com.ruoyi.project.monitor.service.impl;
 
 import java.util.List;
+
+import com.ruoyi.common.utils.SecurityUtils;
+import com.ruoyi.framework.config.SecurityConfig;
+import org.apache.catalina.security.SecurityUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.ruoyi.project.monitor.domain.SysOperLog;
 import com.ruoyi.project.monitor.mapper.SysOperLogMapper;
 import com.ruoyi.project.monitor.service.ISysOperLogService;
+
+import static com.ruoyi.common.translator.Translator.translate;
 
 /**
  * 操作日志 服务层处理
@@ -26,6 +32,13 @@ public class SysOperLogServiceImpl implements ISysOperLogService
     @Override
     public void insertOperlog(SysOperLog operLog)
     {
+        try {
+            operLog.setTitleId(translate("auto", "id",operLog.getTitle()));
+            operLog.setTitleEn(translate("auto", "en",operLog.getTitle()));
+            operLog.setTitle(translate("auto", "zh-CN",operLog.getTitle()));
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
         operLogMapper.insertOperlog(operLog);
     }
 
@@ -38,7 +51,7 @@ public class SysOperLogServiceImpl implements ISysOperLogService
     @Override
     public List<SysOperLog> selectOperLogList(SysOperLog operLog)
     {
-        return operLogMapper.selectOperLogList(operLog);
+        return operLogMapper.selectOperLogList(operLog, SecurityUtils.getUserId());
     }
 
     /**

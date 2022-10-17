@@ -71,7 +71,7 @@ public class SysUserServiceImpl implements ISysUserService
     @DataScope(deptAlias = "d", userAlias = "u")
     public List<SysUser> selectUserList(SysUser user)
     {
-        return userMapper.selectUserList(user);
+        return userMapper.selectUserList(user,SecurityUtils.getUserId());
     }
 
     /**
@@ -133,7 +133,7 @@ public class SysUserServiceImpl implements ISysUserService
     @Override
     public String selectUserRoleGroup(String userName)
     {
-        List<SysRole> list = roleMapper.selectRolesByUserName(userName);
+        List<SysRole> list = roleMapper.selectRolesByUserName(userName,SecurityUtils.getUserId());
         if (CollectionUtils.isEmpty(list))
         {
             return StringUtils.EMPTY;
@@ -150,7 +150,7 @@ public class SysUserServiceImpl implements ISysUserService
     @Override
     public String selectUserPostGroup(String userName)
     {
-        List<SysPost> list = postMapper.selectPostsByUserName(userName);
+        List<SysPost> list = postMapper.selectPostsByUserName(userName,SecurityUtils.getUserId());
         if (CollectionUtils.isEmpty(list))
         {
             return StringUtils.EMPTY;
@@ -161,15 +161,14 @@ public class SysUserServiceImpl implements ISysUserService
     /**
      * 校验用户名称是否唯一
      * 
-     * @param user 用户信息
+     * @param userName 用户名称
      * @return 结果
      */
     @Override
-    public String checkUserNameUnique(SysUser user)
+    public String checkUserNameUnique(String userName)
     {
-        Long userId = StringUtils.isNull(user.getUserId()) ? -1L : user.getUserId();
-        SysUser info = userMapper.checkUserNameUnique(user.getUserName());
-        if (StringUtils.isNotNull(info) && info.getUserId().longValue() != userId.longValue())
+        int count = userMapper.checkUserNameUnique(userName);
+        if (count > 0)
         {
             return UserConstants.NOT_UNIQUE;
         }
@@ -499,8 +498,6 @@ public class SysUserServiceImpl implements ISysUserService
                 if (StringUtils.isNull(u))
                 {
                     BeanValidators.validateWithException(validator, user);
-                    checkUserAllowed(user);
-                    checkUserDataScope(user.getUserId());
                     user.setPassword(SecurityUtils.encryptPassword(password));
                     user.setCreateBy(operName);
                     this.insertUser(user);
@@ -539,5 +536,10 @@ public class SysUserServiceImpl implements ISysUserService
             successMsg.insert(0, "恭喜您，数据已全部导入成功！共 " + successNum + " 条，数据如下：");
         }
         return successMsg.toString();
+    }
+
+    @Override
+    public void updateLang(Long lang, Long userId) {
+        userMapper.updateLang(lang, userId);
     }
 }

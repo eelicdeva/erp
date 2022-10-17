@@ -6,6 +6,8 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import javax.sql.DataSource;
+
+import com.ruoyi.common.utils.MessageUtils;
 import org.apache.ibatis.io.VFS;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.SqlSessionFactoryBean;
@@ -81,7 +83,8 @@ public class MyBatisConfig
             }
             else
             {
-                throw new RuntimeException("mybatis typeAliasesPackage 路径扫描错误,参数typeAliasesPackage:" + typeAliasesPackage + "未找到任何包");
+//                "mybatis typeAliasesPackage 路径扫描错误,参数typeAliasesPackage:" + typeAliasesPackage + "未找到任何包"
+                throw new RuntimeException(MessageUtils.message("mybatis.exception.prefix") + typeAliasesPackage + MessageUtils.message("mybatis.exception.suffix"));
             }
         }
         catch (IOException e)

@@ -8,6 +8,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<id     property="dictCode"   column="dict_code"   />
 		<result property="dictSort"   column="dict_sort"   />
 		<result property="dictLabel"  column="dict_label"  />
+		<result property="dictLabelEn"  column="dict_label_en"  />
+		<result property="dictLabelId"  column="dict_label_id"  />
 		<result property="dictValue"  column="dict_value"  />
 		<result property="dictType"   column="dict_type"   />
 		<result property="cssClass"   column="css_class"   />
@@ -21,7 +23,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</resultMap>
 	
 	<sql id="selectDictDataVo">
-        select dict_code, dict_sort, dict_label, dict_value, dict_type, css_class, list_class, is_default, status, create_by, create_time, remark 
+        select dict_code, dict_sort, dict_label, dict_label_en, dict_label_id, dict_value, dict_type, css_class, list_class, is_default, status, create_by, create_time, remark
 		from sys_dict_data
     </sql>
 
@@ -33,6 +35,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			</if>
 			<if test="dictLabel != null and dictLabel != ''">
 				AND dict_label like concat('%', #{dictLabel}, '%')
+			</if>
+			<if test="dictLabelEn != null and dictLabelEn != ''">
+				AND dict_label_en like concat('%', #{dictLabelEn}, '%')
+			</if>
+			<if test="dictLabelId != null and dictLabelId != ''">
+				AND dict_label_id like concat('%', #{dictLabelId}, '%')
 			</if>
 			<if test="status != null and status != ''">
 				AND status = #{status}

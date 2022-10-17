@@ -19,7 +19,7 @@ public interface SysUserMapper
      * @param sysUser 用户信息
      * @return 用户信息集合信息
      */
-    public List<SysUser> selectUserList(SysUser sysUser);
+    public List<SysUser> selectUserList(@Param("u")SysUser sysUser, @Param("userId")Long userId);
 
     /**
      * 根据条件分页查询已配用户角色列表
@@ -43,7 +43,7 @@ public interface SysUserMapper
      * @param userName 用户名
      * @return 用户对象信息
      */
-    public SysUser selectUserByUserName(String userName);
+    public SysUser selectUserByUserName(@Param("userName")String userName);
 
     /**
      * 通过用户ID查询用户
@@ -109,7 +109,7 @@ public interface SysUserMapper
      * @param userName 用户名称
      * @return 结果
      */
-    public SysUser checkUserNameUnique(String userName);
+    public int checkUserNameUnique(String userName);
 
     /**
      * 校验手机号码是否唯一
@@ -126,4 +126,7 @@ public interface SysUserMapper
      * @return 结果
      */
     public SysUser checkEmailUnique(String email);
+
+
+    public int updateLang(Long lang, Long userId);
 }

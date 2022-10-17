@@ -1,8 +1,8 @@
 package com.ruoyi.framework.web.domain;
 
 import java.util.HashMap;
-import java.util.Objects;
 import com.ruoyi.common.constant.HttpStatus;
+import com.ruoyi.common.utils.MessageUtils;
 import com.ruoyi.common.utils.StringUtils;
 
 /**
@@ -66,7 +66,8 @@ public class AjaxResult extends HashMap<String, Object>
      */
     public static AjaxResult success()
     {
-        return AjaxResult.success("操作成功");
+//        "操作成功"
+        return AjaxResult.success(MessageUtils.message("successful.operation"));
     }
 
     /**
@@ -76,7 +77,8 @@ public class AjaxResult extends HashMap<String, Object>
      */
     public static AjaxResult success(Object data)
     {
-        return AjaxResult.success("操作成功", data);
+//        "操作成功"
+        return AjaxResult.success(MessageUtils.message("successful.operation"), data);
     }
 
     /**
@@ -109,7 +111,8 @@ public class AjaxResult extends HashMap<String, Object>
      */
     public static AjaxResult error()
     {
-        return AjaxResult.error("操作失败");
+//        "操作失败"
+        return AjaxResult.error(MessageUtils.message("operation.failed"));
     }
 
     /**
@@ -145,26 +148,6 @@ public class AjaxResult extends HashMap<String, Object>
     public static AjaxResult error(int code, String msg)
     {
         return new AjaxResult(code, msg, null);
-    }
-
-    /**
-     * 是否为成功消息
-     *
-     * @return 结果
-     */
-    public boolean isSuccess()
-    {
-        return !isError();
-    }
-
-    /**
-     * 是否为错误消息
-     *
-     * @return 结果
-     */
-    public boolean isError()
-    {
-        return Objects.equals(HttpStatus.ERROR, this.get(CODE_TAG));
     }
 
     /**

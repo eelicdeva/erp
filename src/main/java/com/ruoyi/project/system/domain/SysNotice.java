@@ -22,6 +22,12 @@ public class SysNotice extends BaseEntity
     /** 公告标题 */
     private String noticeTitle;
 
+    /** Announcement title */
+    private String noticeTitleEn;
+
+    /** Judul pengumuman */
+    private String noticeTitleId;
+
     /** 公告类型（1通知 2公告） */
     private String noticeType;
 
@@ -52,6 +58,22 @@ public class SysNotice extends BaseEntity
     public String getNoticeTitle()
     {
         return noticeTitle;
+    }
+
+    public String getNoticeTitleEn() {
+        return noticeTitleEn;
+    }
+
+    public void setNoticeTitleEn(String noticeTitleEn) {
+        this.noticeTitleEn = noticeTitleEn;
+    }
+
+    public String getNoticeTitleId() {
+        return noticeTitleId;
+    }
+
+    public void setNoticeTitleId(String noticeTitleId) {
+        this.noticeTitleId = noticeTitleId;
     }
 
     public void setNoticeType(String noticeType)

@@ -1,6 +1,8 @@
 package com.ruoyi.project.system.service.impl;
 
 import java.util.List;
+
+import com.ruoyi.common.utils.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.ruoyi.common.constant.UserConstants;
@@ -10,6 +12,8 @@ import com.ruoyi.project.system.domain.SysPost;
 import com.ruoyi.project.system.mapper.SysPostMapper;
 import com.ruoyi.project.system.mapper.SysUserPostMapper;
 import com.ruoyi.project.system.service.ISysPostService;
+
+import static com.ruoyi.common.translator.Translator.translate;
 
 /**
  * 岗位信息 服务层处理
@@ -34,7 +38,7 @@ public class SysPostServiceImpl implements ISysPostService
     @Override
     public List<SysPost> selectPostList(SysPost post)
     {
-        return postMapper.selectPostList(post);
+        return postMapper.selectPostList(post,SecurityUtils.getUserId());
     }
 
     /**
@@ -45,7 +49,7 @@ public class SysPostServiceImpl implements ISysPostService
     @Override
     public List<SysPost> selectPostAll()
     {
-        return postMapper.selectPostAll();
+        return postMapper.selectPostAll(SecurityUtils.getUserId());
     }
 
     /**
@@ -57,7 +61,7 @@ public class SysPostServiceImpl implements ISysPostService
     @Override
     public SysPost selectPostById(Long postId)
     {
-        return postMapper.selectPostById(postId);
+        return postMapper.selectPostById(postId,SecurityUtils.getUserId());
     }
 
     /**
@@ -100,7 +104,7 @@ public class SysPostServiceImpl implements ISysPostService
     public String checkPostCodeUnique(SysPost post)
     {
         Long postId = StringUtils.isNull(post.getPostId()) ? -1L : post.getPostId();
-        SysPost info = postMapper.checkPostCodeUnique(post.getPostCode());
+        SysPost info = postMapper.checkPostCodeUnique(post.getPostCode(),SecurityUtils.getUserId());
         if (StringUtils.isNotNull(info) && info.getPostId().longValue() != postId.longValue())
         {
             return UserConstants.NOT_UNIQUE;
@@ -161,6 +165,14 @@ public class SysPostServiceImpl implements ISysPostService
     @Override
     public int insertPost(SysPost post)
     {
+        try {
+            post.setPostNameId(translate("auto", "id",post.getPostName()));
+            post.setPostNameEn(translate("auto", "en",post.getPostName()));
+            post.setPostName(translate("auto", "zh-CN",post.getPostName()));
+
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
         return postMapper.insertPost(post);
     }
 
@@ -173,6 +185,14 @@ public class SysPostServiceImpl implements ISysPostService
     @Override
     public int updatePost(SysPost post)
     {
+        try {
+            post.setPostNameId(translate("auto", "id",post.getPostName()));
+            post.setPostNameEn(translate("auto", "en",post.getPostName()));
+            post.setPostName(translate("auto", "zh-CN",post.getPostName()));
+
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
         return postMapper.updatePost(post);
     }
 }

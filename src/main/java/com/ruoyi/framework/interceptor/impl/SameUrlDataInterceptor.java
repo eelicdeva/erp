@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import com.alibaba.fastjson2.JSON;
-import com.ruoyi.common.constant.CacheConstants;
+import com.ruoyi.common.constant.Constants;
 import com.ruoyi.common.filter.RepeatedlyRequestWrapper;
 import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.common.utils.http.HttpHelper;
@@ -18,7 +18,9 @@ import com.ruoyi.framework.redis.RedisCache;
 
 /**
  * 判断请求url和数据是否和上一次相同，
+ * Determine whether the request url and data are the same as the last time,
  * 如果和上次相同，则是重复提交表单。 有效时间为10秒内。
+ * If it is the same as last time, the form is submitted repeatedly. The valid time is within 10 seconds.
  * 
  * @author ruoyi
  */
@@ -30,6 +32,7 @@ public class SameUrlDataInterceptor extends RepeatSubmitInterceptor
     public final String REPEAT_TIME = "repeatTime";
 
     // 令牌自定义标识
+    // token custom ID
     @Value("${token.header}")
     private String header;
 
@@ -48,6 +51,7 @@ public class SameUrlDataInterceptor extends RepeatSubmitInterceptor
         }
 
         // body参数为空，获取Parameter的数据
+        // The body parameter is empty, get the data of Parameter
         if (StringUtils.isEmpty(nowParams))
         {
             nowParams = JSON.toJSONString(request.getParameterMap());
@@ -57,13 +61,16 @@ public class SameUrlDataInterceptor extends RepeatSubmitInterceptor
         nowDataMap.put(REPEAT_TIME, System.currentTimeMillis());
 
         // 请求地址（作为存放cache的key值）
+        // request address (as the key value for storing the cache)
         String url = request.getRequestURI();
 
         // 唯一值（没有消息头则使用请求地址）
+        // Unique value (use request address without header)
         String submitKey = StringUtils.trimToEmpty(request.getHeader(header));
 
         // 唯一标识（指定key + url + 消息头）
-        String cacheRepeatKey = CacheConstants.REPEAT_SUBMIT_KEY + url + submitKey;
+        // Unique identifier (specify key + url + message header)
+        String cacheRepeatKey = Constants.REPEAT_SUBMIT_KEY + url + submitKey;
 
         Object sessionObj = redisCache.getCacheObject(cacheRepeatKey);
         if (sessionObj != null)

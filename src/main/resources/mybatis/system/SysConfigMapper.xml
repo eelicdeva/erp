@@ -7,6 +7,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <resultMap type="SysConfig" id="SysConfigResult">
     	<id     property="configId"      column="config_id"      />
         <result property="configName"    column="config_name"    />
+        <result property="configNameEn"  column="config_name_en" />
+        <result property="configNameId"  column="config_name_id" />
         <result property="configKey"     column="config_key"     />
         <result property="configValue"   column="config_value"   />
         <result property="configType"    column="config_type"    />
@@ -15,9 +17,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="updateBy"      column="update_by"      />
         <result property="updateTime"    column="update_time"    />
     </resultMap>
-    
+
     <sql id="selectConfigVo">
-        select config_id, config_name, config_key, config_value, config_type, create_by, create_time, update_by, update_time, remark 
+        select config_id, config_name, config_name_en, config_name_id, config_key, config_value, config_type, create_by, create_time, update_by, update_time, remark
 		from sys_config
     </sql>
     
@@ -44,6 +46,18 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			<if test="configName != null and configName != ''">
 				AND config_name like concat('%', #{configName}, '%')
 			</if>
+            <if test="configNameEn != null and configNameEn != ''">
+                AND config_name_en like concat('%', #{configNameEn}, '%')
+            </if>
+            <if test="configNameId != null and configNameId != ''">
+                AND config_nameId like concat('%', #{configNameId}, '%')
+            </if>
+            <if test="configNameEn != null and configNameEn != ''">
+                AND config_name like concat('%', #{configNameEn}, '%')
+            </if>
+            <if test="configNameId != null and configNameId != ''">
+                AND config_name like concat('%', #{configNameId}, '%')
+            </if>
 			<if test="configType != null and configType != ''">
 				AND config_type = #{configType}
 			</if>

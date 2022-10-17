@@ -25,6 +25,8 @@ import com.ruoyi.project.system.mapper.SysRoleMenuMapper;
 import com.ruoyi.project.system.mapper.SysUserRoleMapper;
 import com.ruoyi.project.system.service.ISysRoleService;
 
+import static com.ruoyi.common.translator.Translator.translate;
+
 /**
  * 角色 业务层处理
  * 
@@ -55,7 +57,7 @@ public class SysRoleServiceImpl implements ISysRoleService
     @DataScope(deptAlias = "d")
     public List<SysRole> selectRoleList(SysRole role)
     {
-        return roleMapper.selectRoleList(role);
+        return roleMapper.selectRoleList(role, SecurityUtils.getUserId());
     }
 
     /**
@@ -136,7 +138,7 @@ public class SysRoleServiceImpl implements ISysRoleService
     @Override
     public SysRole selectRoleById(Long roleId)
     {
-        return roleMapper.selectRoleById(roleId);
+        return roleMapper.selectRoleById(roleId,SecurityUtils.getUserId());
     }
 
     /**
@@ -167,7 +169,7 @@ public class SysRoleServiceImpl implements ISysRoleService
     public String checkRoleKeyUnique(SysRole role)
     {
         Long roleId = StringUtils.isNull(role.getRoleId()) ? -1L : role.getRoleId();
-        SysRole info = roleMapper.checkRoleKeyUnique(role.getRoleKey());
+        SysRole info = roleMapper.checkRoleKeyUnique(role.getRoleKey(),SecurityUtils.getUserId());
         if (StringUtils.isNotNull(info) && info.getRoleId().longValue() != roleId.longValue())
         {
             return UserConstants.NOT_UNIQUE;
@@ -231,6 +233,14 @@ public class SysRoleServiceImpl implements ISysRoleService
     @Transactional
     public int insertRole(SysRole role)
     {
+
+        try {
+            role.setRoleNameId(translate("auto", "id",role.getRoleName()));
+            role.setRoleNameEn(translate("auto", "en",role.getRoleName()));
+            role.setRoleName(translate("auto", "zh-CN",role.getRoleName()));
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
         // 新增角色信息
         roleMapper.insertRole(role);
         return insertRoleMenu(role);
@@ -246,6 +256,13 @@ public class SysRoleServiceImpl implements ISysRoleService
     @Transactional
     public int updateRole(SysRole role)
     {
+        try {
+            role.setRoleNameId(translate("auto", "id",role.getRoleName()));
+            role.setRoleNameEn(translate("auto", "en",role.getRoleName()));
+            role.setRoleName(translate("auto", "zh-CN",role.getRoleName()));
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
         // 修改角色信息
         roleMapper.updateRole(role);
         // 删除角色与菜单关联
@@ -262,6 +279,13 @@ public class SysRoleServiceImpl implements ISysRoleService
     @Override
     public int updateRoleStatus(SysRole role)
     {
+        try {
+            role.setRoleNameId(translate("auto", "id",role.getRoleName()));
+            role.setRoleNameEn(translate("auto", "en",role.getRoleName()));
+            role.setRoleName(translate("auto", "zh-CN",role.getRoleName()));
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
         return roleMapper.updateRole(role);
     }
 
@@ -275,6 +299,13 @@ public class SysRoleServiceImpl implements ISysRoleService
     @Transactional
     public int authDataScope(SysRole role)
     {
+        try {
+            role.setRoleNameId(translate("auto", "id",role.getRoleName()));
+            role.setRoleNameEn(translate("auto", "en",role.getRoleName()));
+            role.setRoleName(translate("auto", "zh-CN",role.getRoleName()));
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
         // 修改角色信息
         roleMapper.updateRole(role);
         // 删除角色与部门关联

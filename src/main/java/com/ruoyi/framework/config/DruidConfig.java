@@ -80,6 +80,7 @@ public class DruidConfig
 
     /**
      * 去除监控页面底部的广告
+     * Remove ads at the bottom of the monitoring page
      */
     @SuppressWarnings({ "rawtypes", "unchecked" })
     @Bean
@@ -87,12 +88,15 @@ public class DruidConfig
     public FilterRegistrationBean removeDruidFilterRegistrationBean(DruidStatProperties properties)
     {
         // 获取web监控页面的参数
+        // Get the parameters of the web monitoring page
         DruidStatProperties.StatViewServlet config = properties.getStatViewServlet();
         // 提取common.js的配置路径
+        // Extract the configuration path of common.js
         String pattern = config.getUrlPattern() != null ? config.getUrlPattern() : "/druid/*";
         String commonJsPattern = pattern.replaceAll("\\*", "js/common.js");
         final String filePath = "support/http/resources/js/common.js";
         // 创建filter进行过滤
+        // create filter to filter
         Filter filter = new Filter()
         {
             @Override
@@ -105,10 +109,12 @@ public class DruidConfig
             {
                 chain.doFilter(request, response);
                 // 重置缓冲区，响应头不会被重置
+                // reset the buffer, the response header will not be reset
                 response.resetBuffer();
                 // 获取common.js
                 String text = Utils.readFromResource(filePath);
                 // 正则替换banner, 除去底部的广告信息
+                // Regularly replace the banner, remove the advertising information at the bottom
                 text = text.replaceAll("<a.*?banner\"></a><br/>", "");
                 text = text.replaceAll("powered.*?shrek.wang</a>", "");
                 response.getWriter().write(text);

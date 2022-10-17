@@ -1,6 +1,8 @@
 package com.ruoyi.project.system.controller;
 
 import java.util.List;
+
+import com.ruoyi.common.utils.MessageUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
@@ -51,7 +53,7 @@ public class SysMenuController extends BaseController
     @GetMapping(value = "/{menuId}")
     public AjaxResult getInfo(@PathVariable Long menuId)
     {
-        return AjaxResult.success(menuService.selectMenuById(menuId));
+        return AjaxResult.success(menuService.selectMenuById(menuId,getUserId()));
     }
 
     /**
@@ -85,13 +87,15 @@ public class SysMenuController extends BaseController
     @PostMapping
     public AjaxResult add(@Validated @RequestBody SysMenu menu)
     {
-        if (UserConstants.NOT_UNIQUE.equals(menuService.checkMenuNameUnique(menu)))
+        if (UserConstants.NOT_UNIQUE.equals(menuService.checkMenuNameUnique(menu,getUserId())))
         {
-            return AjaxResult.error("新增菜单'" + menu.getMenuName() + "'失败，菜单名称已存在");
+//            "新增菜单'" + menu.getMenuName() + "'失败，菜单名称已存在"
+            return AjaxResult.error(MessageUtils.message("add.menu") + menu.getMenuName() + MessageUtils.message("failed.menu"));
         }
         else if (UserConstants.YES_FRAME.equals(menu.getIsFrame()) && !StringUtils.ishttp(menu.getPath()))
         {
-            return AjaxResult.error("新增菜单'" + menu.getMenuName() + "'失败，地址必须以http(s)://开头");
+//            "新增菜单'" + menu.getMenuName() + "'失败，地址必须以http(s)://开头"
+            return AjaxResult.error(MessageUtils.message("add.menu") + menu.getMenuName() + MessageUtils.message("failed.address"));
         }
         menu.setCreateBy(getUsername());
         return toAjax(menuService.insertMenu(menu));
@@ -105,17 +109,20 @@ public class SysMenuController extends BaseController
     @PutMapping
     public AjaxResult edit(@Validated @RequestBody SysMenu menu)
     {
-        if (UserConstants.NOT_UNIQUE.equals(menuService.checkMenuNameUnique(menu)))
+        if (UserConstants.NOT_UNIQUE.equals(menuService.checkMenuNameUnique(menu, getUserId())))
         {
-            return AjaxResult.error("修改菜单'" + menu.getMenuName() + "'失败，菜单名称已存在");
+//            "修改菜单'" + menu.getMenuName() + "'失败，菜单名称已存在"
+            return AjaxResult.error(MessageUtils.message("modify.menu") + menu.getMenuName() + MessageUtils.message("failed.menu"));
         }
         else if (UserConstants.YES_FRAME.equals(menu.getIsFrame()) && !StringUtils.ishttp(menu.getPath()))
         {
-            return AjaxResult.error("修改菜单'" + menu.getMenuName() + "'失败，地址必须以http(s)://开头");
+//            "修改菜单'" + menu.getMenuName() + "'失败，地址必须以http(s)://开头"
+            return AjaxResult.error(MessageUtils.message("modify.menu")  + menu.getMenuName() +  MessageUtils.message("failed.address"));
         }
         else if (menu.getMenuId().equals(menu.getParentId()))
         {
-            return AjaxResult.error("修改菜单'" + menu.getMenuName() + "'失败，上级菜单不能选择自己");
+//            "修改菜单'" + menu.getMenuName() + "'失败，上级菜单不能选择自己"
+            return AjaxResult.error(MessageUtils.message("modify.menu") + menu.getMenuName() + MessageUtils.message("failed.parent.menu"));
         }
         menu.setUpdateBy(getUsername());
         return toAjax(menuService.updateMenu(menu));
@@ -131,11 +138,13 @@ public class SysMenuController extends BaseController
     {
         if (menuService.hasChildByMenuId(menuId))
         {
-            return AjaxResult.error("存在子菜单,不允许删除");
+//            "存在子菜单,不允许删除"
+            return AjaxResult.error(MessageUtils.message("submenu.exist"));
         }
         if (menuService.checkMenuExistRole(menuId))
         {
-            return AjaxResult.error("菜单已分配,不允许删除");
+//            "菜单已分配,不允许删除"
+            return AjaxResult.error(MessageUtils.message("menu.has.assigned"));
         }
         return toAjax(menuService.deleteMenuById(menuId));
     }

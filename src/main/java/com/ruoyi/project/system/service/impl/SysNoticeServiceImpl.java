@@ -1,11 +1,15 @@
 package com.ruoyi.project.system.service.impl;
 
 import java.util.List;
+
+import com.ruoyi.common.utils.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.ruoyi.project.system.domain.SysNotice;
 import com.ruoyi.project.system.mapper.SysNoticeMapper;
 import com.ruoyi.project.system.service.ISysNoticeService;
+
+import static com.ruoyi.common.translator.Translator.translate;
 
 /**
  * 公告 服务层实现
@@ -27,7 +31,7 @@ public class SysNoticeServiceImpl implements ISysNoticeService
     @Override
     public SysNotice selectNoticeById(Long noticeId)
     {
-        return noticeMapper.selectNoticeById(noticeId);
+        return noticeMapper.selectNoticeById(noticeId, SecurityUtils.getUserId());
     }
 
     /**
@@ -39,7 +43,7 @@ public class SysNoticeServiceImpl implements ISysNoticeService
     @Override
     public List<SysNotice> selectNoticeList(SysNotice notice)
     {
-        return noticeMapper.selectNoticeList(notice);
+        return noticeMapper.selectNoticeList(notice,SecurityUtils.getUserId());
     }
 
     /**
@@ -51,6 +55,14 @@ public class SysNoticeServiceImpl implements ISysNoticeService
     @Override
     public int insertNotice(SysNotice notice)
     {
+        try {
+            notice.setNoticeTitleId(translate("auto", "id",notice.getNoticeTitle()));
+            notice.setNoticeTitleEn(translate("auto", "en",notice.getNoticeTitle()));
+            notice.setNoticeTitle(translate("auto", "zh-CN",notice.getNoticeTitle()));
+
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
         return noticeMapper.insertNotice(notice);
     }
 
@@ -63,6 +75,14 @@ public class SysNoticeServiceImpl implements ISysNoticeService
     @Override
     public int updateNotice(SysNotice notice)
     {
+        try {
+            notice.setNoticeTitleId(translate("auto", "id",notice.getNoticeTitle()));
+            notice.setNoticeTitleEn(translate("auto", "en",notice.getNoticeTitle()));
+            notice.setNoticeTitle(translate("auto", "zh-CN",notice.getNoticeTitle()));
+
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
         return noticeMapper.updateNotice(notice);
     }
 

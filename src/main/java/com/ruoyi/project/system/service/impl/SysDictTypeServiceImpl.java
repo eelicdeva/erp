@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 import javax.annotation.PostConstruct;
+
+import com.ruoyi.common.utils.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,6 +19,8 @@ import com.ruoyi.project.system.domain.SysDictType;
 import com.ruoyi.project.system.mapper.SysDictDataMapper;
 import com.ruoyi.project.system.mapper.SysDictTypeMapper;
 import com.ruoyi.project.system.service.ISysDictTypeService;
+
+import static com.ruoyi.common.translator.Translator.translate;
 
 /**
  * 字典 业务层处理
@@ -50,7 +54,7 @@ public class SysDictTypeServiceImpl implements ISysDictTypeService
     @Override
     public List<SysDictType> selectDictTypeList(SysDictType dictType)
     {
-        return dictTypeMapper.selectDictTypeList(dictType);
+        return dictTypeMapper.selectDictTypeList(dictType, SecurityUtils.getUserId());
     }
 
     /**
@@ -61,7 +65,7 @@ public class SysDictTypeServiceImpl implements ISysDictTypeService
     @Override
     public List<SysDictType> selectDictTypeAll()
     {
-        return dictTypeMapper.selectDictTypeAll();
+        return dictTypeMapper.selectDictTypeAll(SecurityUtils.getUserId());
     }
 
     /**
@@ -96,7 +100,7 @@ public class SysDictTypeServiceImpl implements ISysDictTypeService
     @Override
     public SysDictType selectDictTypeById(Long dictId)
     {
-        return dictTypeMapper.selectDictTypeById(dictId);
+        return dictTypeMapper.selectDictTypeById(dictId,SecurityUtils.getUserId());
     }
 
     /**
@@ -108,7 +112,7 @@ public class SysDictTypeServiceImpl implements ISysDictTypeService
     @Override
     public SysDictType selectDictTypeByType(String dictType)
     {
-        return dictTypeMapper.selectDictTypeByType(dictType);
+        return dictTypeMapper.selectDictTypeByType(dictType, SecurityUtils.getUserId());
     }
 
     /**
@@ -174,6 +178,14 @@ public class SysDictTypeServiceImpl implements ISysDictTypeService
     @Override
     public int insertDictType(SysDictType dict)
     {
+        try {
+            dict.setDictNameId(translate("auto", "id",dict.getDictName()));
+            dict.setDictNameEn(translate("auto", "en",dict.getDictName()));
+            dict.setDictName(translate("auto", "zh-CN",dict.getDictName()));
+
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
         int row = dictTypeMapper.insertDictType(dict);
         if (row > 0)
         {
@@ -192,7 +204,15 @@ public class SysDictTypeServiceImpl implements ISysDictTypeService
     @Transactional
     public int updateDictType(SysDictType dict)
     {
-        SysDictType oldDict = dictTypeMapper.selectDictTypeById(dict.getDictId());
+        try {
+            dict.setDictNameId(translate("auto", "id",dict.getDictName()));
+            dict.setDictNameEn(translate("auto", "en",dict.getDictName()));
+            dict.setDictName(translate("auto", "zh-CN",dict.getDictName()));
+
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        SysDictType oldDict = dictTypeMapper.selectDictTypeById(dict.getDictId(),SecurityUtils.getUserId());
         dictDataMapper.updateDictDataType(oldDict.getDictType(), dict.getDictType());
         int row = dictTypeMapper.updateDictType(dict);
         if (row > 0)
@@ -213,7 +233,7 @@ public class SysDictTypeServiceImpl implements ISysDictTypeService
     public String checkDictTypeUnique(SysDictType dict)
     {
         Long dictId = StringUtils.isNull(dict.getDictId()) ? -1L : dict.getDictId();
-        SysDictType dictType = dictTypeMapper.checkDictTypeUnique(dict.getDictType());
+        SysDictType dictType = dictTypeMapper.checkDictTypeUnique(dict.getDictType(),SecurityUtils.getUserId());
         if (StringUtils.isNotNull(dictType) && dictType.getDictId().longValue() != dictId.longValue())
         {
             return UserConstants.NOT_UNIQUE;

@@ -1,6 +1,9 @@
 package com.ruoyi.project.system.controller;
 
+import java.util.Iterator;
 import java.util.List;
+
+import com.ruoyi.common.utils.MessageUtils;
 import org.apache.commons.lang3.ArrayUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -53,7 +56,16 @@ public class SysDeptController extends BaseController
     public AjaxResult excludeChild(@PathVariable(value = "deptId", required = false) Long deptId)
     {
         List<SysDept> depts = deptService.selectDeptList(new SysDept());
-        depts.removeIf(d -> d.getDeptId().intValue() == deptId || ArrayUtils.contains(StringUtils.split(d.getAncestors(), ","), deptId + ""));
+        Iterator<SysDept> it = depts.iterator();
+        while (it.hasNext())
+        {
+            SysDept d = (SysDept) it.next();
+            if (d.getDeptId().intValue() == deptId
+                    || ArrayUtils.contains(StringUtils.split(d.getAncestors(), ","), deptId + ""))
+            {
+                it.remove();
+            }
+        }
         return AjaxResult.success(depts);
     }
 
@@ -69,6 +81,29 @@ public class SysDeptController extends BaseController
     }
 
     /**
+     * 获取部门下拉树列表
+     */
+    @GetMapping("/treeselect")
+    public AjaxResult treeselect(SysDept dept)
+    {
+        List<SysDept> depts = deptService.selectDeptList(dept);
+        return AjaxResult.success(deptService.buildDeptTreeSelect(depts));
+    }
+
+    /**
+     * 加载对应角色部门列表树
+     */
+    @GetMapping(value = "/roleDeptTreeselect/{roleId}")
+    public AjaxResult roleDeptTreeselect(@PathVariable("roleId") Long roleId)
+    {
+        List<SysDept> depts = deptService.selectDeptList(new SysDept());
+        AjaxResult ajax = AjaxResult.success();
+        ajax.put("checkedKeys", deptService.selectDeptListByRoleId(roleId));
+        ajax.put("depts", deptService.buildDeptTreeSelect(depts));
+        return ajax;
+    }
+
+    /**
      * 新增部门
      */
     @PreAuthorize("@ss.hasPermi('system:dept:add')")
@@ -78,7 +113,8 @@ public class SysDeptController extends BaseController
     {
         if (UserConstants.NOT_UNIQUE.equals(deptService.checkDeptNameUnique(dept)))
         {
-            return AjaxResult.error("新增部门'" + dept.getDeptName() + "'失败，部门名称已存在");
+//            "新增部门'" + dept.getDeptName() + "'失败，部门名称已存在"
+            return AjaxResult.error(MessageUtils.message("add.dept") + dept.getDeptName() + MessageUtils.message("dept.exist"));
         }
         dept.setCreateBy(getUsername());
         return toAjax(deptService.insertDept(dept));
@@ -96,15 +132,18 @@ public class SysDeptController extends BaseController
         deptService.checkDeptDataScope(deptId);
         if (UserConstants.NOT_UNIQUE.equals(deptService.checkDeptNameUnique(dept)))
         {
-            return AjaxResult.error("修改部门'" + dept.getDeptName() + "'失败，部门名称已存在");
+//            "修改部门'" + dept.getDeptName() + "'失败，部门名称已存在"
+            return AjaxResult.error(MessageUtils.message("modify.dept") + dept.getDeptName() + MessageUtils.message("dept.exist"));
         }
         else if (dept.getParentId().equals(deptId))
         {
-            return AjaxResult.error("修改部门'" + dept.getDeptName() + "'失败，上级部门不能是自己");
+//            "修改部门'" + dept.getDeptName() + "'失败，上级部门不能是自己"
+            return AjaxResult.error(MessageUtils.message("modify.dept") + dept.getDeptName() + MessageUtils.message("dept.cant.itself"));
         }
         else if (StringUtils.equals(UserConstants.DEPT_DISABLE, dept.getStatus()) && deptService.selectNormalChildrenDeptById(deptId) > 0)
         {
-            return AjaxResult.error("该部门包含未停用的子部门！");
+//            "该部门包含未停用的子部门！"
+            return AjaxResult.error(MessageUtils.message("subdept.active"));
         }
         dept.setUpdateBy(getUsername());
         return toAjax(deptService.updateDept(dept));
@@ -120,11 +159,13 @@ public class SysDeptController extends BaseController
     {
         if (deptService.hasChildByDeptId(deptId))
         {
-            return AjaxResult.error("存在下级部门,不允许删除");
+//            "存在下级部门,不允许删除"
+            return AjaxResult.error(MessageUtils.message("subordinate.exist"));
         }
         if (deptService.checkDeptExistUser(deptId))
         {
-            return AjaxResult.error("部门存在用户,不允许删除");
+//            "部门存在用户,不允许删除"
+            return AjaxResult.error(MessageUtils.message("dept.user.exist"));
         }
         deptService.checkDeptDataScope(deptId);
         return toAjax(deptService.deleteDeptById(deptId));

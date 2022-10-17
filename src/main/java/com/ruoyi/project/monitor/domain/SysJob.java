@@ -30,6 +30,15 @@ public class SysJob extends BaseEntity
     @Excel(name = "任务名称")
     private String jobName;
 
+    /** 任务名称 */
+    @Excel(name = "mission name")
+    private String jobNameEn;
+
+
+    /** 任务名称 */
+    @Excel(name = "nama misi")
+    private String jobNameId;
+
     /** 任务组名 */
     @Excel(name = "任务组名")
     private String jobGroup;
@@ -74,6 +83,30 @@ public class SysJob extends BaseEntity
     public void setJobName(String jobName)
     {
         this.jobName = jobName;
+    }
+
+    @NotBlank(message = "Task name cannot be empty")
+    @Size(min = 0, max = 64, message = "Task name cannot exceed 64 characters")
+    public String getJobNameEn()
+    {
+        return jobNameEn;
+    }
+
+    public void setJobNameEn(String jobName)
+    {
+        this.jobNameEn = jobName;
+    }
+
+    @NotBlank(message = "Nama tugas tidak boleh kosong")
+    @Size(min = 0, max = 64, message = "Nama tugas tidak boleh melebihi 64 karakter")
+    public String getJobNameId()
+    {
+        return jobNameId;
+    }
+
+    public void setJobNameId(String jobName)
+    {
+        this.jobNameId = jobName;
     }
 
     public String getJobGroup()

@@ -25,6 +25,16 @@ public class SysConfig extends BaseEntity
     @Excel(name = "参数名称")
     private String configName;
 
+    /** parameter name */
+    @Excel(name = "parameter name")
+    private String configNameEn;
+
+
+    /** nama parameter */
+    @Excel(name = "nama parameter")
+    private String configNameId;
+
+
     /** 参数键名 */
     @Excel(name = "参数键名")
     private String configKey;
@@ -57,6 +67,26 @@ public class SysConfig extends BaseEntity
     public void setConfigName(String configName)
     {
         this.configName = configName;
+    }
+
+    @NotBlank(message = "Parameter name cannot be empty")
+    @Size(min = 0, max = 100, message = "Parameter name cannot exceed 100 characters")
+    public String getConfigNameEn() {
+        return configNameEn;
+    }
+
+    public void setConfigNameEn(String configNameEn) {
+        this.configNameEn = configNameEn;
+    }
+
+    @NotBlank(message = "Nama parameter tidak boleh kosong")
+    @Size(min = 0, max = 100, message = "Nama parameter tidak boleh melebihi 100 karakter")
+    public String getConfigNameId() {
+        return configNameId;
+    }
+
+    public void setConfigNameId(String configNameId) {
+        this.configNameId = configNameId;
     }
 
     @NotBlank(message = "参数键名长度不能为空")
@@ -98,6 +128,8 @@ public class SysConfig extends BaseEntity
         return new ToStringBuilder(this,ToStringStyle.MULTI_LINE_STYLE)
             .append("configId", getConfigId())
             .append("configName", getConfigName())
+            .append("configNameEn", getConfigNameEn())
+            .append("configNameId", getConfigNameId())
             .append("configKey", getConfigKey())
             .append("configValue", getConfigValue())
             .append("configType", getConfigType())

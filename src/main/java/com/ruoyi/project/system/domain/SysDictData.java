@@ -30,6 +30,14 @@ public class SysDictData extends BaseEntity
     @Excel(name = "字典标签")
     private String dictLabel;
 
+    /** 字典标签 */
+    @Excel(name = "Dictionary tags")
+    private String dictLabelEn;
+
+    /** 字典标签 */
+    @Excel(name = "Tag kamus")
+    private String dictLabelId;
+
     /** 字典键值 */
     @Excel(name = "字典键值")
     private String dictValue;
@@ -84,6 +92,30 @@ public class SysDictData extends BaseEntity
         this.dictLabel = dictLabel;
     }
 
+    @NotBlank(message = "Dictionary tag cannot be empty")
+    @Size(min = 0, max = 100, message = "Dictionary label length cannot exceed 100 characters")
+    public String getDictLabelEn()
+    {
+        return dictLabelEn;
+    }
+
+    public void setDictLabelEn(String dictLabel)
+    {
+        this.dictLabelEn = dictLabel;
+    }
+
+    @NotBlank(message = "Tag kamus tidak boleh kosong")
+    @Size(min = 0, max = 100, message = "Panjang label kamus tidak boleh melebihi 100 karakter")
+    public String getDictLabelId()
+    {
+        return dictLabelId;
+    }
+
+    public void setDictLabelId(String dictLabel)
+    {
+        this.dictLabelId = dictLabel;
+    }
+
     @NotBlank(message = "字典键值不能为空")
     @Size(min = 0, max = 100, message = "字典键值长度不能超过100个字符")
     public String getDictValue()
@@ -131,7 +163,7 @@ public class SysDictData extends BaseEntity
 
     public boolean getDefault()
     {
-        return UserConstants.YES.equals(this.isDefault);
+        return UserConstants.YES.equals(this.isDefault) ? true : false;
     }
 
     public String getIsDefault()

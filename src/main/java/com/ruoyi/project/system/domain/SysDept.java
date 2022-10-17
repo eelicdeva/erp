@@ -31,11 +31,23 @@ public class SysDept extends BaseEntity
     /** 部门名称 */
     private String deptName;
 
+    /** Department name */
+    private String deptNameEn;
+
+    /** Nama departemen */
+    private String deptNameId;
+
     /** 显示顺序 */
     private Integer orderNum;
 
     /** 负责人 */
     private String leader;
+
+    /** leader */
+    private String leaderEn;
+
+    /** pemimpin */
+    private String leaderId;
 
     /** 联系电话 */
     private String phone;
@@ -97,6 +109,22 @@ public class SysDept extends BaseEntity
         this.deptName = deptName;
     }
 
+    public String getDeptNameEn() {
+        return deptNameEn;
+    }
+
+    public void setDeptNameEn(String deptNameEn) {
+        this.deptNameEn = deptNameEn;
+    }
+
+    public String getDeptNameId() {
+        return deptNameId;
+    }
+
+    public void setDeptNameId(String deptNameId) {
+        this.deptNameId = deptNameId;
+    }
+
     @NotNull(message = "显示顺序不能为空")
     public Integer getOrderNum()
     {
@@ -116,6 +144,22 @@ public class SysDept extends BaseEntity
     public void setLeader(String leader)
     {
         this.leader = leader;
+    }
+
+    public String getLeaderEn() {
+        return leaderEn;
+    }
+
+    public void setLeaderEn(String leaderEn) {
+        this.leaderEn = leaderEn;
+    }
+
+    public String getLeaderId() {
+        return leaderId;
+    }
+
+    public void setLeaderId(String leaderId) {
+        this.leaderId = leaderId;
     }
 
     @Size(min = 0, max = 11, message = "联系电话长度不能超过11个字符")

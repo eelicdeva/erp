@@ -25,6 +25,8 @@ import com.ruoyi.project.system.mapper.SysRoleMapper;
 import com.ruoyi.project.system.mapper.SysRoleMenuMapper;
 import com.ruoyi.project.system.service.ISysMenuService;
 
+import static com.ruoyi.common.translator.Translator.translate;
+
 /**
  * 菜单 业务层处理
  * 
@@ -69,12 +71,12 @@ public class SysMenuServiceImpl implements ISysMenuService
         // 管理员显示所有菜单信息
         if (SysUser.isAdmin(userId))
         {
-            menuList = menuMapper.selectMenuList(menu);
+            menuList = menuMapper.selectMenuList(menu,userId);
         }
         else
         {
             menu.getParams().put("userId", userId);
-            menuList = menuMapper.selectMenuListByUserId(menu);
+            menuList = menuMapper.selectMenuListByUserId(menu,userId);
         }
         return menuList;
     }
@@ -101,27 +103,6 @@ public class SysMenuServiceImpl implements ISysMenuService
     }
 
     /**
-     * 根据角色ID查询权限
-     * 
-     * @param roleId 角色ID
-     * @return 权限列表
-     */
-    @Override
-    public Set<String> selectMenuPermsByRoleId(Long roleId)
-    {
-        List<String> perms = menuMapper.selectMenuPermsByRoleId(roleId);
-        Set<String> permsSet = new HashSet<>();
-        for (String perm : perms)
-        {
-            if (StringUtils.isNotEmpty(perm))
-            {
-                permsSet.addAll(Arrays.asList(perm.trim().split(",")));
-            }
-        }
-        return permsSet;
-    }
-
-    /**
      * 根据用户ID查询菜单
      * 
      * @param userId 用户名称
@@ -133,7 +114,7 @@ public class SysMenuServiceImpl implements ISysMenuService
         List<SysMenu> menus = null;
         if (SecurityUtils.isAdmin(userId))
         {
-            menus = menuMapper.selectMenuTreeAll();
+            menus = menuMapper.selectMenuTreeAll(userId);
         }
         else
         {
@@ -151,7 +132,7 @@ public class SysMenuServiceImpl implements ISysMenuService
     @Override
     public List<Long> selectMenuListByRoleId(Long roleId)
     {
-        SysRole role = roleMapper.selectRoleById(roleId);
+        SysRole role = roleMapper.selectRoleById(roleId,SecurityUtils.getUserId());
         return menuMapper.selectMenuListByRoleId(roleId, role.isMenuCheckStrictly());
     }
 
@@ -265,9 +246,9 @@ public class SysMenuServiceImpl implements ISysMenuService
      * @return 菜单信息
      */
     @Override
-    public SysMenu selectMenuById(Long menuId)
+    public SysMenu selectMenuById(Long menuId, Long userId)
     {
-        return menuMapper.selectMenuById(menuId);
+        return menuMapper.selectMenuById(menuId,userId);
     }
 
     /**
@@ -305,6 +286,13 @@ public class SysMenuServiceImpl implements ISysMenuService
     @Override
     public int insertMenu(SysMenu menu)
     {
+        try {
+            menu.setMenuNameId(translate("auto", "id",menu.getMenuName()));
+            menu.setMenuNameEn(translate("auto", "en",menu.getMenuName()));
+            menu.setMenuName(translate("auto", "zh-CN",menu.getMenuName()));
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
         return menuMapper.insertMenu(menu);
     }
 
@@ -317,6 +305,13 @@ public class SysMenuServiceImpl implements ISysMenuService
     @Override
     public int updateMenu(SysMenu menu)
     {
+        try {
+            menu.setMenuNameId(translate("auto", "id",menu.getMenuName()));
+            menu.setMenuNameEn(translate("auto", "en",menu.getMenuName()));
+            menu.setMenuName(translate("auto", "zh-CN",menu.getMenuName()));
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
         return menuMapper.updateMenu(menu);
     }
 
@@ -339,7 +334,7 @@ public class SysMenuServiceImpl implements ISysMenuService
      * @return 结果
      */
     @Override
-    public String checkMenuNameUnique(SysMenu menu)
+    public String checkMenuNameUnique(SysMenu menu, Long userId)
     {
         Long menuId = StringUtils.isNull(menu.getMenuId()) ? -1L : menu.getMenuId();
         SysMenu info = menuMapper.checkMenuNameUnique(menu.getMenuName(), menu.getParentId());
@@ -524,12 +519,15 @@ public class SysMenuServiceImpl implements ISysMenuService
 
     /**
      * 内链域名特殊字符替换
-     * 
+     *
      * @return
      */
     public String innerLinkReplaceEach(String path)
     {
-        return StringUtils.replaceEach(path, new String[] { Constants.HTTP, Constants.HTTPS, Constants.WWW, "." },
-                new String[] { "", "", "", "/" });
+        return StringUtils.replaceEach(path, new String[] { Constants.HTTP, Constants.HTTPS },
+                new String[] { "", "" });
     }
+
+
+
 }

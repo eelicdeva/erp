@@ -2,6 +2,8 @@ package com.ruoyi.project.monitor.controller;
 
 import java.util.List;
 import javax.servlet.http.HttpServletResponse;
+
+import com.ruoyi.common.utils.MessageUtils;
 import org.quartz.SchedulerException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -84,27 +86,33 @@ public class SysJobController extends BaseController
     {
         if (!CronUtils.isValid(job.getCronExpression()))
         {
-            return error("新增任务'" + job.getJobName() + "'失败，Cron表达式不正确");
+//            "新增任务'" + job.getJobName() + "'失败，Cron表达式不正确"
+            return error(MessageUtils.message("add.task") + job.getJobName() + MessageUtils.message("cron.wrong"));
         }
         else if (StringUtils.containsIgnoreCase(job.getInvokeTarget(), Constants.LOOKUP_RMI))
         {
-            return error("新增任务'" + job.getJobName() + "'失败，目标字符串不允许'rmi'调用");
+//            "新增任务'" + job.getJobName() + "'失败，目标字符串不允许'rmi'调用"
+            return error(MessageUtils.message("add.task") + job.getJobName() + MessageUtils.message("fail.rmi"));
         }
         else if (StringUtils.containsAnyIgnoreCase(job.getInvokeTarget(), new String[] { Constants.LOOKUP_LDAP, Constants.LOOKUP_LDAPS }))
         {
-            return error("新增任务'" + job.getJobName() + "'失败，目标字符串不允许'ldap(s)'调用");
+//            "新增任务'" + job.getJobName() + "'失败，目标字符串不允许'ldap(s)'调用"
+            return error(MessageUtils.message("add.task") + job.getJobName() + MessageUtils.message("fail.ldap"));
         }
         else if (StringUtils.containsAnyIgnoreCase(job.getInvokeTarget(), new String[] { Constants.HTTP, Constants.HTTPS }))
         {
-            return error("新增任务'" + job.getJobName() + "'失败，目标字符串不允许'http(s)'调用");
+//            "新增任务'" + job.getJobName() + "'失败，目标字符串不允许'http(s)'调用"
+            return error(MessageUtils.message("add.task") + job.getJobName() + MessageUtils.message("fail.http"));
         }
         else if (StringUtils.containsAnyIgnoreCase(job.getInvokeTarget(), Constants.JOB_ERROR_STR))
         {
-            return error("新增任务'" + job.getJobName() + "'失败，目标字符串存在违规");
+//            "新增任务'" + job.getJobName() + "'失败，目标字符串存在违规"
+            return error(MessageUtils.message("add.task") + job.getJobName() + MessageUtils.message("fail.target.string"));
         }
         else if (!ScheduleUtils.whiteList(job.getInvokeTarget()))
         {
-            return error("新增任务'" + job.getJobName() + "'失败，目标字符串不在白名单内");
+//            "新增任务'" + job.getJobName() + "'失败，目标字符串不在白名单内"
+            return error(MessageUtils.message("add.task") + job.getJobName() + MessageUtils.message("fail.whitelist"));
         }
         job.setCreateBy(getUsername());
         return toAjax(jobService.insertJob(job));
@@ -120,27 +128,33 @@ public class SysJobController extends BaseController
     {
         if (!CronUtils.isValid(job.getCronExpression()))
         {
-            return error("修改任务'" + job.getJobName() + "'失败，Cron表达式不正确");
+//            "修改任务'" + job.getJobName() + "'失败，Cron表达式不正确"
+            return error(MessageUtils.message("modify.task") + job.getJobName() + MessageUtils.message("cron.wrong"));
         }
         else if (StringUtils.containsIgnoreCase(job.getInvokeTarget(), Constants.LOOKUP_RMI))
         {
-            return error("修改任务'" + job.getJobName() + "'失败，目标字符串不允许'rmi'调用");
+//            "修改任务'" + job.getJobName() + "'失败，目标字符串不允许'rmi'调用"
+            return error(MessageUtils.message("modify.task") + job.getJobName() + MessageUtils.message("fail.rmi"));
         }
         else if (StringUtils.containsAnyIgnoreCase(job.getInvokeTarget(), new String[] { Constants.LOOKUP_LDAP, Constants.LOOKUP_LDAPS }))
         {
-            return error("修改任务'" + job.getJobName() + "'失败，目标字符串不允许'ldap(s)'调用");
+//            "修改任务'" + job.getJobName() + "'失败，目标字符串不允许'ldap(s)'调用"
+            return error(MessageUtils.message("modify.task") + job.getJobName() + MessageUtils.message("fail.ldap"));
         }
         else if (StringUtils.containsAnyIgnoreCase(job.getInvokeTarget(), new String[] { Constants.HTTP, Constants.HTTPS }))
         {
-            return error("修改任务'" + job.getJobName() + "'失败，目标字符串不允许'http(s)'调用");
+//            "修改任务'" + job.getJobName() + "'失败，目标字符串不允许'http(s)'调用"
+            return error(MessageUtils.message("modify.task")+ job.getJobName() + MessageUtils.message("fail.http"));
         }
         else if (StringUtils.containsAnyIgnoreCase(job.getInvokeTarget(), Constants.JOB_ERROR_STR))
         {
-            return error("修改任务'" + job.getJobName() + "'失败，目标字符串存在违规");
+//            "修改任务'" + job.getJobName() + "'失败，目标字符串存在违规"
+            return error(MessageUtils.message("modify.task") + job.getJobName() + MessageUtils.message("fail.target.string"));
         }
         else if (!ScheduleUtils.whiteList(job.getInvokeTarget()))
         {
-            return error("修改任务'" + job.getJobName() + "'失败，目标字符串不在白名单内");
+//            "修改任务'" + job.getJobName() + "'失败，目标字符串不在白名单内"
+            return error(MessageUtils.message("modify.task") + job.getJobName() + MessageUtils.message("fail.whitelist"));
         }
         job.setUpdateBy(getUsername());
         return toAjax(jobService.updateJob(job));
@@ -167,8 +181,8 @@ public class SysJobController extends BaseController
     @PutMapping("/run")
     public AjaxResult run(@RequestBody SysJob job) throws SchedulerException
     {
-        boolean result = jobService.run(job);
-        return result ? success() : error("任务不存在或已过期！");
+        jobService.run(job);
+        return AjaxResult.success();
     }
 
     /**
@@ -180,6 +194,6 @@ public class SysJobController extends BaseController
     public AjaxResult remove(@PathVariable Long[] jobIds) throws SchedulerException, TaskException
     {
         jobService.deleteJobByIds(jobIds);
-        return success();
+        return AjaxResult.success();
     }
 }

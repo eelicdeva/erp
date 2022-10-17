@@ -7,7 +7,6 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
-import com.ruoyi.common.constant.CacheConstants;
 import com.ruoyi.common.constant.Constants;
 import com.ruoyi.common.exception.ServiceException;
 import com.ruoyi.common.exception.user.CaptchaException;
@@ -22,7 +21,6 @@ import com.ruoyi.framework.manager.AsyncManager;
 import com.ruoyi.framework.manager.factory.AsyncFactory;
 import com.ruoyi.framework.redis.RedisCache;
 import com.ruoyi.framework.security.LoginUser;
-import com.ruoyi.framework.security.context.AuthenticationContextHolder;
 import com.ruoyi.project.system.domain.SysUser;
 import com.ruoyi.project.system.service.ISysConfigService;
 import com.ruoyi.project.system.service.ISysUserService;
@@ -52,6 +50,7 @@ public class SysLoginService
 
     /**
      * 登录验证
+     * Login authentication
      * 
      * @param username 用户名
      * @param password 密码
@@ -61,20 +60,21 @@ public class SysLoginService
      */
     public String login(String username, String password, String code, String uuid)
     {
-        boolean captchaEnabled = configService.selectCaptchaEnabled();
+        boolean captchaOnOff = configService.selectCaptchaOnOff();
         // 验证码开关
-        if (captchaEnabled)
+        // verification code switch
+        if (captchaOnOff)
         {
             validateCaptcha(username, code, uuid);
         }
         // 用户验证
+        // User Authentication
         Authentication authentication = null;
         try
         {
-            UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(username, password);
-            AuthenticationContextHolder.setContext(authenticationToken);
             // 该方法会去调用UserDetailsServiceImpl.loadUserByUsername
-            authentication = authenticationManager.authenticate(authenticationToken);
+            authentication = authenticationManager
+                    .authenticate(new UsernamePasswordAuthenticationToken(username, password));
         }
         catch (Exception e)
         {
@@ -89,20 +89,17 @@ public class SysLoginService
                 throw new ServiceException(e.getMessage());
             }
         }
-        finally
-        {
-            AuthenticationContextHolder.clearContext();
-        }
         AsyncManager.me().execute(AsyncFactory.recordLogininfor(username, Constants.LOGIN_SUCCESS, MessageUtils.message("user.login.success")));
         LoginUser loginUser = (LoginUser) authentication.getPrincipal();
         recordLoginInfo(loginUser.getUserId());
         // 生成token
+        // generate token
         return tokenService.createToken(loginUser);
     }
 
     /**
      * 校验验证码
-     * 
+     * Verify verification code
      * @param username 用户名
      * @param code 验证码
      * @param uuid 唯一标识
@@ -110,7 +107,7 @@ public class SysLoginService
      */
     public void validateCaptcha(String username, String code, String uuid)
     {
-        String verifyKey = CacheConstants.CAPTCHA_CODE_KEY + StringUtils.nvl(uuid, "");
+        String verifyKey = Constants.CAPTCHA_CODE_KEY + StringUtils.nvl(uuid, "");
         String captcha = redisCache.getCacheObject(verifyKey);
         redisCache.deleteObject(verifyKey);
         if (captcha == null)
@@ -127,7 +124,7 @@ public class SysLoginService
 
     /**
      * 记录登录信息
-     *
+     * record login information
      * @param userId 用户ID
      */
     public void recordLoginInfo(Long userId)
@@ -138,4 +135,20 @@ public class SysLoginService
         sysUser.setLoginDate(DateUtils.getNowDate());
         userService.updateUserProfile(sysUser);
     }
+
+    public void updateLang(String langs, Long userId)
+    {
+        Long lang = null;
+        if(langs.equals("en")){
+            lang = 0L;
+        }
+        if(langs.equals("zh")){
+            lang = 1L;
+        }
+        if(langs.equals("id")){
+            lang = 2L;
+        }
+        userService.updateLang(lang, userId);
+    }
+
 }

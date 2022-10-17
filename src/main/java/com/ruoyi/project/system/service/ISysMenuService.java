@@ -37,14 +37,6 @@ public interface ISysMenuService
      * @return 权限列表
      */
     public Set<String> selectMenuPermsByUserId(Long userId);
-    
-    /**
-     * 根据角色ID查询权限
-     * 
-     * @param roleId 角色ID
-     * @return 权限列表
-     */
-    public Set<String> selectMenuPermsByRoleId(Long roleId);
 
     /**
      * 根据用户ID查询菜单树信息
@@ -92,7 +84,7 @@ public interface ISysMenuService
      * @param menuId 菜单ID
      * @return 菜单信息
      */
-    public SysMenu selectMenuById(Long menuId);
+    public SysMenu selectMenuById(Long menuId, Long UserId);
 
     /**
      * 是否存在菜单子节点
@@ -136,9 +128,11 @@ public interface ISysMenuService
 
     /**
      * 校验菜单名称是否唯一
-     * 
-     * @param menu 菜单信息
+     *
+     * @param menu   菜单信息
+     * @param userId
      * @return 结果
      */
-    public String checkMenuNameUnique(SysMenu menu);
+    public String checkMenuNameUnique(SysMenu menu, Long userId);
+
 }

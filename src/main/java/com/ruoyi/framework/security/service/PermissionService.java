@@ -6,7 +6,6 @@ import org.springframework.util.CollectionUtils;
 import com.ruoyi.common.utils.SecurityUtils;
 import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.framework.security.LoginUser;
-import com.ruoyi.framework.security.context.PermissionContextHolder;
 import com.ruoyi.project.system.domain.SysRole;
 
 /**
@@ -44,7 +43,6 @@ public class PermissionService
         {
             return false;
         }
-        PermissionContextHolder.setContext(permission);
         return hasPermissions(loginUser.getPermissions(), permission);
     }
 
@@ -76,7 +74,6 @@ public class PermissionService
         {
             return false;
         }
-        PermissionContextHolder.setContext(permissions);
         Set<String> authorities = loginUser.getPermissions();
         for (String permission : permissions.split(PERMISSION_DELIMETER))
         {

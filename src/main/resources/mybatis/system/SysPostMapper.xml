@@ -16,23 +16,33 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result property="updateTime"    column="update_time"   />
 		<result property="remark"        column="remark"        />
 	</resultMap>
-	
+
+	<sql id="selectPostName">
+		case (select user_lang from sys_user where user_id = #{userId})
+		when 0 then (select post_name_en from sys_post where post_id = p.post_id)
+		when 1 then (select post_name from sys_post where post_id = p.post_id)
+		when 2 then (select post_name_id from sys_post where post_id = p.post_id)
+		end as post_name
+	</sql>
+
 	<sql id="selectPostVo">
-        select post_id, post_code, post_name, post_sort, status, create_by, create_time, remark 
-		from sys_post
+		select post_id, post_code, <include refid="selectPostName"/>, post_sort, status, create_by, create_time, remark
+		from sys_post p
     </sql>
 	
 	<select id="selectPostList" parameterType="SysPost" resultMap="SysPostResult">
 	    <include refid="selectPostVo"/>
 		<where>
-			<if test="postCode != null and postCode != ''">
-				AND post_code like concat('%', #{postCode}, '%')
+			<if test="p.postCode != null and p.postCode != ''">
+				AND post_code like concat('%', #{p.postCode}, '%')
 			</if>
-			<if test="status != null and status != ''">
-				AND status = #{status}
+			<if test="p.status != null and p.status != ''">
+				AND status = #{p.status}
 			</if>
-			<if test="postName != null and postName != ''">
-				AND post_name like concat('%', #{postName}, '%')
+			<if test="p.postName != null and p.postName != ''">
+				AND post_name_en like concat('%', #{p.postName}, '%')
+				OR post_name like concat('%', #{p.postName}, '%')
+				OR post_name_id like concat('%', #{p.postName}, '%')
 			</if>
 		</where>
 	</select>
@@ -54,8 +64,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	    where u.user_id = #{userId}
 	</select>
 	
-	<select id="selectPostsByUserName" parameterType="String" resultMap="SysPostResult">
-		select p.post_id, p.post_name, p.post_code
+	<select id="selectPostsByUserName" resultMap="SysPostResult">
+		select p.post_id, <include refid="selectPostName"/>, p.post_code
 		from sys_post p
 			 left join sys_user_post up on up.post_id = p.post_id
 			 left join sys_user u on u.user_id = up.user_id
@@ -63,11 +73,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</select>
 	
 	<select id="checkPostNameUnique" parameterType="String" resultMap="SysPostResult">
-		<include refid="selectPostVo"/>
-		 where post_name=#{postName} limit 1
+		 select post_id, post_code, post_name, post_name_en, post_name_id, post_sort, status, create_by, create_time, remark
+		 from sys_post p
+		 where post_name=#{postName} or post_name_en=#{postName} or post_name_id=#{postName} limit 1
 	</select>
 	
-	<select id="checkPostCodeUnique" parameterType="String" resultMap="SysPostResult">
+	<select id="checkPostCodeUnique" resultMap="SysPostResult">
 		<include refid="selectPostVo"/>
 		 where post_code=#{postCode} limit 1
 	</select>
@@ -77,6 +88,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
  		<set>
  			<if test="postCode != null and postCode != ''">post_code = #{postCode},</if>
  			<if test="postName != null and postName != ''">post_name = #{postName},</if>
+			<if test="postNameEn != null and postNameEn != ''">post_name_en = #{postNameEn},</if>
+			<if test="postNameId != null and postNameId != ''">post_name_id = #{postNameId},</if>
  			<if test="postSort != null and postSort != ''">post_sort = #{postSort},</if>
  			<if test="status != null and status != ''">status = #{status},</if>
  			<if test="remark != null">remark = #{remark},</if>
@@ -91,6 +104,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
  			<if test="postId != null and postId != 0">post_id,</if>
  			<if test="postCode != null and postCode != ''">post_code,</if>
  			<if test="postName != null and postName != ''">post_name,</if>
+			<if test="postNameEn != null and postNameEn != ''">post_name_en,</if>
+			<if test="postNameId != null and postNameId != ''">post_name_id,</if>
  			<if test="postSort != null and postSort != ''">post_sort,</if>
  			<if test="status != null and status != ''">status,</if>
  			<if test="remark != null and remark != ''">remark,</if>
@@ -100,6 +115,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
  			<if test="postId != null and postId != 0">#{postId},</if>
  			<if test="postCode != null and postCode != ''">#{postCode},</if>
  			<if test="postName != null and postName != ''">#{postName},</if>
+			<if test="postNameEn != null and postNameEn != ''">#{postNameEn},</if>
+		    <if test="postNameId != null and postNameId != ''">#{postNameId},</if>
  			<if test="postSort != null and postSort != ''">#{postSort},</if>
  			<if test="status != null and status != ''">#{status},</if>
  			<if test="remark != null and remark != ''">#{remark},</if>

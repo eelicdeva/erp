@@ -2,6 +2,7 @@ package com.ruoyi.project.system.mapper;
 
 import java.util.List;
 import com.ruoyi.project.system.domain.SysPost;
+import org.apache.ibatis.annotations.Param;
 
 /**
  * 岗位信息 数据层
@@ -16,14 +17,14 @@ public interface SysPostMapper
      * @param post 岗位信息
      * @return 岗位数据集合
      */
-    public List<SysPost> selectPostList(SysPost post);
+    public List<SysPost> selectPostList(@Param("p") SysPost post, @Param("userId") Long userId);
 
     /**
      * 查询所有岗位
      * 
      * @return 岗位列表
      */
-    public List<SysPost> selectPostAll();
+    public List<SysPost> selectPostAll(Long userId);
 
     /**
      * 通过岗位ID查询岗位信息
@@ -31,7 +32,7 @@ public interface SysPostMapper
      * @param postId 岗位ID
      * @return 角色对象信息
      */
-    public SysPost selectPostById(Long postId);
+    public SysPost selectPostById(Long postId, Long userId);
 
     /**
      * 根据用户ID获取岗位选择框列表
@@ -43,11 +44,12 @@ public interface SysPostMapper
 
     /**
      * 查询用户所属岗位组
-     * 
+     *
      * @param userName 用户名
+     * @param userId
      * @return 结果
      */
-    public List<SysPost> selectPostsByUserName(String userName);
+    public List<SysPost> selectPostsByUserName(@Param("userName")String userName, @Param("userId")Long userId);
 
     /**
      * 删除岗位信息
@@ -95,5 +97,5 @@ public interface SysPostMapper
      * @param postCode 岗位编码
      * @return 结果
      */
-    public SysPost checkPostCodeUnique(String postCode);
+    public SysPost checkPostCodeUnique(@Param("postCode") String postCode, @Param("userId")Long userId);
 }
