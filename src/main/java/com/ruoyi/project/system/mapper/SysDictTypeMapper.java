@@ -1,9 +1,10 @@
 package com.ruoyi.project.system.mapper;
 
-import java.util.List;
-import org.apache.ibatis.annotations.Mapper;
 import com.ruoyi.project.system.domain.SysDictType;
+import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 /**
  * 字典表 数据层
@@ -74,7 +75,7 @@ public interface SysDictTypeMapper
      * @param dictType 字典类型信息
      * @return 结果
      */
-    public int updateDictType(SysDictType dictType);
+    public int updateDictType(@Param("d") SysDictType dictType , @Param("langUser") String langUser);
 
     /**
      * 校验字典类型称是否唯一

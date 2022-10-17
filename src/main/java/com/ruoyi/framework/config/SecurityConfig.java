@@ -30,49 +30,43 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter
 {
     /**
      * 自定义用户认证逻辑
-     * Custom User Authentication Logic
      */
     @Autowired
     private UserDetailsService userDetailsService;
     
     /**
      * 认证失败处理类
-     * Authentication failure handling class
      */
     @Autowired
     private AuthenticationEntryPointImpl unauthorizedHandler;
 
     /**
      * 退出处理类
-     * Exit handler class
      */
     @Autowired
     private LogoutSuccessHandlerImpl logoutSuccessHandler;
 
     /**
      * token认证过滤器
-     * token authentication filter
      */
     @Autowired
     private JwtAuthenticationTokenFilter authenticationTokenFilter;
     
     /**
      * 跨域过滤器
-     * cross domain filter
      */
     @Autowired
     private CorsFilter corsFilter;
 
     /**
      * 允许匿名访问的地址
-     * addresses that allow anonymous access
      */
     @Autowired
     private PermitAllUrlProperties permitAllUrl;
 
     /**
-     * 解决 无法直接注入
-     * AuthenticationManager
+     * 解决 无法直接注入 AuthenticationManager
+     *
      * @return
      * @throws Exception
      */
@@ -98,22 +92,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter
      * rememberMe          |   允许通过remember-me登录的用户访问
      * authenticated       |   用户登录后可访问
      */
-
-    /**
-     * anyRequest | matches all request paths
-     * access | Accessible when SpringEl expression evaluates to true
-     * anonymous | Anonymous can access
-     * denyAll | user cannot access
-     * fullyAuthenticated | The user is fully authenticated and can access (automatic login without remember-me)
-     * hasAnyAuthority | If there are parameters, the parameters represent permissions, any one of them can access
-     * hasAnyRole | If there are parameters, the parameters represent roles, any one of them can access
-     * hasAuthority | If there is a parameter, the parameter represents the authority, then its authority can access
-     * hasIpAddress | If there is a parameter, the parameter represents the IP address, and if the user IP matches the parameter, it can be accessed
-     * hasRole | If there is a parameter, the parameter represents a role, then its role can access
-     * permitAll | User can access arbitrarily
-     * rememberMe | Allow access for users logged in via remember-me
-     * authenticated | user can access after login
-     */
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception
     {
@@ -123,44 +101,33 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter
  
         httpSecurity
                 // CSRF禁用，因为不使用session
-                // CSRF disabled because session is not used
                 .csrf().disable()
                 // 认证失败处理类
-                // Authentication failure handling class
                 .exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
                 // 基于token，所以不需要session
-                // Based on token, so no session is needed
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
                 // 过滤请求
-                // filter request
                 .authorizeRequests()
                 // 对于登录login 注册register 验证码captchaImage 允许匿名访问
-                // For login login registration register verification code captchaImage allows anonymous access
                 .antMatchers("/login", "/register", "/captchaImage").permitAll()
                 // 静态资源，可匿名访问
-                // Static resources, can be accessed anonymously
                 .antMatchers(HttpMethod.GET, "/", "/*.html", "/**/*.html", "/**/*.css", "/**/*.js", "/profile/**").permitAll()
                 .antMatchers("/swagger-ui.html", "/swagger-resources/**", "/webjars/**", "/*/api-docs", "/druid/**").permitAll()
                 // 除上面外的所有请求全部需要鉴权认证
-                // All requests except the above require authentication
                 .anyRequest().authenticated()
                 .and()
                 .headers().frameOptions().disable();
         // 添加Logout filter
-        // add Logout filter
         httpSecurity.logout().logoutUrl("/logout").logoutSuccessHandler(logoutSuccessHandler);
         // 添加JWT filter
-        // add JWT filter
         httpSecurity.addFilterBefore(authenticationTokenFilter, UsernamePasswordAuthenticationFilter.class);
         // 添加CORS filter
-        // add CORS filter
         httpSecurity.addFilterBefore(corsFilter, JwtAuthenticationTokenFilter.class);
         httpSecurity.addFilterBefore(corsFilter, LogoutFilter.class);
     }
 
     /**
      * 强散列哈希加密实现
-     * Strong hash hash encryption implementation
      */
     @Bean
     public BCryptPasswordEncoder bCryptPasswordEncoder()
@@ -170,8 +137,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter
 
     /**
      * 身份认证接口
-     *
-     * Identity authentication interface
      */
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception

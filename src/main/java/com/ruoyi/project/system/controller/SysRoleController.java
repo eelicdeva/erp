@@ -2,8 +2,6 @@ package com.ruoyi.project.system.controller;
 
 import java.util.List;
 import javax.servlet.http.HttpServletResponse;
-
-import com.ruoyi.common.utils.MessageUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
@@ -26,9 +24,11 @@ import com.ruoyi.framework.security.service.TokenService;
 import com.ruoyi.framework.web.controller.BaseController;
 import com.ruoyi.framework.web.domain.AjaxResult;
 import com.ruoyi.framework.web.page.TableDataInfo;
+import com.ruoyi.project.system.domain.SysDept;
 import com.ruoyi.project.system.domain.SysRole;
 import com.ruoyi.project.system.domain.SysUser;
 import com.ruoyi.project.system.domain.SysUserRole;
+import com.ruoyi.project.system.service.ISysDeptService;
 import com.ruoyi.project.system.service.ISysRoleService;
 import com.ruoyi.project.system.service.ISysUserService;
 
@@ -52,6 +52,9 @@ public class SysRoleController extends BaseController
     
     @Autowired
     private ISysUserService userService;
+
+    @Autowired
+    private ISysDeptService deptService;
 
     @PreAuthorize("@ss.hasPermi('system:role:list')")
     @GetMapping("/list")
@@ -93,13 +96,11 @@ public class SysRoleController extends BaseController
     {
         if (UserConstants.NOT_UNIQUE.equals(roleService.checkRoleNameUnique(role)))
         {
-//            "新增角色'" + role.getRoleName() + "'失败，角色名称已存在"
-            return AjaxResult.error(MessageUtils.message("new.role") + role.getRoleName() + MessageUtils.message("failed.role"));
+            return AjaxResult.error("新增角色'" + role.getRoleName() + "'失败，角色名称已存在");
         }
         else if (UserConstants.NOT_UNIQUE.equals(roleService.checkRoleKeyUnique(role)))
         {
-//            "新增角色'" + role.getRoleName() + "'失败，角色权限已存在"
-            return AjaxResult.error(MessageUtils.message("new.role") + role.getRoleName() + MessageUtils.message("role.exist"));
+            return AjaxResult.error("新增角色'" + role.getRoleName() + "'失败，角色权限已存在");
         }
         role.setCreateBy(getUsername());
         return toAjax(roleService.insertRole(role));
@@ -118,13 +119,11 @@ public class SysRoleController extends BaseController
         roleService.checkRoleDataScope(role.getRoleId());
         if (UserConstants.NOT_UNIQUE.equals(roleService.checkRoleNameUnique(role)))
         {
-//            "修改角色'" + role.getRoleName() + "'失败，角色名称已存在"
-            return AjaxResult.error(MessageUtils.message("modify.role") + role.getRoleName() + MessageUtils.message("failed.role"));
+            return AjaxResult.error("修改角色'" + role.getRoleName() + "'失败，角色名称已存在");
         }
         else if (UserConstants.NOT_UNIQUE.equals(roleService.checkRoleKeyUnique(role)))
         {
-//            "修改角色'" + role.getRoleName() + "'失败，角色权限已存在"
-            return AjaxResult.error(MessageUtils.message("modify.role") + role.getRoleName() +  MessageUtils.message("role.exist"));
+            return AjaxResult.error("修改角色'" + role.getRoleName() + "'失败，角色权限已存在");
         }
         role.setUpdateBy(getUsername());
         
@@ -140,8 +139,7 @@ public class SysRoleController extends BaseController
             }
             return AjaxResult.success();
         }
-//        "修改角色'" + role.getRoleName() + "'失败，请联系管理员"
-        return AjaxResult.error(MessageUtils.message("modify.role") + role.getRoleName() + MessageUtils.message("failed.admin"));
+        return AjaxResult.error("修改角色'" + role.getRoleName() + "'失败，请联系管理员");
     }
 
     /**
@@ -248,5 +246,18 @@ public class SysRoleController extends BaseController
     {
         roleService.checkRoleDataScope(roleId);
         return toAjax(roleService.insertAuthUsers(roleId, userIds));
+    }
+
+    /**
+     * 获取对应角色部门树列表
+     */
+    @PreAuthorize("@ss.hasPermi('system:role:query')")
+    @GetMapping(value = "/deptTree/{roleId}")
+    public AjaxResult deptTree(@PathVariable("roleId") Long roleId)
+    {
+        AjaxResult ajax = AjaxResult.success();
+        ajax.put("checkedKeys", deptService.selectDeptListByRoleId(roleId));
+        ajax.put("depts", deptService.selectDeptTreeList(new SysDept(), getLoginUser().getLangUser()));
+        return ajax;
     }
 }

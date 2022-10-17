@@ -1,0 +1,225 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.project.eelic.mapper.SysBookMapper">
+    
+    <resultMap type="SysBook" id="SysBookResult">
+        <result property="bookId"    column="book_id"    />
+        <result property="isbn"    column="isbn"    />
+        <result property="bookTitle"    column="book_title"    />
+        <result property="bookTitleEn"    column="book_title_en"    />
+        <result property="bookTitleId"    column="book_title_id"    />
+        <result property="bookImage"    column="book_image"    />
+        <result property="categoryId"    column="category_id"    />
+        <result property="author"    column="author"    />
+        <result property="cdStatus"    column="cd_status"    />
+        <result property="synopsis"    column="synopsis"    />
+        <result property="synopsisEn"    column="synopsis_en"    />
+        <result property="synopsisId"    column="synopsis_id"    />
+        <result property="language"    column="language"    />
+        <result property="status"    column="status"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="locationId"    column="location_id"    />
+        <association property="category"    column="category_id" javaType="SysBookCategory" resultMap="categoryResult" />
+        <association property="location"    column="location_id" javaType="SysBookLocation" resultMap="locationResult" />
+    </resultMap>
+
+    <resultMap id="categoryResult" type="SysBookCategory">
+        <id     property="categoryId"    column="category_id"     />
+        <result property="categoryName"  column="category_name"   />
+        <result property="status"  column="status"   />
+        <result property="delFlag" column="del_flag"   />
+    </resultMap>
+
+    <resultMap id="locationResult" type="SysBookLocation">
+        <id     property="locationId"    column="location_id"     />
+        <result property="location"  column="location"   />
+        <result property="status"  column="status"   />
+        <result property="delFlag" column="del_flag"   />
+    </resultMap>
+
+
+
+    <sql id="case">
+        case (#{langUser})
+    </sql>
+
+    <sql id="selectBookTitle">
+        <include refid="case"/>
+        when "en" then (select book_title_en from sys_book where book_id = b.book_id)
+        when "zh" then (select book_title from sys_book where book_id = b.book_id)
+        when "id" then (select book_title_id from sys_book where book_id = b.book_id)
+        end as book_title
+    </sql>
+
+    <sql id="selectSynopsis">
+        <include refid="case"/>
+        when "en" then (select synopsis_en from sys_book where book_id = b.book_id)
+        when "zh" then (select synopsis from sys_book where book_id = b.book_id)
+        when "id" then (select synopsis_id from sys_book where book_id = b.book_id)
+        end as synopsis
+    </sql>
+
+    <sql id="selectCategoryName">
+        <include refid="case"/>
+        when "en" then (select category_name_en from sys_book_category where category_id = c.category_id)
+        when "zh" then (select category_name from sys_book_category where category_id = c.category_id)
+        when "id" then (select category_name_id from sys_book_category where category_id = c.category_id)
+        end as category_name
+    </sql>
+
+    <sql id="selectSysBookVo">
+        select b.book_id, b.isbn, <include refid="selectBookTitle"/>, b.book_image, b.author, b.cd_status, <include refid="selectSynopsis"/>, b.language, b.status, b.create_by, b.create_time, b.update_by, b.update_time,
+        c.category_id, <include refid="selectCategoryName"/>, l.location_id, l.location
+        from sys_book b
+        left join sys_book_category c on b.category_id = c.category_id
+        left join sys_book_location l on b.location_id = l.location_id
+    </sql>
+
+    <select id="selectSysBookList" parameterType="SysBook" resultMap="SysBookResult">
+        <include refid="selectSysBookVo"/>
+        <where>
+            b.del_flag = '0'
+            <if test="book.isbn != null  and book.isbn != ''"> and b.isbn = #{isbn}</if>
+            <if test="book.bookTitle != null  and book.bookTitle != ''">
+                and b.book_title like concat('%', #{book.bookTitle}, '%')
+                or b.book_title_en like concat('%', #{book.bookTitle}, '%')
+                or b.book_title_id like concat('%',  #{book.bookTitle}, '%')
+            </if>
+            <if test="book.bookImage != null  and book.bookImage != ''"> and b.book_image = #{book.bookImage}</if>
+            <if test="book.author != null  and book.author != ''"> and b.author = #{book.author}</if>
+            <if test="book.cdStatus != null  and book.cdStatus != ''"> and b.cd_status = #{book.cdStatus}</if>
+            <if test="book.synopsis != null  and book.synopsis != ''"> and b.synopsis = #{book.synopsis}</if>
+            <if test="book.language != null  and book.language != ''"> and b.language = #{book.language}</if>
+            <if test="book.status != null  and book.status != ''"> and b.status = #{book.status}</if>
+            <if test="book.categoryId != null and book.categoryId != ''"> and b.category_id = #{book.categoryId}</if>
+            <if test="book.locationId != null and book.locationId != ''"> and b.location_id = #{book.locationId}</if>
+        </where>
+    </select>
+
+    <select id="countBookCategory" resultType="Integer">
+        select count(1) from sys_book where category_id = #{categoryId}
+    </select>
+
+    <select id="selectSysBookByBookId" parameterType="String" resultMap="SysBookResult">
+        <include refid="selectSysBookVo"/>
+        where book_id = #{bookId}
+    </select>
+
+    <select id="selectAllBook"  resultMap="SysBookResult">
+        select book_id, isbn, book_title, book_title_en, book_title_id, book_image, category_id, author, cd_status, synopsis, synopsis_en, synopsis_id, language, status, create_by, create_time, update_by, update_time from sys_book
+        where del_flag = '0'
+    </select>
+        
+    <insert id="insertSysBook" parameterType="SysBook">
+        <selectKey keyProperty="book.bookId" resultType="String" order="BEFORE">
+            select REPLACE(UUID(),"-","")
+        </selectKey>
+        insert into sys_book
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="book.bookId != null">book_id,</if>
+            <if test="book.isbn != null">isbn,</if>
+            <if test="book.bookTitle != null and book.bookTitle != '' ">book_title,</if>
+            <if test="book.bookTitle != null and book.bookTitle != '' ">book_title_en,</if>
+            <if test="book.bookTitle != null and book.bookTitle != '' ">book_title_id,</if>
+            <if test="book.bookImage != null">book_image,</if>
+            <if test="book.categoryId != null">category_id,</if>
+            <if test="book.author != null">author,</if>
+            <if test="book.locationId != null">location_id,</if>
+            <if test="book.cdStatus != null">cd_status,</if>
+            <if test="book.synopsis != null and book.synopsis != '' ">synopsis,</if>
+            <if test="book.synopsis != null and book.synopsis != '' ">synopsis_en,</if>
+            <if test="book.synopsis != null and book.synopsis != '' ">synopsis_id,</if>
+            <if test="book.language != null">language,</if>
+            <if test="book.status != null">status,</if>
+            <if test="book.createBy != null">create_by,</if>
+            <if test="book.createTime != null">create_time,</if>
+            <if test="book.updateBy != null">update_by,</if>
+            <if test="book.updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="book.bookId != null">#{book.bookId},</if>
+            <if test="book.isbn != null">#{book.isbn},</if>
+            <foreach item="bookTitleCat" collection="bookTitleCat" separator="," close="," >
+                <if test="book.bookTitle != null and book.bookTitle != '' "> #{bookTitleCat} </if>
+            </foreach>
+            <if test="book.bookImage != null">#{book.bookImage},</if>
+            <if test="book.categoryId != null">#{book.categoryId},</if>
+            <if test="book.author != null">#{book.author},</if>
+            <if test="book.locationId != null">#{book.locationId},</if>
+            <if test="book.cdStatus != null">#{book.cdStatus},</if>
+            <foreach item="synopsisCat" collection="synopsisCat" separator="," close="," >
+                <if test="book.synopsis != null and book.synopsis != '' "> #{synopsisCat} </if>
+            </foreach>
+            <if test="book.language != null">#{book.language},</if>
+            <if test="book.status != null">#{book.status},</if>
+            <if test="book.createBy != null">#{book.createBy},</if>
+            <if test="book.createTime != null">#{book.createTime},</if>
+            <if test="book.updateBy != null">#{book.updateBy},</if>
+            <if test="book.updateTime != null">#{book.updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateSysBook" parameterType="SysBook">
+        update sys_book
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="book.isbn != null">isbn = #{book.isbn},</if>
+            <if test="book.bookTitle != null">
+                book_title_en = <include refid="case"/>
+                when "en" then #{book.bookTitle}
+                else book_title_en
+                end,
+                book_title = <include refid="case"/>
+                when "zh" then #{book.bookTitle}
+                else book_title
+                end,
+                book_title_id = <include refid="case"/>
+                when "id" then #{book.bookTitle}
+                else book_title_id
+                end,
+            </if>
+            <if test="book.bookImage != null">book_image = #{book.bookImage},</if>
+            <if test="book.categoryId != null">category_id = #{book.categoryId},</if>
+            <if test="book.author != null">author = #{book.author},</if>
+            <if test="book.locationId != null">location_id = #{book.locationId},</if>
+            <if test="book.cdStatus != null">cd_status = #{book.cdStatus},</if>
+            <if test="book.synopsis != null">
+                synopsis_en = <include refid="case"/>
+                when "en" then #{book.synopsis}
+                else synopsis_en
+                end,
+                synopsis = <include refid="case"/>
+                when "zh" then #{book.synopsis}
+                else synopsis
+                end,
+                synopsis_id = <include refid="case"/>
+                when "id" then #{book.synopsis}
+                else synopsis_id
+                end,
+            </if>
+            <if test="book.language != null">language = #{book.language},</if>
+            <if test="book.status != null">status = #{book.status},</if>
+            <if test="book.createBy != null">create_by = #{book.createBy},</if>
+            <if test="book.createTime != null">create_time = #{book.createTime},</if>
+            <if test="book.updateBy != null">update_by = #{book.updateBy},</if>
+            <if test="book.updateTime != null">update_time = #{book.updateTime},</if>
+        </trim>
+        where book_id = #{book.bookId}
+    </update>
+
+    <delete id="deleteSysBookByBookId" parameterType="String">
+        update sys_book set del_flag = '2' where book_id = #{bookId}
+    </delete>
+
+    <delete id="deleteSysBookByBookIds" parameterType="String">
+        update sys_book set del_flag = '2' where book_id in
+        <foreach item="bookId" collection="array" open="(" separator="," close=")">
+            #{bookId}
+        </foreach>
+    </delete>
+
+</mapper>

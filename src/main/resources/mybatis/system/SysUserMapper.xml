@@ -46,11 +46,15 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="status"       column="role_status"    />
     </resultMap>
 
+	<sql id="case">
+		case (#{langUser})
+	</sql>
+
 	<sql id="selectDeptName">
-		case (select user_lang from sys_user where user_id = #{userId})
-		when 0 then (select dept_name_en from sys_dept where dept_id = d.dept_id)
-		when 1 then (select dept_name from sys_dept where dept_id = d.dept_id)
-		when 2 then (select dept_name_id from sys_dept where dept_id = d.dept_id)
+		<include refid="case"/>
+		when "en" then (select dept_name_en from sys_dept where dept_id = d.dept_id)
+		when "zh" then (select dept_name from sys_dept where dept_id = d.dept_id)
+		when "id" then (select dept_name_id from sys_dept where dept_id = d.dept_id)
 		end as dept_name
 	</sql>
 
@@ -65,19 +69,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		    left join sys_role r on r.role_id = ur.role_id
     </sql>
 
-	<sql id="selectDeptNameLocal">
-		case (select user_lang from sys_user where user_id = u.user_id)
-		when 0 then (select dept_name_en from sys_dept where dept_id = d.dept_id)
-		when 1 then (select dept_name from sys_dept where dept_id = d.dept_id)
-		when 2 then (select dept_name_id from sys_dept where dept_id = d.dept_id)
-		end as dept_name
-	</sql>
-
-
 
 	<sql id="selectUserVoLocal">
 		select u.user_id, u.dept_id, u.user_name, u.nick_name, u.email, u.avatar, u.phonenumber, u.password, u.sex, u.status, u.del_flag, u.login_ip, u.login_date, u.create_by, u.create_time, u.remark,
-		d.dept_id, d.parent_id, d.ancestors, <include refid="selectDeptNameLocal"/>, d.order_num, d.leader , d.status as dept_status,
+		d.dept_id, d.parent_id, d.ancestors, d.dept_name, d.order_num, d.leader , d.status as dept_status,
 		r.role_id, r.role_name, r.role_key, r.role_sort, r.data_scope, r.status as role_status
 		from sys_user u
 		left join sys_dept d on u.dept_id = d.dept_id

@@ -41,15 +41,6 @@ public class SysLogininforServiceImpl implements ISysLogininforService
     {
         return logininforMapper.selectLogininforList(logininfor);
     }
-    @Override
-    public int countLogininforWrong(String userName){
-        return logininforMapper.countLogininforWrong(userName);
-    }
-
-    @Override
-    public int countLoginWrong(String userName){
-        return logininforMapper.countLoginWrong(userName);
-    }
 
     /**
      * 批量删除系统登录日志

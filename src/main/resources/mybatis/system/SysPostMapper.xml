@@ -114,28 +114,28 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
  		where post_id = #{p.postId}
 	</update>
  	
- 	<insert id="insertPost" parameterType="SysPost" useGeneratedKeys="true" keyProperty="postId">
+ 	<insert id="insertPost" parameterType="SysPost" useGeneratedKeys="true" keyProperty="post.postId">
  		insert into sys_post(
- 			<if test="postId != null and postId != 0">post_id,</if>
- 			<if test="postCode != null and postCode != ''">post_code,</if>
- 			<if test="postName != null and postName != ''">post_name,</if>
-			<if test="postNameEn != null and postNameEn != ''">post_name_en,</if>
-			<if test="postNameId != null and postNameId != ''">post_name_id,</if>
- 			<if test="postSort != null and postSort != ''">post_sort,</if>
- 			<if test="status != null and status != ''">status,</if>
- 			<if test="remark != null and remark != ''">remark,</if>
- 			<if test="createBy != null and createBy != ''">create_by,</if>
+ 			<if test="post.postId != null and post.postId != 0">post_id,</if>
+ 			<if test="post.postCode != null and post.postCode != ''">post_code,</if>
+ 			<if test="post.postName != null and post.postName != ''">post_name,</if>
+			<if test="post.postName != null and post.postName != ''">post_name_en,</if>
+			<if test="post.postName != null and post.postName != ''">post_name_id,</if>
+ 			<if test="post.postSort != null and post.postSort != ''">post_sort,</if>
+ 			<if test="post.status != null and post.status != ''">status,</if>
+ 			<if test="post.remark != null and post.remark != ''">remark,</if>
+ 			<if test="post.createBy != null and post.createBy != ''">create_by,</if>
  			create_time
  		)values(
- 			<if test="postId != null and postId != 0">#{postId},</if>
- 			<if test="postCode != null and postCode != ''">#{postCode},</if>
- 			<if test="postName != null and postName != ''">#{postName},</if>
-			<if test="postNameEn != null and postNameEn != ''">#{postNameEn},</if>
-		    <if test="postNameId != null and postNameId != ''">#{postNameId},</if>
- 			<if test="postSort != null and postSort != ''">#{postSort},</if>
- 			<if test="status != null and status != ''">#{status},</if>
- 			<if test="remark != null and remark != ''">#{remark},</if>
- 			<if test="createBy != null and createBy != ''">#{createBy},</if>
+ 			<if test="post.postId != null and post.postId != 0">#{post.postId},</if>
+ 			<if test="post.postCode != null and post.postCode != ''">#{post.postCode},</if>
+			<foreach item="postNameCat" collection="postNameCat" separator="," close="," >
+				<if test="post.postName != null and post.postName != '' "> #{postNameCat} </if>
+			</foreach>
+ 			<if test="post.postSort != null and post.postSort != ''">#{post.postSort},</if>
+ 			<if test="post.status != null and post.status != ''">#{post.status},</if>
+ 			<if test="post.remark != null and post.remark != ''">#{post.remark},</if>
+ 			<if test="post.createBy != null and post.createBy != ''">#{post.createBy},</if>
  			sysdate()
  		)
 	</insert>

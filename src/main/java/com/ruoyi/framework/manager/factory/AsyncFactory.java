@@ -74,21 +74,11 @@ public class AsyncFactory
                 {
                     logininfor.setStatus(Constants.FAIL);
                 }
-                else if(status.equals("2"))
-                {
-                    logininfor.setStatus(status);
-                }
-                else if(status.equals("3"))
-                {
-                    logininfor.setStatus(status);
-                }
-
                 // 插入数据
                 SpringUtils.getBean(ISysLogininforService.class).insertLogininfor(logininfor);
             }
         };
     }
-
 
     /**
      * 操作日志记录

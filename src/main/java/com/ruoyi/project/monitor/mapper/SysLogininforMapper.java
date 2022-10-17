@@ -25,10 +25,6 @@ public interface SysLogininforMapper
      */
     public List<SysLogininfor> selectLogininforList(SysLogininfor logininfor);
 
-    public int countLogininforWrong(String userName);
-
-    public int countLoginWrong(String userName);
-
     /**
      * 批量删除系统登录日志
      * 
@@ -43,6 +39,4 @@ public interface SysLogininforMapper
      * @return 结果
      */
     public int cleanLogininfor();
-
-
 }

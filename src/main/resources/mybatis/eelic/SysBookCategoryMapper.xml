@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.project.eelic.mapper.SysBookCategoryMapper">
+    
+    <resultMap type="SysBookCategory" id="SysBookCategoryResult">
+        <result property="categoryId"    column="category_id"    />
+        <result property="categoryName"    column="category_name"    />
+        <result property="status"    column="status"    />
+        <result property="delFlag"    column="del_flag"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="case">
+        case (#{langUser})
+    </sql>
+
+    <sql id="selectCategoryName">
+        <include refid="case"/>
+        when "en" then (select category_name_en from sys_book_category where category_id = c.category_id)
+        when "zh" then (select category_name from sys_book_category where category_id = c.category_id)
+        when "id" then (select category_name_id from sys_book_category where category_id = c.category_id)
+        end as category_name
+    </sql>
+
+    <sql id="selectSysBookCategoryVo">
+        select category_id, <include refid="selectCategoryName"/>, status, del_flag, create_by, create_time, update_by, update_time from sys_book_category c
+    </sql>
+
+    <select id="selectSysBookCategoryList" parameterType="SysBookCategory" resultMap="SysBookCategoryResult">
+        <include refid="selectSysBookCategoryVo"/>
+        <where>
+            del_flag = '0'
+            <if test="category.categoryName != null and category.categoryName != ''">
+                and category_name like concat('%', #{category.categoryName}, '%')
+                or category_name_en like concat('%', #{category.categoryName}, '%')
+                or category_name_id like concat('%', #{category.categoryName}, '%')
+            </if>
+            <if test="category.status != null  and category.status != ''"> and status = #{category.status}</if>
+
+        </where>
+    </select>
+    
+    <select id="selectSysBookCategoryByCategoryId" parameterType="String" resultMap="SysBookCategoryResult">
+        <include refid="selectSysBookCategoryVo"/>
+        where category_id = #{categoryId}
+    </select>
+        
+    <insert id="insertSysBookCategory" parameterType="SysBookCategory">
+        <selectKey keyProperty="c.categoryId" resultType="String" order="BEFORE">
+            select REPLACE(UUID(),"-","")
+        </selectKey>
+        insert into sys_book_category
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="c.categoryId != null">category_id,</if>
+            <if test="c.categoryName != null">category_name,</if>
+            <if test="c.categoryName != null">category_name_en,</if>
+            <if test="c.categoryName != null">category_name_id,</if>
+            <if test="c.status != null">status,</if>
+            <if test="c.delFlag != null">del_flag,</if>
+            <if test="c.createBy != null">create_by,</if>
+            <if test="c.createTime != null">create_time,</if>
+            <if test="c.updateBy != null">update_by,</if>
+            <if test="c.updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="c.categoryId != null">#{c.categoryId},</if>
+            <foreach item="categoryCat" collection="categoryCat" separator="," close="," >
+                <if test="c.categoryName != null and c.categoryName != '' "> #{categoryCat} </if>
+            </foreach>
+            <if test="c.status != null">#{c.status},</if>
+            <if test="c.delFlag != null">#{c.delFlag},</if>
+            <if test="c.createBy != null">#{c.createBy},</if>
+            <if test="c.createTime != null">#{c.createTime},</if>
+            <if test="c.updateBy != null">#{c.updateBy},</if>
+            <if test="c.updateTime != null">#{c.updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateSysBookCategory" parameterType="SysBookCategory">
+        update sys_book_category
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="categoryName != null">category_name = #{categoryName},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="delFlag != null">del_flag = #{delFlag},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where category_id = #{categoryId}
+    </update>
+
+    <delete id="deleteSysBookCategoryByCategoryId" parameterType="String">
+        update sys_book_category set del_flag = '2' where category_id = #{categoryId}
+    </delete>
+
+    <delete id="deleteSysBookCategoryByCategoryIds" parameterType="String">
+        update sys_book_category set del_flag = '2' where category_id in
+        <foreach item="categoryId" collection="array" open="(" separator="," close=")">
+            #{categoryId}
+        </foreach>
+    </delete>
+</mapper>

@@ -1,19 +1,20 @@
 package com.ruoyi.project.system.service.impl;
 
-import java.util.List;
-
-import com.ruoyi.common.utils.SecurityUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 import com.ruoyi.common.constant.UserConstants;
 import com.ruoyi.common.exception.ServiceException;
+import com.ruoyi.common.utils.SecurityUtils;
 import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.project.system.domain.SysPost;
 import com.ruoyi.project.system.mapper.SysPostMapper;
 import com.ruoyi.project.system.mapper.SysUserPostMapper;
 import com.ruoyi.project.system.service.ISysPostService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
-import static com.ruoyi.common.translator.Translator.translate;
+import java.util.List;
+
+import static com.ruoyi.common.translator.Translator.*;
+import static com.ruoyi.common.translator.Translator.translateOffline;
 
 /**
  * 岗位信息 服务层处理
@@ -166,14 +167,14 @@ public class SysPostServiceImpl implements ISysPostService
     public int insertPost(SysPost post)
     {
         try {
-            post.setPostNameId(translate("auto", "id",post.getPostName()));
-            post.setPostNameEn(translate("auto", "en",post.getPostName()));
-            post.setPostName(translate("auto", "zh-CN",post.getPostName()));
-
+            return postMapper.insertPost(post, translateAll(post.getPostName()));
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            try{
+                return postMapper.insertPost(post, translateOffline(post.getPostName()));
+            } catch (Exception e2) {
+                throw new RuntimeException(e2);
+            }
         }
-        return postMapper.insertPost(post);
     }
 
     /**

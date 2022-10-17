@@ -134,6 +134,13 @@
 		where m.status = '0' and r.status = '0' and ur.user_id = #{userId}
 	</select>
 
+	<select id="selectMenuPermsByRoleId" parameterType="Long" resultType="String">
+		select distinct m.perms
+		from sys_menu m
+		left join sys_role_menu rm on m.menu_id = rm.menu_id
+		where m.status = '0' and rm.role_id = #{roleId}
+	</select>
+
 	<select id="selectMenuById" resultMap="SysMenuResult">
 		<include refid="selectMenuVo"/>
 		where menu_id = #{menuId}
@@ -187,44 +194,44 @@
 
 	<insert id="insertMenu" parameterType="SysMenu">
 		insert into sys_menu(
-		<if test="menuId != null and menuId != 0">menu_id,</if>
-		<if test="parentId != null and parentId != 0">parent_id,</if>
-		<if test="menuName != null and menuName != ''">menu_name,</if>
-		<if test="menuNameEn != null and menuNameEn != ''">menu_name_en,</if>
-		<if test="menuNameId != null and menuNameId != ''">menu_name_id,</if>
-		<if test="orderNum != null">order_num,</if>
-		<if test="path != null and path != ''">path,</if>
-		<if test="component != null and component != ''">component,</if>
-		<if test="query != null and query != ''">`query`,</if>
-		<if test="isFrame != null and isFrame != ''">is_frame,</if>
-		<if test="isCache != null and isCache != ''">is_cache,</if>
-		<if test="menuType != null and menuType != ''">menu_type,</if>
-		<if test="visible != null">visible,</if>
-		<if test="status != null">status,</if>
-		<if test="perms !=null and perms != ''">perms,</if>
-		<if test="icon != null and icon != ''">icon,</if>
-		<if test="remark != null and remark != ''">remark,</if>
-		<if test="createBy != null and createBy != ''">create_by,</if>
+		<if test="menu.menuId != null and menu.menuId != 0">menu_id,</if>
+		<if test="menu.parentId != null and menu.parentId != 0">parent_id,</if>
+		<if test="menu.menuName != null and menu.menuName != ''">menu_name,</if>
+		<if test="menu.menuName != null and menu.menuName != ''">menu_name_en,</if>
+		<if test="menu.menuName != null and menu.menuName != ''">menu_name_id,</if>
+		<if test="menu.orderNum != null">order_num,</if>
+		<if test="menu.path != null and menu.path != ''">path,</if>
+		<if test="menu.component != null and menu.component != ''">component,</if>
+		<if test="menu.query != null and menu.query != ''">`query`,</if>
+		<if test="menu.isFrame != null and menu.isFrame != ''">is_frame,</if>
+		<if test="menu.isCache != null and menu.isCache != ''">is_cache,</if>
+		<if test="menu.menuType != null and menu.menuType != ''">menu_type,</if>
+		<if test="menu.visible != null">visible,</if>
+		<if test="menu.status != null">status,</if>
+		<if test="menu.perms !=null and menu.perms != ''">perms,</if>
+		<if test="menu.icon != null and menu.icon != ''">icon,</if>
+		<if test="menu.remark != null and menu.remark != ''">remark,</if>
+		<if test="menu.createBy != null and menu.createBy != ''">create_by,</if>
 		create_time
 		)values(
-		<if test="menuId != null and menuId != 0">#{menuId},</if>
-		<if test="parentId != null and parentId != 0">#{parentId},</if>
-		<if test="menuName != null and menuName != ''">#{menuName},</if>
-		<if test="menuNameEn != null and menuNameEn != ''">#{menuNameEn},</if>
-		<if test="menuNameId != null and menuNameId != ''">#{menuNameId },</if>
-		<if test="orderNum != null">#{orderNum},</if>
-		<if test="path != null and path != ''">#{path},</if>
-		<if test="component != null and component != ''">#{component},</if>
-		<if test="query != null and query != ''">#{query},</if>
-		<if test="isFrame != null and isFrame != ''">#{isFrame},</if>
-		<if test="isCache != null and isCache != ''">#{isCache},</if>
-		<if test="menuType != null and menuType != ''">#{menuType},</if>
-		<if test="visible != null">#{visible},</if>
-		<if test="status != null">#{status},</if>
-		<if test="perms !=null and perms != ''">#{perms},</if>
-		<if test="icon != null and icon != ''">#{icon},</if>
-		<if test="remark != null and remark != ''">#{remark},</if>
-		<if test="createBy != null and createBy != ''">#{createBy},</if>
+		<if test="menu.menuId != null and menu.menuId != 0">#{menu.menuId},</if>
+		<if test="menu.parentId != null and menu.parentId != 0">#{menu.parentId},</if>
+		<foreach item="menuNameCat" collection="menuNameCat" separator="," close="," >
+			<if test="menu.menuName != null and menu.menuName != '' "> #{menuNameCat} </if>
+		</foreach>
+		<if test="menu.orderNum != null">#{menu.orderNum},</if>
+		<if test="menu.path != null and menu.path != ''">#{menu.path},</if>
+		<if test="menu.component != null and menu.component != ''">#{menu.component},</if>
+		<if test="menu.query != null and menu.query != ''">#{menu.query},</if>
+		<if test="menu.isFrame != null and menu.isFrame != ''">#{menu.isFrame},</if>
+		<if test="menu.isCache != null and menu.isCache != ''">#{menu.isCache},</if>
+		<if test="menu.menuType != null and menu.menuType != ''">#{menu.menuType},</if>
+		<if test="menu.visible != null">#{menu.visible},</if>
+		<if test="menu.status != null">#{menu.status},</if>
+		<if test="menu.perms !=null and menu.perms != ''">#{menu.perms},</if>
+		<if test="menu.icon != null and menu.icon != ''">#{menu.icon},</if>
+		<if test="menu.remark != null and menu.remark != ''">#{menu.remark},</if>
+		<if test="menu.createBy != null and menu.createBy != ''">#{menu.createBy},</if>
 		sysdate()
 		)
 	</insert>

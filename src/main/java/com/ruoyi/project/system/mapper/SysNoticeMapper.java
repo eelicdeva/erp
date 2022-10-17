@@ -1,8 +1,9 @@
 package com.ruoyi.project.system.mapper;
 
-import java.util.List;
 import com.ruoyi.project.system.domain.SysNotice;
 import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 /**
  * 通知公告表 数据层

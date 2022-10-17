@@ -21,7 +21,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result property="updateBy"   column="update_by"   />
 		<result property="updateTime" column="update_time" />
 	</resultMap>
-	
+
+	<sql id="case">
+		case (#{langUser})
+	</sql>
+
 	<sql id="selectDictDataVo">
         select dict_code, dict_sort, dict_label, dict_label_en, dict_label_id, dict_value, dict_type, css_class, list_class, is_default, status, create_by, create_time, remark
 		from sys_dict_data
@@ -82,19 +86,31 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<update id="updateDictData" parameterType="SysDictData">
  		update sys_dict_data
  		<set>
- 			<if test="dictSort != null">dict_sort = #{dictSort},</if>
- 			<if test="dictLabel != null and dictLabel != ''">dict_label = #{dictLabel},</if>
- 			<if test="dictValue != null and dictValue != ''">dict_value = #{dictValue},</if>
- 			<if test="dictType != null and dictType != ''">dict_type = #{dictType},</if>
- 			<if test="cssClass != null">css_class = #{cssClass},</if>
- 			<if test="listClass != null">list_class = #{listClass},</if>
- 			<if test="isDefault != null and isDefault != ''">is_default = #{isDefault},</if>
- 			<if test="status != null">status = #{status},</if>
- 			<if test="remark != null">remark = #{remark},</if>
- 			<if test="updateBy != null and updateBy != ''">update_by = #{updateBy},</if>
+ 			<if test="d.dictSort != null">dict_sort = #{d.dictSort},</if>
+			<if test="d.dictLabel != null and d.dictLabel != ''">
+				dict_label_en = <include refid="case"/>
+				when "en" then #{d.dictLabel}
+				else dict_label_en
+				end,
+				dict_label = <include refid="case"/>
+				when "zh" then #{d.dictLabel}
+				else dict_label
+				end,
+				dict_label_id = <include refid="case"/>
+				when "id" then #{d.dictLabel}
+				else dict_label_id
+				end,
+			</if>
+ 			<if test="d.dictType != null and d.dictType != ''">dict_type = #{d.dictType},</if>
+ 			<if test="d.cssClass != null">css_class = #{d.cssClass},</if>
+ 			<if test="d.listClass != null">list_class = #{d.listClass},</if>
+ 			<if test="d.isDefault != null and d.isDefault != ''">is_default = #{d.isDefault},</if>
+ 			<if test="d.status != null">status = #{d.status},</if>
+ 			<if test="d.remark != null">remark = #{d.remark},</if>
+ 			<if test="d.updateBy != null and d.updateBy != ''">update_by = #{d.updateBy},</if>
  			update_time = sysdate()
  		</set>
- 		where dict_code = #{dictCode}
+ 		where dict_code = #{d.dictCode}
 	</update>
 	
 	<update id="updateDictDataType" parameterType="String">
@@ -105,6 +121,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
  		insert into sys_dict_data(
  			<if test="dictSort != null">dict_sort,</if>
  			<if test="dictLabel != null and dictLabel != ''">dict_label,</if>
+			<if test="dictLabelEn != null and dictLabelEn != ''">dict_label_en,</if>
+			<if test="dictLabelId != null and dictLabelId != ''">dict_label_id,</if>
  			<if test="dictValue != null and dictValue != ''">dict_value,</if>
  			<if test="dictType != null and dictType != ''">dict_type,</if>
  			<if test="cssClass != null and cssClass != ''">css_class,</if>
@@ -117,6 +135,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
  		)values(
  		    <if test="dictSort != null">#{dictSort},</if>
  		    <if test="dictLabel != null and dictLabel != ''">#{dictLabel},</if>
+			<if test="dictLabelEn != null and dictLabelEn != ''">#{dictLabelEn},</if>
+			<if test="dictLabelId != null and dictLabelId != ''">#{dictLabelId},</if>
  			<if test="dictValue != null and dictValue != ''">#{dictValue},</if>
  			<if test="dictType != null and dictType != ''">#{dictType},</if>
  			<if test="cssClass != null and cssClass != ''">#{cssClass},</if>

@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import com.ruoyi.common.utils.MessageUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,8 +50,7 @@ public class CommonController
         {
             if (!FileUtils.checkAllowDownload(fileName))
             {
-//                "文件名称({})非法，不允许下载。 "
-                throw new Exception(StringUtils.format(MessageUtils.message("illegal.file"), fileName));
+                throw new Exception(StringUtils.format("文件名称({})非法，不允许下载。 ", fileName));
             }
             String realFileName = System.currentTimeMillis() + fileName.substring(fileName.indexOf("_") + 1);
             String filePath = RuoYiConfig.getDownloadPath() + fileName;
@@ -68,8 +65,7 @@ public class CommonController
         }
         catch (Exception e)
         {
-//            "下载文件失败"
-            log.error(MessageUtils.message("download.failed"), e);
+            log.error("下载文件失败", e);
         }
     }
 
@@ -85,6 +81,7 @@ public class CommonController
             String filePath = RuoYiConfig.getUploadPath();
             // 上传并返回新文件名称
             String fileName = FileUploadUtils.upload(filePath, file);
+            System.out.println(fileName);
             String url = serverConfig.getUrl() + fileName;
             AjaxResult ajax = AjaxResult.success();
             ajax.put("url", url);
@@ -147,8 +144,7 @@ public class CommonController
         {
             if (!FileUtils.checkAllowDownload(resource))
             {
-//                资源文件({})非法，不允许下载。
-                throw new Exception(StringUtils.format(MessageUtils.message("illegal.resource"), resource));
+                throw new Exception(StringUtils.format("资源文件({})非法，不允许下载。 ", resource));
             }
             // 本地资源路径
             String localPath = RuoYiConfig.getProfile();
@@ -162,8 +158,7 @@ public class CommonController
         }
         catch (Exception e)
         {
-//            "下载文件失败"
-            log.error(MessageUtils.message("download.failed"), e);
+            log.error("下载文件失败", e);
         }
     }
 }

@@ -1,8 +1,7 @@
 package com.ruoyi.framework.web.domain;
 
-import com.ruoyi.common.utils.MessageUtils;
-
 import java.io.Serializable;
+import com.ruoyi.common.constant.HttpStatus;
 
 /**
  * 响应信息主体
@@ -14,10 +13,10 @@ public class R<T> implements Serializable
     private static final long serialVersionUID = 1L;
 
     /** 成功 */
-    public static final int SUCCESS = 0;
+    public static final int SUCCESS = HttpStatus.SUCCESS;
 
     /** 失败 */
-    public static final int FAIL = 500;
+    public static final int FAIL = HttpStatus.ERROR;
 
     private int code;
 
@@ -27,14 +26,12 @@ public class R<T> implements Serializable
 
     public static <T> R<T> ok()
     {
-//        "操作成功"
-        return restResult(null, SUCCESS, MessageUtils.message("successful.operation"));
+        return restResult(null, SUCCESS, "操作成功");
     }
 
     public static <T> R<T> ok(T data)
     {
-//        "操作成功"
-        return restResult(data, SUCCESS, MessageUtils.message("successful.operation"));
+        return restResult(data, SUCCESS, "操作成功");
     }
 
     public static <T> R<T> ok(T data, String msg)
@@ -44,8 +41,7 @@ public class R<T> implements Serializable
 
     public static <T> R<T> fail()
     {
-//        "操作失败"
-        return restResult(null, FAIL, MessageUtils.message("operation.failed"));
+        return restResult(null, FAIL, "操作失败");
     }
 
     public static <T> R<T> fail(String msg)
@@ -55,8 +51,7 @@ public class R<T> implements Serializable
 
     public static <T> R<T> fail(T data)
     {
-//        "操作失败"
-        return restResult(data, FAIL, MessageUtils.message("operation.failed"));
+        return restResult(data, FAIL, "操作失败");
     }
 
     public static <T> R<T> fail(T data, String msg)

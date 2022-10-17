@@ -3,8 +3,6 @@ package com.ruoyi.project.system.controller;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
-
-import com.ruoyi.common.utils.ServletUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,10 +18,6 @@ import com.ruoyi.framework.web.domain.AjaxResult;
 import com.ruoyi.project.system.domain.SysMenu;
 import com.ruoyi.project.system.domain.SysUser;
 import com.ruoyi.project.system.service.ISysMenuService;
-import org.springframework.web.util.WebUtils;
-import javax.servlet.http.Cookie;
-
-
 
 /**
  * 登录验证
@@ -41,7 +35,6 @@ public class SysLoginController
 
     @Autowired
     private SysPermissionService permissionService;
-
 
     /**
      * 登录方法
@@ -66,9 +59,9 @@ public class SysLoginController
             if(langUser.equals("id")){
                 Locale localeIndo = new Locale("in", "ID");
                 LocaleContextHolder.setLocale(localeIndo);
-
             }
         }
+
         // 生成令牌
         String token = loginService.login(loginBody.getUsername(), loginBody.getPassword(), loginBody.getCode(),
                 loginBody.getUuid(), loginBody.getLang());
@@ -104,12 +97,8 @@ public class SysLoginController
     @GetMapping("getRouters")
     public AjaxResult getRouters()
     {
-
         Long userId = SecurityUtils.getUserId();
         List<SysMenu> menus = menuService.selectMenuTreeByUserId(userId, SecurityUtils.getLoginUser().getLangUser());
         return AjaxResult.success(menuService.buildMenus(menus));
     }
-
-
-
 }

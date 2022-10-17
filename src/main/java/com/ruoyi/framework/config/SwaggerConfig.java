@@ -51,20 +51,14 @@ public class SwaggerConfig
                 // 是否启用Swagger
                 .enable(enabled)
                 // 用来创建该API的基本信息，展示在文档的页面中（自定义展示的信息）
-                // Informasi dasar yang digunakan untuk membuat API ditampilkan pada halaman dokumen (informasi yang disesuaikan ditampilkan)
                 .apiInfo(apiInfo())
                 // 设置哪些接口暴露给Swagger展示
-                // Set which interfaces are exposed to Swagger display
                 .select()
                 // 扫描所有有注解的api，用这种方式更灵活
-                // Scan all annotated apis, this way is more flexible
-                .apis(RequestHandlerSelectors.any())
+                .apis(RequestHandlerSelectors.withMethodAnnotation(ApiOperation.class))
                 // 扫描指定包中的swagger注解
                 // .apis(RequestHandlerSelectors.basePackage("com.ruoyi.project.tool.swagger"))
-                // 扫描所有 (RequestHandlerSelectors.withMethodAnnotation(ApiOperation.class))
-                // Scan swagger annotations in the specified package
-                // .apis(RequestHandlerSelectors.basePackage("com.ruoyi.project.tool.swagger"))
-                // scan all .apis(RequestHandlerSelectors.any())
+                // 扫描所有 .apis(RequestHandlerSelectors.any())
                 .paths(PathSelectors.any())
                 .build()
                 /* 设置安全模式，swagger可以设置访问token */

@@ -1,8 +1,9 @@
 package com.ruoyi.project.system.mapper;
 
-import java.util.List;
-import org.apache.ibatis.annotations.Param;
 import com.ruoyi.project.system.domain.SysDictData;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 /**
  * 字典表 数据层
@@ -82,7 +83,7 @@ public interface SysDictDataMapper
      * @param dictData 字典数据信息
      * @return 结果
      */
-    public int updateDictData(SysDictData dictData);
+    public int updateDictData(@Param("d") SysDictData dictData, @Param("langUser") String langUser);
 
     /**
      * 同步修改字典类型

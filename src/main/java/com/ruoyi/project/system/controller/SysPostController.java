@@ -2,9 +2,6 @@ package com.ruoyi.project.system.controller;
 
 import java.util.List;
 import javax.servlet.http.HttpServletResponse;
-
-import com.ruoyi.common.utils.MessageUtils;
-import org.aspectj.bridge.Message;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
@@ -80,13 +77,11 @@ public class SysPostController extends BaseController
     {
         if (UserConstants.NOT_UNIQUE.equals(postService.checkPostNameUnique(post)))
         {
-//            "新增岗位'" + post.getPostName() + "'失败，岗位名称已存在"
-            return AjaxResult.error(MessageUtils.message("add.jobs") + post.getPostName() + MessageUtils.message("job.exist"));
+            return AjaxResult.error("新增岗位'" + post.getPostName() + "'失败，岗位名称已存在");
         }
         else if (UserConstants.NOT_UNIQUE.equals(postService.checkPostCodeUnique(post)))
         {
-//            "新增岗位'" + post.getPostName() + "'失败，岗位编码已存在"
-            return AjaxResult.error(MessageUtils.message("add.jobs") + post.getPostName() + MessageUtils.message("job.code.exist"));
+            return AjaxResult.error("新增岗位'" + post.getPostName() + "'失败，岗位编码已存在");
         }
         post.setCreateBy(getUsername());
         return toAjax(postService.insertPost(post));
@@ -102,13 +97,11 @@ public class SysPostController extends BaseController
     {
         if (UserConstants.NOT_UNIQUE.equals(postService.checkPostNameUnique(post)))
         {
-//            "修改岗位'" + post.getPostName() + "'失败，岗位名称已存在"
-            return AjaxResult.error(MessageUtils.message("modify.post") + post.getPostName() + MessageUtils.message("job.exist"));
+            return AjaxResult.error("修改岗位'" + post.getPostName() + "'失败，岗位名称已存在");
         }
         else if (UserConstants.NOT_UNIQUE.equals(postService.checkPostCodeUnique(post)))
         {
-//            "修改岗位'" + post.getPostName() + "'失败，岗位编码已存在"
-            return AjaxResult.error(MessageUtils.message("modify.post") + post.getPostName() + MessageUtils.message("job.code.exist"));
+            return AjaxResult.error("修改岗位'" + post.getPostName() + "'失败，岗位编码已存在");
         }
         post.setUpdateBy(getUsername());
         return toAjax(postService.updatePost(post));

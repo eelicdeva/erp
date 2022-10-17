@@ -1,6 +1,5 @@
 package com.ruoyi.framework.security.service;
 
-import com.ruoyi.common.utils.MessageUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +25,9 @@ public class UserDetailsServiceImpl implements UserDetailsService
 
     @Autowired
     private ISysUserService userService;
+    
+    @Autowired
+    private SysPasswordService passwordService;
 
     @Autowired
     private SysPermissionService permissionService;
@@ -36,19 +38,21 @@ public class UserDetailsServiceImpl implements UserDetailsService
         SysUser user = userService.selectUserByUserName(username);
         if (StringUtils.isNull(user))
         {
-            log.info(MessageUtils.message("login.user") + " {} " + MessageUtils.message("doesnt.exist"), username);
-            throw new ServiceException(MessageUtils.message("login.user") + username + " " + MessageUtils.message("doesnt.exist"));
+            log.info("登录用户：{} 不存在.", username);
+            throw new ServiceException("登录用户：" + username + " 不存在");
         }
         else if (UserStatus.DELETED.getCode().equals(user.getDelFlag()))
         {
-            log.info(MessageUtils.message("login.user") + " {} " + MessageUtils.message("has.been.deleted"), username);
-            throw new ServiceException(MessageUtils.message("sorry.account") + username + " " + MessageUtils.message("deleted"));
+            log.info("登录用户：{} 已被删除.", username);
+            throw new ServiceException("对不起，您的账号：" + username + " 已被删除");
         }
         else if (UserStatus.DISABLE.getCode().equals(user.getStatus()))
         {
-            log.info(MessageUtils.message("login.user") + " {} " + MessageUtils.message("has.been.disabled"), username);
-            throw new ServiceException(MessageUtils.message("sorry.account") + username + " " + MessageUtils.message("disabled"));
+            log.info("登录用户：{} 已被停用.", username);
+            throw new ServiceException("对不起，您的账号：" + username + " 已停用");
         }
+
+        passwordService.validate(user);
 
         return createLoginUser(user);
     }

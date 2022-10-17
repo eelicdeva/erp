@@ -42,15 +42,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		</where>
 		order by info_id desc
 	</select>
-
-	<select id="countLogininforWrong" resultType="Integer">
-		select count(1) from sys_logininfor where
-		user_name = #{userName} and login_time >= all (SELECT login_time FROM sys_logininfor where status = 3  order by login_time desc) and status = 2;
-	</select>
-
-	<select id="countLoginWrong" resultType="Integer">
-		select count(1) from sys_logininfor where user_name = #{userName} and status = 3 and (timestampdiff(minute, login_time, sysdate())) &lt;= 5;
-	</select>
 	
 	<delete id="deleteLogininforByIds" parameterType="Long">
  		delete from sys_logininfor where info_id in

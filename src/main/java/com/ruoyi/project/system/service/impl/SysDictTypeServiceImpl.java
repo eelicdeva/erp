@@ -1,24 +1,24 @@
 package com.ruoyi.project.system.service.impl;
 
-import java.util.Comparator;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
-import javax.annotation.PostConstruct;
-
-import com.ruoyi.common.utils.SecurityUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import com.ruoyi.common.constant.UserConstants;
 import com.ruoyi.common.exception.ServiceException;
 import com.ruoyi.common.utils.DictUtils;
+import com.ruoyi.common.utils.SecurityUtils;
 import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.project.system.domain.SysDictData;
 import com.ruoyi.project.system.domain.SysDictType;
 import com.ruoyi.project.system.mapper.SysDictDataMapper;
 import com.ruoyi.project.system.mapper.SysDictTypeMapper;
 import com.ruoyi.project.system.service.ISysDictTypeService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import javax.annotation.PostConstruct;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 import static com.ruoyi.common.translator.Translator.translate;
 
@@ -204,17 +204,9 @@ public class SysDictTypeServiceImpl implements ISysDictTypeService
     @Transactional
     public int updateDictType(SysDictType dict)
     {
-        try {
-            dict.setDictNameId(translate("auto", "id",dict.getDictName()));
-            dict.setDictNameEn(translate("auto", "en",dict.getDictName()));
-            dict.setDictName(translate("auto", "zh-CN",dict.getDictName()));
-
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
         SysDictType oldDict = dictTypeMapper.selectDictTypeById(dict.getDictId(),SecurityUtils.getLoginUser().getLangUser());
         dictDataMapper.updateDictDataType(oldDict.getDictType(), dict.getDictType());
-        int row = dictTypeMapper.updateDictType(dict);
+        int row = dictTypeMapper.updateDictType(dict, SecurityUtils.getLoginUser().getLangUser());
         if (row > 0)
         {
             List<SysDictData> dictDatas = dictDataMapper.selectDictDataByType(dict.getDictType());

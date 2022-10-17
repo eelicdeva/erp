@@ -2,8 +2,6 @@ package com.ruoyi.project.system.controller;
 
 import java.util.List;
 import javax.servlet.http.HttpServletResponse;
-
-import com.ruoyi.common.utils.MessageUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
@@ -88,8 +86,7 @@ public class SysConfigController extends BaseController
     {
         if (UserConstants.NOT_UNIQUE.equals(configService.checkConfigKeyUnique(config)))
         {
-//            "新增参数'" + config.getConfigName() + "'失败，参数键名已存在"
-            return AjaxResult.error(MessageUtils.message("add.parameter") + config.getConfigName() + MessageUtils.message("parameter.exist"));
+            return AjaxResult.error("新增参数'" + config.getConfigName() + "'失败，参数键名已存在");
         }
         config.setCreateBy(getUsername());
         return toAjax(configService.insertConfig(config));
@@ -105,8 +102,7 @@ public class SysConfigController extends BaseController
     {
         if (UserConstants.NOT_UNIQUE.equals(configService.checkConfigKeyUnique(config)))
         {
-//            "修改参数'" + config.getConfigName() + "'失败，参数键名已存在"
-            return AjaxResult.error(MessageUtils.message("modify.parameter") + config.getConfigName() + MessageUtils.message("parameter.exist"));
+            return AjaxResult.error("修改参数'" + config.getConfigName() + "'失败，参数键名已存在");
         }
         config.setUpdateBy(getUsername());
         return toAjax(configService.updateConfig(config));

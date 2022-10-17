@@ -1,8 +1,6 @@
 package com.ruoyi.framework.web.exception;
 
 import javax.servlet.http.HttpServletRequest;
-
-import com.ruoyi.common.utils.MessageUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.access.AccessDeniedException;
@@ -34,10 +32,8 @@ public class GlobalExceptionHandler
     public AjaxResult handleAccessDeniedException(AccessDeniedException e, HttpServletRequest request)
     {
         String requestURI = request.getRequestURI();
-//        "请求地址'{}',权限校验失败'{}'"
-        log.error(MessageUtils.message("permission.verification.failed"), requestURI, e.getMessage());
-//        "没有权限，请联系管理员授权"
-        return AjaxResult.error(HttpStatus.FORBIDDEN, MessageUtils.message("no.permission.contact.admin"));
+        log.error("请求地址'{}',权限校验失败'{}'", requestURI, e.getMessage());
+        return AjaxResult.error(HttpStatus.FORBIDDEN, "没有权限，请联系管理员授权");
     }
 
     /**
@@ -48,8 +44,7 @@ public class GlobalExceptionHandler
             HttpServletRequest request)
     {
         String requestURI = request.getRequestURI();
-//        "请求地址'{}',不支持'{}'请求"
-        log.error(MessageUtils.message("request.not.supported"), requestURI, e.getMethod());
+        log.error("请求地址'{}',不支持'{}'请求", requestURI, e.getMethod());
         return AjaxResult.error(e.getMessage());
     }
 
@@ -71,8 +66,7 @@ public class GlobalExceptionHandler
     public AjaxResult handleRuntimeException(RuntimeException e, HttpServletRequest request)
     {
         String requestURI = request.getRequestURI();
-//        "请求地址'{}',发生未知异常."
-        log.error(MessageUtils.message("request.unknown.exception"), requestURI, e);
+        log.error("请求地址'{}',发生未知异常.", requestURI, e);
         return AjaxResult.error(e.getMessage());
     }
 
@@ -83,8 +77,7 @@ public class GlobalExceptionHandler
     public AjaxResult handleException(Exception e, HttpServletRequest request)
     {
         String requestURI = request.getRequestURI();
-//        "请求地址'{}',发生系统异常."
-        log.error(MessageUtils.message("system.exception.occurred"), requestURI, e);
+        log.error("请求地址'{}',发生系统异常.", requestURI, e);
         return AjaxResult.error(e.getMessage());
     }
 
@@ -116,7 +109,6 @@ public class GlobalExceptionHandler
     @ExceptionHandler(DemoModeException.class)
     public AjaxResult handleDemoModeException(DemoModeException e)
     {
-//        "演示模式，不允许操作"
-        return AjaxResult.error(MessageUtils.message("demo.mode"));
+        return AjaxResult.error("演示模式，不允许操作");
     }
 }

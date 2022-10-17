@@ -1,6 +1,5 @@
 package com.ruoyi.project.system.controller;
 
-import com.ruoyi.common.utils.MessageUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -67,18 +66,17 @@ public class SysProfileController extends BaseController
         if (StringUtils.isNotEmpty(user.getPhonenumber())
                 && UserConstants.NOT_UNIQUE.equals(userService.checkPhoneUnique(user)))
         {
-//            "修改用户'" + user.getUserName() + "'失败，手机号码已存在"
-            return AjaxResult.error(MessageUtils.message("modify.user") + user.getUserName() + MessageUtils.message("mobile.number.exists"));
+            return AjaxResult.error("修改用户'" + user.getUserName() + "'失败，手机号码已存在");
         }
         if (StringUtils.isNotEmpty(user.getEmail())
                 && UserConstants.NOT_UNIQUE.equals(userService.checkEmailUnique(user)))
         {
-//            "修改用户'" + user.getUserName() + "'失败，邮箱账号已存在"
-            return AjaxResult.error(MessageUtils.message("modify.user") + user.getUserName() + MessageUtils.message("email.exists"));
+            return AjaxResult.error("修改用户'" + user.getUserName() + "'失败，邮箱账号已存在");
         }
         user.setUserId(sysUser.getUserId());
         user.setPassword(null);
         user.setAvatar(null);
+        user.setDeptId(null);
         if (userService.updateUserProfile(user) > 0)
         {
             // 更新缓存用户信息
@@ -89,8 +87,7 @@ public class SysProfileController extends BaseController
             tokenService.setLoginUser(loginUser);
             return AjaxResult.success();
         }
-//        "修改个人信息异常，请联系管理员"
-        return AjaxResult.error(MessageUtils.message("modification.abnormal"));
+        return AjaxResult.error("修改个人信息异常，请联系管理员");
     }
 
     /**
@@ -105,13 +102,11 @@ public class SysProfileController extends BaseController
         String password = loginUser.getPassword();
         if (!SecurityUtils.matchesPassword(oldPassword, password))
         {
-//            "修改密码失败，旧密码错误"
-            return AjaxResult.error(MessageUtils.message("old.pass.wrong"));
+            return AjaxResult.error("修改密码失败，旧密码错误");
         }
         if (SecurityUtils.matchesPassword(newPassword, password))
         {
-//            "新密码不能与旧密码相同"
-            return AjaxResult.error(MessageUtils.message("pass.cant.same"));
+            return AjaxResult.error("新密码不能与旧密码相同");
         }
         if (userService.resetUserPwd(userName, SecurityUtils.encryptPassword(newPassword)) > 0)
         {
@@ -120,8 +115,7 @@ public class SysProfileController extends BaseController
             tokenService.setLoginUser(loginUser);
             return AjaxResult.success();
         }
-//        "修改密码异常，请联系管理员"
-        return AjaxResult.error(MessageUtils.message("pass.abnormal"));
+        return AjaxResult.error("修改密码异常，请联系管理员");
     }
 
     /**
@@ -145,7 +139,6 @@ public class SysProfileController extends BaseController
                 return ajax;
             }
         }
-//       "上传图片异常，请联系管理员"
-        return AjaxResult.error(MessageUtils.message("image.abnormal"));
+        return AjaxResult.error("上传图片异常，请联系管理员");
     }
 }

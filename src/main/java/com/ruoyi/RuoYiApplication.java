@@ -4,13 +4,10 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 
-import static com.ruoyi.common.translator.Translator.translate;
-
-
 /**
  * 启动程序
  * 
- * @author ruoyi
+ * @author eelic
  */
 @SpringBootApplication(exclude = { DataSourceAutoConfiguration.class })
 public class RuoYiApplication
@@ -33,3 +30,4 @@ public class RuoYiApplication
 
     }
 }
+

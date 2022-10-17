@@ -2,8 +2,6 @@ package com.ruoyi.project.system.controller;
 
 import java.util.List;
 import javax.servlet.http.HttpServletResponse;
-
-import com.ruoyi.common.utils.MessageUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
@@ -76,8 +74,7 @@ public class SysDictTypeController extends BaseController
     {
         if (UserConstants.NOT_UNIQUE.equals(dictTypeService.checkDictTypeUnique(dict)))
         {
-//            "新增字典'" + dict.getDictName() + "'失败，字典类型已存在"
-            return AjaxResult.error(MessageUtils.message("add.dict") + dict.getDictName() + MessageUtils.message("dict.type.exist"));
+            return AjaxResult.error("新增字典'" + dict.getDictName() + "'失败，字典类型已存在");
         }
         dict.setCreateBy(getUsername());
         return toAjax(dictTypeService.insertDictType(dict));
@@ -93,7 +90,7 @@ public class SysDictTypeController extends BaseController
     {
         if (UserConstants.NOT_UNIQUE.equals(dictTypeService.checkDictTypeUnique(dict)))
         {
-            return AjaxResult.error(MessageUtils.message("modify.dict") + dict.getDictName() + MessageUtils.message("dict.type.exist"));
+            return AjaxResult.error("修改字典'" + dict.getDictName() + "'失败，字典类型已存在");
         }
         dict.setUpdateBy(getUsername());
         return toAjax(dictTypeService.updateDictType(dict));

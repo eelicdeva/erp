@@ -1,7 +1,5 @@
 package com.ruoyi.framework.manager;
 
-import com.ruoyi.common.utils.MessageUtils;
-import org.aspectj.bridge.Message;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -30,9 +28,7 @@ public class ShutdownManager
     {
         try
         {
-//            "====关闭后台任务任务线程池===="
-//      "====Close background task task thread pool===="
-            logger.info(" ==== Close background task thread pool ====");
+            logger.info("====关闭后台任务任务线程池====");
             AsyncManager.me().shutdown();
         }
         catch (Exception e)

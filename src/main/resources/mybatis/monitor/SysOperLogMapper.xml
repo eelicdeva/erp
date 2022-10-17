@@ -24,48 +24,41 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</resultMap>
 
 	<sql id="selectOperLogVo">
-		select oper_id,
-		case (select user_lang from sys_user where user_id = #{userId})
-		when 0 then (select title_en from sys_oper_log where oper_id = o.oper_id)
-		when 1 then (select title from sys_oper_log where oper_id = o.oper_id)
-		when 2 then (select title_id from sys_oper_log where oper_id = o.oper_id)
-		end as title, business_type, method, request_method, operator_type, oper_name, dept_name, oper_url, oper_ip, oper_location, oper_param, json_result, status, error_msg, oper_time
-		from sys_oper_log o
+        select oper_id, title, business_type, method, request_method, operator_type, oper_name, dept_name, oper_url, oper_ip, oper_location, oper_param, json_result, status, error_msg, oper_time
+        from sys_oper_log
     </sql>
     
 	<insert id="insertOperlog" parameterType="SysOperLog">
-		insert into sys_oper_log(title, title_en, title_id, business_type, method, request_method, operator_type, oper_name, dept_name, oper_url, oper_ip, oper_location, oper_param, json_result, status, error_msg, oper_time)
-        values (#{title}, #{titleEn}, #{titleId}, #{businessType}, #{method}, #{requestMethod}, #{operatorType}, #{operName}, #{deptName}, #{operUrl}, #{operIp}, #{operLocation}, #{operParam}, #{jsonResult}, #{status}, #{errorMsg}, sysdate())
+		insert into sys_oper_log(title, business_type, method, request_method, operator_type, oper_name, dept_name, oper_url, oper_ip, oper_location, oper_param, json_result, status, error_msg, oper_time)
+        values (#{title}, #{businessType}, #{method}, #{requestMethod}, #{operatorType}, #{operName}, #{deptName}, #{operUrl}, #{operIp}, #{operLocation}, #{operParam}, #{jsonResult}, #{status}, #{errorMsg}, sysdate())
 	</insert>
 	
 	<select id="selectOperLogList" parameterType="SysOperLog" resultMap="SysOperLogResult">
 		<include refid="selectOperLogVo"/>
 		<where>
-			<if test="o.title != null and o.title != ''">
-				AND title like concat('%', #{o.title}, '%')
-				OR title_en like concat('%', #{o.title}, '%')
-				OR title_id like concat('%', #{o.title}, '%')
+			<if test="title != null and title != ''">
+				AND title like concat('%', #{title}, '%')
 			</if>
-			<if test="o.businessType != null">
-				AND business_type = #{o.businessType}
+			<if test="businessType != null">
+				AND business_type = #{businessType}
 			</if>
-			<if test="o.businessTypes != null and o.businessTypes.length > 0">
+			<if test="businessTypes != null and businessTypes.length > 0">
 			    AND business_type in
-			    <foreach collection="o.businessTypes" item="o.businessType" open="(" separator="," close=")">
-		 			#{o.businessType}
+			    <foreach collection="businessTypes" item="businessType" open="(" separator="," close=")">
+		 			#{businessType}
 		        </foreach> 
 			</if>
-			<if test="o.status != null">
-				AND status = #{o.status}
+			<if test="status != null">
+				AND status = #{status}
 			</if>
-			<if test="o.operName != null and o.operName != ''">
-				AND oper_name like concat('%', #{o.operName}, '%')
+			<if test="operName != null and operName != ''">
+				AND oper_name like concat('%', #{operName}, '%')
 			</if>
-			<if test="o.params.beginTime != null and o.params.beginTime != ''"><!-- 开始时间检索 -->
-				and date_format(oper_time,'%y%m%d') &gt;= date_format(#{o.params.beginTime},'%y%m%d')
+			<if test="params.beginTime != null and params.beginTime != ''"><!-- 开始时间检索 -->
+				and date_format(oper_time,'%y%m%d') &gt;= date_format(#{params.beginTime},'%y%m%d')
 			</if>
-			<if test="o.params.endTime != null and o.params.endTime != ''"><!-- 结束时间检索 -->
-				and date_format(oper_time,'%y%m%d') &lt;= date_format(#{o.params.endTime},'%y%m%d')
+			<if test="params.endTime != null and params.endTime != ''"><!-- 结束时间检索 -->
+				and date_format(oper_time,'%y%m%d') &lt;= date_format(#{params.endTime},'%y%m%d')
 			</if>
 		</where>
 		order by oper_id desc

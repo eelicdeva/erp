@@ -5,7 +5,6 @@ import java.util.Locale;
 import java.util.stream.Collectors;
 import javax.servlet.http.HttpServletResponse;
 
-import com.ruoyi.common.utils.MessageUtils;
 import com.ruoyi.framework.security.service.TokenService;
 import org.apache.commons.lang3.ArrayUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,8 +29,10 @@ import com.ruoyi.framework.aspectj.lang.enums.BusinessType;
 import com.ruoyi.framework.web.controller.BaseController;
 import com.ruoyi.framework.web.domain.AjaxResult;
 import com.ruoyi.framework.web.page.TableDataInfo;
+import com.ruoyi.project.system.domain.SysDept;
 import com.ruoyi.project.system.domain.SysRole;
 import com.ruoyi.project.system.domain.SysUser;
+import com.ruoyi.project.system.service.ISysDeptService;
 import com.ruoyi.project.system.service.ISysPostService;
 import com.ruoyi.project.system.service.ISysRoleService;
 import com.ruoyi.project.system.service.ISysUserService;
@@ -52,10 +53,14 @@ public class SysUserController extends BaseController
     private ISysRoleService roleService;
 
     @Autowired
+    private ISysDeptService deptService;
+
+    @Autowired
     private ISysPostService postService;
 
     @Autowired
     private TokenService tokenService;
+
 
     /**
      * 获取用户列表
@@ -130,20 +135,17 @@ public class SysUserController extends BaseController
     {
         if (UserConstants.NOT_UNIQUE.equals(userService.checkUserNameUnique(user.getUserName())))
         {
-//            "新增用户'" + user.getUserName() + "'失败，登录账号已存在"
-            return AjaxResult.error(MessageUtils.message("new.users") + user.getUserName() + MessageUtils.message("failed.login") );
+            return AjaxResult.error("新增用户'" + user.getUserName() + "'失败，登录账号已存在");
         }
         else if (StringUtils.isNotEmpty(user.getPhonenumber())
                 && UserConstants.NOT_UNIQUE.equals(userService.checkPhoneUnique(user)))
         {
-//            "新增用户'" + user.getUserName() + "'失败，手机号码已存在"
-            return AjaxResult.error(MessageUtils.message("new.users") + user.getUserName() + MessageUtils.message("mobile.number.exists"));
+            return AjaxResult.error("新增用户'" + user.getUserName() + "'失败，手机号码已存在");
         }
         else if (StringUtils.isNotEmpty(user.getEmail())
                 && UserConstants.NOT_UNIQUE.equals(userService.checkEmailUnique(user)))
         {
-//            "新增用户'" + user.getUserName() + "'失败，邮箱账号已存在"
-            return AjaxResult.error(MessageUtils.message("new.users") + user.getUserName() + MessageUtils.message("email.exists"));
+            return AjaxResult.error("新增用户'" + user.getUserName() + "'失败，邮箱账号已存在");
         }
         user.setCreateBy(getUsername());
         user.setPassword(SecurityUtils.encryptPassword(user.getPassword()));
@@ -163,14 +165,12 @@ public class SysUserController extends BaseController
         if (StringUtils.isNotEmpty(user.getPhonenumber())
                 && UserConstants.NOT_UNIQUE.equals(userService.checkPhoneUnique(user)))
         {
-//            "修改用户'" + user.getUserName() + "'失败，手机号码已存在"
-            return AjaxResult.error(MessageUtils.message("modify.user") + user.getUserName() + MessageUtils.message("mobile.number.exist"));
+            return AjaxResult.error("修改用户'" + user.getUserName() + "'失败，手机号码已存在");
         }
         else if (StringUtils.isNotEmpty(user.getEmail())
                 && UserConstants.NOT_UNIQUE.equals(userService.checkEmailUnique(user)))
         {
-//            "修改用户'" + user.getUserName() + "'失败，邮箱账号已存在"
-            return AjaxResult.error(MessageUtils.message("modify.user") + user.getUserName() + MessageUtils.message("email.exists"));
+            return AjaxResult.error("修改用户'" + user.getUserName() + "'失败，邮箱账号已存在");
         }
         user.setUpdateBy(getUsername());
         return toAjax(userService.updateUser(user));
@@ -186,8 +186,7 @@ public class SysUserController extends BaseController
     {
         if (ArrayUtils.contains(userIds, getUserId()))
         {
-//            "当前用户不能删除"
-            return error(MessageUtils.message("current.user"));
+            return error("当前用户不能删除");
         }
         return toAjax(userService.deleteUserByIds(userIds));
     }
@@ -249,6 +248,15 @@ public class SysUserController extends BaseController
         return success();
     }
 
+    /**
+     * 获取部门树列表
+     */
+    @PreAuthorize("@ss.hasPermi('system:user:list')")
+    @GetMapping("/deptTree")
+    public AjaxResult deptTree(SysDept dept)
+    {
+        return AjaxResult.success(deptService.selectDeptTreeList(dept,getLoginUser().getLangUser()));
+    }
 
     @PutMapping("/setLang")
     public void setLang(String lang){

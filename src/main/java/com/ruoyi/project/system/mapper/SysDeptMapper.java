@@ -1,8 +1,9 @@
 package com.ruoyi.project.system.mapper;
 
-import java.util.List;
-import org.apache.ibatis.annotations.Param;
 import com.ruoyi.project.system.domain.SysDept;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 /**
  * 部门管理 数据层
@@ -83,7 +84,7 @@ public interface SysDeptMapper
      * @param dept 部门信息
      * @return 结果
      */
-    public int insertDept(SysDept dept);
+    public int insertDept(@Param("d") SysDept dept, @Param("deptNameCat")String[] deptNameCat);
 
     /**
      * 修改部门信息

@@ -1,8 +1,9 @@
 package com.ruoyi.project.system.mapper;
 
-import java.util.List;
 import com.ruoyi.project.system.domain.SysPost;
 import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 /**
  * 岗位信息 数据层
@@ -81,7 +82,7 @@ public interface SysPostMapper
      * @param post 岗位信息
      * @return 结果
      */
-    public int insertPost(SysPost post);
+    public int insertPost(@Param("post") SysPost post, @Param("postNameCat")String[] postNameCat);
 
     /**
      * 校验岗位名称

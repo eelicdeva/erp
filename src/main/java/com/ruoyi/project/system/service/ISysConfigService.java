@@ -1,7 +1,8 @@
 package com.ruoyi.project.system.service;
 
-import java.util.List;
 import com.ruoyi.project.system.domain.SysConfig;
+
+import java.util.List;
 
 /**
  * 参数配置 服务层
@@ -31,7 +32,7 @@ public interface ISysConfigService
      * 
      * @return true开启，false关闭
      */
-    public boolean selectCaptchaOnOff();
+    public boolean selectCaptchaEnabled();
 
     /**
      * 查询参数配置列表

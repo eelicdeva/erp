@@ -1,12 +1,16 @@
 package com.ruoyi.project.system.service.impl;
 
-import java.util.List;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 import com.ruoyi.common.utils.DictUtils;
+import com.ruoyi.common.utils.SecurityUtils;
 import com.ruoyi.project.system.domain.SysDictData;
 import com.ruoyi.project.system.mapper.SysDictDataMapper;
 import com.ruoyi.project.system.service.ISysDictDataService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+
+import static com.ruoyi.common.translator.Translator.translate;
 
 /**
  * 字典 业务层处理
@@ -82,6 +86,13 @@ public class SysDictDataServiceImpl implements ISysDictDataService
     @Override
     public int insertDictData(SysDictData data)
     {
+        try {
+            data.setDictLabelId(translate("auto", "id",data.getDictLabel()));
+            data.setDictLabelEn(translate("auto", "en",data.getDictLabel()));
+            data.setDictLabel(translate("auto", "zh-CN",data.getDictLabel()));
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
         int row = dictDataMapper.insertDictData(data);
         if (row > 0)
         {
@@ -100,7 +111,7 @@ public class SysDictDataServiceImpl implements ISysDictDataService
     @Override
     public int updateDictData(SysDictData data)
     {
-        int row = dictDataMapper.updateDictData(data);
+        int row = dictDataMapper.updateDictData(data, SecurityUtils.getLoginUser().getLangUser());
         if (row > 0)
         {
             List<SysDictData> dictDatas = dictDataMapper.selectDictDataByType(data.getDictType());

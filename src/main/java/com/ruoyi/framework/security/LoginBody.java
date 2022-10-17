@@ -27,10 +27,7 @@ public class LoginBody
      */
     private String uuid;
 
-
     private String lang;
-
-
 
     public String getUsername()
     {

@@ -9,7 +9,7 @@ import com.ruoyi.common.exception.UtilException;
 
 /**
  * 提供通用唯一识别码（universally unique identifier）（UUID）实现
- * Provides a universally unique identifier (UUID) implementation
+ *
  * @author ruoyi
  */
 public final class UUID implements java.io.Serializable, Comparable<UUID>
@@ -25,12 +25,10 @@ public final class UUID implements java.io.Serializable, Comparable<UUID>
         static final SecureRandom numberGenerator = getSecureRandom();
     }
 
-    /** 此UUID的最高64有效位
-     * The most significant 64 bits of this UUID */
+    /** 此UUID的最高64有效位 */
     private final long mostSigBits;
 
-    /** 此UUID的最低64有效位
-     * the least significant 64 bits of this UUID */
+    /** 此UUID的最低64有效位 */
     private final long leastSigBits;
 
     /**

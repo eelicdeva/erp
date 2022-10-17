@@ -66,6 +66,7 @@ public class LoginUser implements UserDetails
      */
     private Set<String> permissions;
 
+
     private String langUser;
 
     /**
@@ -136,9 +137,6 @@ public class LoginUser implements UserDetails
 
     /**
      * 账户是否未过期,过期无法验证
-     */
-    /**
-     * Is the account not expired and cannot be verified after expiration?
      */
     @JSONField(serialize = false)
     @Override

@@ -1,16 +1,9 @@
 package com.ruoyi.project.system.service.impl;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.stream.Collectors;
-
-import com.ruoyi.common.utils.MessageUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 import com.ruoyi.common.constant.UserConstants;
 import com.ruoyi.common.core.text.Convert;
 import com.ruoyi.common.exception.ServiceException;
+import com.ruoyi.common.utils.MessageUtils;
 import com.ruoyi.common.utils.SecurityUtils;
 import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.common.utils.spring.SpringUtils;
@@ -22,8 +15,15 @@ import com.ruoyi.project.system.domain.SysUser;
 import com.ruoyi.project.system.mapper.SysDeptMapper;
 import com.ruoyi.project.system.mapper.SysRoleMapper;
 import com.ruoyi.project.system.service.ISysDeptService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
-import static com.ruoyi.common.translator.Translator.translate;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import static com.ruoyi.common.translator.Translator.*;
 
 /**
  * 部门管理 服务实现
@@ -51,6 +51,20 @@ public class SysDeptServiceImpl implements ISysDeptService
     {
         return deptMapper.selectDeptList(dept, langUser);
     }
+
+    /**
+     * 查询部门树结构信息
+     *
+     * @param dept 部门信息
+     * @return 部门树信息集合
+     */
+    @Override
+    public List<TreeSelect> selectDeptTreeList(SysDept dept, String langUser)
+    {
+        List<SysDept> depts = SpringUtils.getAopProxy(this).selectDeptList(dept, langUser);
+        return buildDeptTreeSelect(depts);
+    }
+
 
     /**
      * 构建前端所需要树结构
@@ -214,20 +228,17 @@ public class SysDeptServiceImpl implements ISysDeptService
             throw new ServiceException(MessageUtils.message("dept.disabled"));
         }
         dept.setAncestors(info.getAncestors() + "," + dept.getParentId());
-        try {
-            dept.setDeptNameId(translate("auto", "id",dept.getDeptName()));
-            dept.setDeptNameEn(translate("auto", "en",dept.getDeptName()));
-            dept.setDeptName(translate("auto", "zh-CN",dept.getDeptName()));
 
-            if (dept.getLeader() != null && dept.getLeader() != "" ) {
-                dept.setLeaderId(translate("auto", "id", dept.getLeader()));
-                dept.setLeaderEn(translate("auto", "en", dept.getLeader()));
-                dept.setLeader(translate("auto", "zh-CN", dept.getLeader()));
-            }
+        try {
+            return deptMapper.insertDept(dept, translateAll(dept.getDeptName()));
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            try{
+                return deptMapper.insertDept(dept, translateOffline(dept.getDeptName()));
+            } catch (Exception e2) {
+                throw new RuntimeException(e2);
+            }
         }
-        return deptMapper.insertDept(dept);
+
     }
 
     /**

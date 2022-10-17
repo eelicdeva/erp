@@ -1,15 +1,5 @@
 package com.ruoyi.project.system.service.impl;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
-import javax.validation.Validator;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.CollectionUtils;
 import com.ruoyi.common.constant.UserConstants;
 import com.ruoyi.common.exception.ServiceException;
 import com.ruoyi.common.utils.SecurityUtils;
@@ -17,18 +7,21 @@ import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.common.utils.bean.BeanValidators;
 import com.ruoyi.common.utils.spring.SpringUtils;
 import com.ruoyi.framework.aspectj.lang.annotation.DataScope;
-import com.ruoyi.project.system.domain.SysPost;
-import com.ruoyi.project.system.domain.SysRole;
-import com.ruoyi.project.system.domain.SysUser;
-import com.ruoyi.project.system.domain.SysUserPost;
-import com.ruoyi.project.system.domain.SysUserRole;
-import com.ruoyi.project.system.mapper.SysPostMapper;
-import com.ruoyi.project.system.mapper.SysRoleMapper;
-import com.ruoyi.project.system.mapper.SysUserMapper;
-import com.ruoyi.project.system.mapper.SysUserPostMapper;
-import com.ruoyi.project.system.mapper.SysUserRoleMapper;
+import com.ruoyi.project.system.domain.*;
+import com.ruoyi.project.system.mapper.*;
 import com.ruoyi.project.system.service.ISysConfigService;
 import com.ruoyi.project.system.service.ISysUserService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
+
+import javax.validation.Validator;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * 用户 业务层处理
@@ -71,7 +64,7 @@ public class SysUserServiceImpl implements ISysUserService
     @DataScope(deptAlias = "d", userAlias = "u")
     public List<SysUser> selectUserList(SysUser user)
     {
-        return userMapper.selectUserList(user,SecurityUtils.getUserId());
+        return userMapper.selectUserList(user,SecurityUtils.getLoginUser().getLangUser());
     }
 
     /**

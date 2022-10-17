@@ -85,16 +85,27 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
  	<update id="updateDictType" parameterType="SysDictType">
  		update sys_dict_type
  		<set>
- 			<if test="dictName != null and dictName != ''">dict_name = #{dictName},</if>
-			<if test="dictNameEn != null and dictNameEn != ''">dict_name_en = #{dictNameEn},</if>
-			<if test="dictNameId != null and dictNameId != ''">dict_name_id = #{dictNameId},</if>
- 			<if test="dictType != null and dictType != ''">dict_type = #{dictType},</if>
- 			<if test="status != null">status = #{status},</if>
- 			<if test="remark != null">remark = #{remark},</if>
- 			<if test="updateBy != null and updateBy != ''">update_by = #{updateBy},</if>
+			<if test="d.dictName != null and d.dictName != ''">
+				dict_name_en = <include refid="case"/>
+				when "en" then #{d.dictName}
+				else dict_name_en
+				end,
+				dict_name = <include refid="case"/>
+				when "zh" then #{d.dictName}
+				else dict_name
+				end,
+				dict_name_id = <include refid="case"/>
+				when "id" then #{d.dictName}
+				else dict_name_id
+				end,
+			</if>
+ 			<if test="d.dictType != null and d.dictType != ''">dict_type = #{d.dictType},</if>
+ 			<if test="d.status != null">status = #{d.status},</if>
+ 			<if test="d.remark != null">remark = #{d.remark},</if>
+ 			<if test="d.updateBy != null and d.updateBy != ''">update_by = #{d.updateBy},</if>
  			update_time = sysdate()
  		</set>
- 		where dict_id = #{dictId}
+ 		where dict_id = #{d.dictId}
 	</update>
  	
  	<insert id="insertDictType" parameterType="SysDictType">
