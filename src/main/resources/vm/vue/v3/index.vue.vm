@@ -61,8 +61,8 @@
 #end
 #end
       <el-form-item>
-        <el-button type="primary" icon="Search" @click="handleQuery">搜索</el-button>
-        <el-button icon="Refresh" @click="resetQuery">重置</el-button>
+        <el-button type="primary" icon="Search" @click="handleQuery">搜索{{ $t('button.search') }}</el-button>
+        <el-button icon="Refresh" @click="resetQuery">重置{{ $t('button.reset') }}</el-button>
       </el-form-item>
     </el-form>
 
@@ -74,7 +74,7 @@
           icon="Plus"
           @click="handleAdd"
           v-hasPermi="['${moduleName}:${businessName}:add']"
-        >新增</el-button>
+        >新增{{ $t('button.add') }}</el-button>
       </el-col>
       <el-col :span="1.5">
         <el-button
@@ -84,7 +84,7 @@
           :disabled="single"
           @click="handleUpdate"
           v-hasPermi="['${moduleName}:${businessName}:edit']"
-        >修改</el-button>
+        >修改{{ $t('button.edit') }}</el-button>
       </el-col>
       <el-col :span="1.5">
         <el-button
@@ -94,7 +94,7 @@
           :disabled="multiple"
           @click="handleDelete"
           v-hasPermi="['${moduleName}:${businessName}:remove']"
-        >删除</el-button>
+        >删除{{ $t('button.delete') }}</el-button>
       </el-col>
       <el-col :span="1.5">
         <el-button
@@ -103,7 +103,7 @@
           icon="Download"
           @click="handleExport"
           v-hasPermi="['${moduleName}:${businessName}:export']"
-        >导出</el-button>
+        >导出{{ $t('button.export') }}</el-button>
       </el-col>
       <right-toolbar v-model:showSearch="showSearch" @queryTable="getList"></right-toolbar>
     </el-row>
@@ -146,20 +146,20 @@
       <el-table-column label="${comment}" align="center" prop="${javaField}" />
 #end
 #end
-      <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
+      <el-table-column :label="$t('user.operate')" align="center" class-name="small-padding fixed-width">
         <template #default="scope">
           <el-button
             type="text"
             icon="Edit"
             @click="handleUpdate(scope.row)"
             v-hasPermi="['${moduleName}:${businessName}:edit']"
-          >修改</el-button>
+          >修改{{ $t('button.edit') }}</el-button>
           <el-button
             type="text"
             icon="Delete"
             @click="handleDelete(scope.row)"
             v-hasPermi="['${moduleName}:${businessName}:remove']"
-          >删除</el-button>
+          >删除{{ $t('button.delete') }}</el-button>
         </template>
       </el-table-column>
     </el-table>
