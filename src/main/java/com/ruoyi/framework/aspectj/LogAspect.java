@@ -20,7 +20,6 @@ import org.springframework.web.servlet.HandlerMapping;
 import com.alibaba.fastjson2.JSON;
 import com.ruoyi.common.enums.HttpMethod;
 import com.ruoyi.common.filter.PropertyPreExcludeFilter;
-import com.ruoyi.common.utils.SecurityUtils;
 import com.ruoyi.common.utils.ServletUtils;
 import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.common.utils.ip.IpUtils;
