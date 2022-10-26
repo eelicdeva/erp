@@ -61,8 +61,8 @@
 #end
 #end
       <el-form-item>
-        <el-button type="primary" icon="Search" @click="handleQuery">搜索</el-button>
-        <el-button icon="Refresh" @click="resetQuery">重置</el-button>
+        <el-button type="primary" icon="Search" @click="handleQuery">{{ $t('button.search') }}</el-button>
+        <el-button icon="Refresh" @click="resetQuery">{{ $t('button.reset') }}</el-button>
       </el-form-item>
     </el-form>
 
@@ -74,7 +74,7 @@
           icon="Plus"
           @click="handleAdd"
           v-hasPermi="['${moduleName}:${businessName}:add']"
-        >新增</el-button>
+        >{{ $t('button.add') }}</el-button>
       </el-col>
       <el-col :span="1.5">
         <el-button
@@ -82,7 +82,7 @@
           plain
           icon="Sort"
           @click="toggleExpandAll"
-        >展开/折叠</el-button>
+        >{{ $t('button.expand') }}</el-button>
       </el-col>
       <right-toolbar v-model:showSearch="showSearch" @queryTable="getList"></right-toolbar>
     </el-row>
@@ -134,26 +134,26 @@
 #end
 #end
 #end
-      <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
+      <el-table-column :label="$t('user.operate')" align="center" class-name="small-padding fixed-width">
         <template #default="scope">
           <el-button
             type="text"
             icon="Edit"
             @click="handleUpdate(scope.row)"
             v-hasPermi="['${moduleName}:${businessName}:edit']"
-          >修改</el-button>
+          >{{ $t('button.edit') }}</el-button>
           <el-button
             type="text"
             icon="Plus"
             @click="handleAdd(scope.row)"
             v-hasPermi="['${moduleName}:${businessName}:add']"
-          >新增</el-button>
+          >{{ $t('button.add') }}</el-button>
           <el-button
             type="text"
             icon="Delete"
             @click="handleDelete(scope.row)"
             v-hasPermi="['${moduleName}:${businessName}:remove']"
-          >删除</el-button>
+          >{{ $t('button.delete') }}</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -271,8 +271,8 @@
       </el-form>
       <template #footer>
         <div class="dialog-footer">
-          <el-button type="primary" @click="submitForm">确 定</el-button>
-          <el-button @click="cancel">取 消</el-button>
+          <el-button type="primary" @click="submitForm">{{ $t('button.submit') }}</el-button>
+          <el-button @click="cancel">{{ $t('button.cancel') }}</el-button>
         </div>
       </template>
     </el-dialog>
@@ -457,13 +457,13 @@ function submitForm() {
 #end
       if (form.value.${pkColumn.javaField} != null) {
         update${BusinessName}(form.value).then(response => {
-          proxy.#[[$modal]]#.msgSuccess("修改成功");
+          proxy.#[[$modal]]#.msgSuccess(t('button.successModify'));
           open.value = false;
           getList();
         });
       } else {
         add${BusinessName}(form.value).then(response => {
-          proxy.#[[$modal]]#.msgSuccess("新增成功");
+          proxy.#[[$modal]]#.msgSuccess(t('button.AddSuccess'));
           open.value = false;
           getList();
         });
@@ -478,7 +478,7 @@ function handleDelete(row) {
     return del${BusinessName}(row.${pkColumn.javaField});
   }).then(() => {
     getList();
-    proxy.#[[$modal]]#.msgSuccess("删除成功");
+    proxy.#[[$modal]]#.msgSuccess(t('user.succesDeleted'));
   }).catch(() => {});
 }
 

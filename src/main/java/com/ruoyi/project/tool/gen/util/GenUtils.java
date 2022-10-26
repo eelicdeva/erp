@@ -96,6 +96,11 @@ public class GenUtils
         {
             column.setIsQuery(GenConstants.REQUIRE);
         }
+        // 查询字段
+        if (!arraysContains(GenConstants.COLUMNNAME_NOT_QUERY, columnName) && !column.isPk())
+        {
+            column.setIsI18n(GenConstants.REQUIRE);
+        }
 
         // 查询字段类型
         if (StringUtils.endsWithIgnoreCase(columnName, "name"))

@@ -56,6 +56,8 @@ public class GenTableColumn extends BaseEntity
     /** 是否查询字段（1是） */
     private String isQuery;
 
+    private String isI18n;
+
     /** 查询方式（EQ等于、NE不等于、GT大于、LT小于、LIKE模糊、BETWEEN范围） */
     private String queryType;
 
@@ -283,6 +285,23 @@ public class GenTableColumn extends BaseEntity
         return isQuery != null && StringUtils.equals("1", isQuery);
     }
 
+    public String getIsI18n() {
+        return isI18n;
+    }
+
+    public void setIsI18n(String isI18n) {
+        this.isI18n = isI18n;
+    }
+
+    public boolean isI18n()
+    {
+        return isI18n(this.isI18n);
+    }
+    public boolean isI18n(String isI18n)
+    {
+        return isI18n != null && StringUtils.equals("1", isI18n);
+    }
+
     public void setQueryType(String queryType)
     {
         this.queryType = queryType;
@@ -370,4 +389,5 @@ public class GenTableColumn extends BaseEntity
             return this.columnComment;
         }
     }
+
 }
