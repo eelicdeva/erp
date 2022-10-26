@@ -1,22 +1,13 @@
--- 菜单 SQL
-insert into sys_menu (menu_name, parent_id, order_num, path, component, is_frame, is_cache, menu_type, visible, status, perms, icon, create_by, create_time, update_by, update_time, remark, menu_name_en, menu_name_id)
-values('【请填写功能名称】', '3', '1', 'mbti', 'system/mbti/index', 1, 0, 'C', '0', '0', 'system:mbti:list', '#', 'admin', sysdate(), '', null, '【请填写功能名称】菜单', '【请填写功能名称】', '【请填写功能名称】');
+DELETE FROM `erp`.`sys_menu` WHERE (`menu_id` = '1100');
+DELETE FROM `erp`.`sys_menu` WHERE (`menu_id` = '1101');
+DELETE FROM `erp`.`sys_menu` WHERE (`menu_id` = '1102');
+DELETE FROM `erp`.`sys_menu` WHERE (`menu_id` = '1103');
+DELETE FROM `erp`.`sys_menu` WHERE (`menu_id` = '1104');
+DELETE FROM `erp`.`sys_menu` WHERE (`menu_id` = '1105');
 
--- 按钮父菜单ID
-SELECT @parentId := LAST_INSERT_ID();
-
--- 按钮 SQL
-insert into sys_menu (menu_name, parent_id, order_num, path, component, is_frame, is_cache, menu_type, visible, status, perms, icon, create_by, create_time, update_by, update_time, remark, menu_name_en, menu_name_id)
-values('【请填写功能名称】查询', @parentId, '1',  '#', '', 1, 0, 'F', '0', '0', 'system:mbti:query',        '#', 'admin', sysdate(), '', null, '', '【请填写功能名称】 query', 'kueri 【请填写功能名称】');
-
-insert into sys_menu (menu_name, parent_id, order_num, path, component, is_frame, is_cache, menu_type, visible, status, perms, icon, create_by, create_time, update_by, update_time, remark, menu_name_en, menu_name_id)
-values('【请填写功能名称】新增', @parentId, '2',  '#', '', 1, 0, 'F', '0', '0', 'system:mbti:add',          '#', 'admin', sysdate(), '', null, '', '【请填写功能名称】 add', 'tambah 【请填写功能名称】');
-
-insert into sys_menu (menu_name, parent_id, order_num, path, component, is_frame, is_cache, menu_type, visible, status, perms, icon, create_by, create_time, update_by, update_time, remark, menu_name_en, menu_name_id)
-values('【请填写功能名称】修改', @parentId, '3',  '#', '', 1, 0, 'F', '0', '0', 'system:mbti:edit',         '#', 'admin', sysdate(), '', null, '', '【请填写功能名称】 edit', 'ubah 【请填写功能名称】');
-
-insert into sys_menu (menu_name, parent_id, order_num, path, component, is_frame, is_cache, menu_type, visible, status, perms, icon, create_by, create_time, update_by, update_time, remark, menu_name_en, menu_name_id)
-values('【请填写功能名称】删除', @parentId, '4',  '#', '', 1, 0, 'F', '0', '0', 'system:mbti:remove',       '#', 'admin', sysdate(), '', null, '', '【请填写功能名称】 delete', 'hapus 【请填写功能名称】');
-
-insert into sys_menu (menu_name, parent_id, order_num, path, component, is_frame, is_cache, menu_type, visible, status, perms, icon, create_by, create_time, update_by, update_time, remark, menu_name_en, menu_name_id)
-values('【请填写功能名称】导出', @parentId, '5',  '#', '', 1, 0, 'F', '0', '0', 'system:mbti:export',       '#', 'admin', sysdate(), '', null, '', '【请填写功能名称】 export', 'ekspor 【请填写功能名称】');
+INSERT INTO `erp`.`sys_menu` (`menu_id`, `menu_name`, `parent_id`, `order_num`, `path`, `component`, `is_frame`, `is_cache`, `menu_type`, `visible`, `status`, `perms`, `icon`, `create_by`, `create_time`, `update_by`, `update_time`, `remark`, `menu_name_en`, `menu_name_id`) VALUES ('1101', 'MBTI Test', '1078', '1', 'mbti', 'hr/mbti/index', '1', '0', 'C', '0', '0', 'hr:mbti:list', 'edit', 'admin', '2022-10-19 10:01:09', 'admin', '2022-10-19 10:15:56', 'MBTI Test菜单', 'MBTI Test', 'Tes MBTI');
+INSERT INTO `erp`.`sys_menu` (`menu_id`, `menu_name`, `parent_id`, `order_num`, `path`, `component`, `is_frame`, `is_cache`, `menu_type`, `visible`, `status`, `perms`, `icon`, `create_by`, `create_time`, `update_by`, `remark`, `menu_name_en`, `menu_name_id`) VALUES ('1102', 'MBTI Test查询', '1101', '1', '#', '', '1', '0', 'F', '0', '0', 'hr:mbti:query', '#', 'admin', '2022-10-19 10:01:09', '', '', 'MBTI Test query', 'Kueri Tes MBTI');
+INSERT INTO `erp`.`sys_menu` (`menu_id`, `menu_name`, `parent_id`, `order_num`, `path`, `component`, `is_frame`, `is_cache`, `menu_type`, `visible`, `status`, `perms`, `icon`, `create_by`, `create_time`, `update_by`, `remark`, `menu_name_en`, `menu_name_id`) VALUES ('1103', 'MBTI Test新增', '1101', '2', '#', '', '1', '0', 'F', '0', '0', 'hr:mbti:add', '#', 'admin', '2022-10-19 10:01:09', '', '', 'MBTI Test added', 'Tes MBTI ditambahkan');
+INSERT INTO `erp`.`sys_menu` (`menu_id`, `menu_name`, `parent_id`, `order_num`, `path`, `component`, `is_frame`, `is_cache`, `menu_type`, `visible`, `status`, `perms`, `icon`, `create_by`, `create_time`, `update_by`, `remark`, `menu_name_en`, `menu_name_id`) VALUES ('1104', 'MBTI Test修改', '1101', '3', '#', '', '1', '0', 'F', '0', '0', 'hr:mbti:edit', '#', 'admin', '2022-10-19 10:01:09', '', '', 'MBTI Test Modification', 'Modifikasi Tes MBTI');
+INSERT INTO `erp`.`sys_menu` (`menu_id`, `menu_name`, `parent_id`, `order_num`, `path`, `component`, `is_frame`, `is_cache`, `menu_type`, `visible`, `status`, `perms`, `icon`, `create_by`, `create_time`, `update_by`, `remark`, `menu_name_en`, `menu_name_id`) VALUES ('1105', 'MBTI Test删除', '1101', '4', '#', '', '1', '0', 'F', '0', '0', 'hr:mbti:remove', '#', 'admin', '2022-10-19 10:01:09', '', '', 'MBTI Test deleted', 'Tes MBTI dihapus');
+INSERT INTO `erp`.`sys_menu` (`menu_id`, `menu_name`, `parent_id`, `order_num`, `path`, `component`, `is_frame`, `is_cache`, `menu_type`, `visible`, `status`, `perms`, `icon`, `create_by`, `create_time`, `update_by`, `remark`, `menu_name_en`, `menu_name_id`) VALUES ('1106', 'MBTI Test导出', '1101', '5', '#', '', '1', '0', 'F', '0', '0', 'hr:mbti:export', '#', 'admin', '2022-10-19 10:01:09', '', '', 'MBTI Test Export', 'Ekspor Tes MBTI');
