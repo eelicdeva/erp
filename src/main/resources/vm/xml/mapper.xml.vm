@@ -22,8 +22,20 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 #end
 
+    <sql id="case">
+            case (#{langUser})
+    </sql>
+
     <sql id="select${ClassName}Vo">
-        select#foreach($column in $columns) $column.columnName#if($foreach.count != $columns.size()),#end#end from ${tableName}
+        select#foreach($column in $columns) #if($column.isI18n)
+        #set($columnNameEn=$column.columnName + '_en')
+        #set($columnNameId=$column.columnName + '_id')
+
+        <include refid="case"/>
+        when "en" then (select $columnNameEn from ${tableName} where ${pkColumn.columnName} = a.${pkColumn.columnName})
+        when "id" then (select $columnNameId from ${tableName} where ${pkColumn.columnName} = a.${pkColumn.columnName})
+        when "zh" then (select $column.columnName from ${tableName} where ${pkColumn.columnName} = a.${pkColumn.columnName})
+        end as $column.columnName#else$column.columnName#end #if($foreach.count != $columns.size()),#end#end from ${tableName} a
     </sql>
 
     <select id="select${ClassName}List" parameterType="${ClassName}" resultMap="${ClassName}Result">
