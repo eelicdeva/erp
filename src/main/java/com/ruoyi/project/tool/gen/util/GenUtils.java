@@ -80,30 +80,36 @@ public class GenUtils
 
         // 插入字段（默认所有字段都需要插入）
         column.setIsInsert(GenConstants.REQUIRE);
-
+        //set i8n column
+        if (StringUtils.endsWithIgnoreCase(columnName, "_en") || StringUtils.endsWithIgnoreCase(columnName, "_id") || StringUtils.endsWithIgnoreCase(columnName, "_tw"))
+        {
+            if (!column.isPk()) {
+                column.setIsSubI18n(GenConstants.REQUIRE);
+            }
+        }
         // 编辑字段
-        if (!arraysContains(GenConstants.COLUMNNAME_NOT_EDIT, columnName) && !column.isPk())
+        if (!arraysContains(GenConstants.COLUMNNAME_NOT_EDIT, columnName) && !column.isPk() && !column.isSubI18n())
         {
             column.setIsEdit(GenConstants.REQUIRE);
         }
         // 列表字段
-        if (!arraysContains(GenConstants.COLUMNNAME_NOT_LIST, columnName) && !column.isPk())
+        if (!arraysContains(GenConstants.COLUMNNAME_NOT_LIST, columnName) && !column.isPk() && !column.isSubI18n())
         {
             column.setIsList(GenConstants.REQUIRE);
         }
         // 查询字段
-        if (!arraysContains(GenConstants.COLUMNNAME_NOT_QUERY, columnName) && !column.isPk())
+        if (!arraysContains(GenConstants.COLUMNNAME_NOT_QUERY, columnName) && !column.isPk() && !column.isSubI18n())
         {
             column.setIsQuery(GenConstants.REQUIRE);
         }
         // 查询字段
-        if (!arraysContains(GenConstants.COLUMNNAME_NOT_QUERY, columnName) && !column.isPk())
+        if (!arraysContains(GenConstants.COLUMNNAME_NOT_QUERY, columnName) && !column.isPk() && !column.isSubI18n() && StringUtils.endsWithIgnoreCase(columnName, "name"))
         {
             column.setIsI18n(GenConstants.REQUIRE);
         }
 
         // 查询字段类型
-        if (StringUtils.endsWithIgnoreCase(columnName, "name"))
+        if (StringUtils.endsWithIgnoreCase(columnName, "name") || column.isI18n())
         {
             column.setQueryType(GenConstants.QUERY_LIKE);
         }

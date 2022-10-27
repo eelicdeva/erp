@@ -40,30 +40,47 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
     <select id="select${ClassName}List" parameterType="${ClassName}" resultMap="${ClassName}Result">
         <include refid="select${ClassName}Vo"/>
-        <where>  
+        <where>
 #foreach($column in $columns)
 #set($queryType=$column.queryType)
 #set($javaField=$column.javaField)
 #set($javaType=$column.javaType)
 #set($columnName=$column.columnName)
 #set($AttrName=$column.javaField.substring(0,1).toUpperCase() + ${column.javaField.substring(1)})
+#set($columnNameEn=$column.columnName + '_en')
+#set($columnNameId=$column.columnName + '_id')
+#set($param=$className + '.' + $javaField)
 #if($column.query)
 #if($column.queryType == "EQ")
-            <if test="$javaField != null #if($javaType == 'String' ) and $javaField.trim() != ''#end"> and $columnName = #{$javaField}</if>
+#if($column.isI18n)
+        <if test="$param != null #if($javaType == 'String' ) and $javaField.trim() != ''#end">
+            and $columnName = #{$param}
+            or $columnNameEn = #{$param}
+            or $columnNameId = #{$param}
+        </if>
+#else        <if test="$param != null #if($javaType == 'String' ) and $javaField.trim() != ''#end"> and $columnName = #{$param}</if>
+#end
 #elseif($queryType == "NE")
-            <if test="$javaField != null #if($javaType == 'String' ) and $javaField.trim() != ''#end"> and $columnName != #{$javaField}</if>
+             <if test="$param != null #if($javaType == 'String' ) and $javaField.trim() != ''#end"> and $columnName != #{$param}</if>
 #elseif($queryType == "GT")
-            <if test="$javaField != null #if($javaType == 'String' ) and $javaField.trim() != ''#end"> and $columnName &gt; #{$javaField}</if>
+             <if test="$param != null #if($javaType == 'String' ) and $javaField.trim() != ''#end"> and $columnName &gt; #{$param}</if>
 #elseif($queryType == "GTE")
-            <if test="$javaField != null #if($javaType == 'String' ) and $javaField.trim() != ''#end"> and $columnName &gt;= #{$javaField}</if>
+             <if test="$param != null #if($javaType == 'String' ) and $javaField.trim() != ''#end"> and $columnName &gt;= #{$param}</if>
 #elseif($queryType == "LT")
-            <if test="$javaField != null #if($javaType == 'String' ) and $javaField.trim() != ''#end"> and $columnName &lt; #{$javaField}</if>
+             <if test="$param != null #if($javaType == 'String' ) and $javaField.trim() != ''#end"> and $columnName &lt; #{$param}</if>
 #elseif($queryType == "LTE")
-            <if test="$javaField != null #if($javaType == 'String' ) and $javaField.trim() != ''#end"> and $columnName &lt;= #{$javaField}</if>
+             <if test="$param != null #if($javaType == 'String' ) and $javaField.trim() != ''#end"> and $columnName &lt;= #{$param}</if>
 #elseif($queryType == "LIKE")
-            <if test="$javaField != null #if($javaType == 'String' ) and $javaField.trim() != ''#end"> and $columnName like concat('%', #{$javaField}, '%')</if>
+#if($column.isI18n)
+        <if test="$param != null #if($javaType == 'String' ) and $javaField.trim() != ''#end">
+             and $columnName like concat('%', #{$param}, '%')
+             or $columnNameEn like concat('%', #{$param}, '%')
+             or $columnNameId like concat('%', #{$param}, '%')
+        </if>
+#else        <if test="$param != null #if($javaType == 'String' ) and $javaField.trim() != ''#end"> and $columnName like concat('%', #{$param}, '%')</if>
+#end
 #elseif($queryType == "BETWEEN")
-            <if test="params.begin$AttrName != null and params.begin$AttrName != '' and params.end$AttrName != null and params.end$AttrName != ''"> and $columnName between #{params.begin$AttrName} and #{params.end$AttrName}</if>
+             <if test="params.begin$AttrName != null and params.begin$AttrName != '' and params.end$AttrName != null and params.end$AttrName != ''"> and $columnName between #{params.begin$AttrName} and #{params.end$AttrName}</if>
 #end
 #end
 #end
@@ -85,18 +102,41 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </select>
         
     <insert id="insert${ClassName}" parameterType="${ClassName}"#if($pkColumn.increment) useGeneratedKeys="true" keyProperty="$pkColumn.javaField"#end>
+        #if($pkColumn.javaType == 'String' && !$pkColumn.increment)
+            <selectKey keyProperty="$pkColumn.javaField" resultType="String" order="BEFORE">
+                select REPLACE(UUID(),"-","")
+            </selectKey>
+        #end
         insert into ${tableName}
         <trim prefix="(" suffix=")" suffixOverrides=",">
 #foreach($column in $columns)
+#set($param=$className + '.' + $column.javaField)
 #if($column.columnName != $pkColumn.columnName || !$pkColumn.increment)
-            <if test="$column.javaField != null#if($column.javaType == 'String' && $column.required) and $column.javaField != ''#end">$column.columnName,</if>
+#if(!$column.isSubI18n)
+            <if test="$param != null#if($column.javaType == 'String' && $column.required) and $param != ''#end">$column.columnName,</if>
+#if($column.isI18n)
+#set($columnNameEn=$column.columnName + '_en')
+#set($columnNameId=$column.columnName + '_id')
+            <if test="$param != null#if($column.javaType == 'String' && $column.required) and $param != ''#end">$columnNameEn,</if>
+            <if test="$param != null#if($column.javaType == 'String' && $column.required) and $param != ''#end">$columnNameId,</if>
+#end
+#end
 #end
 #end
          </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
 #foreach($column in $columns)
+#set($param=$className + '.' + $column.javaField)
 #if($column.columnName != $pkColumn.columnName || !$pkColumn.increment)
-            <if test="$column.javaField != null#if($column.javaType == 'String' && $column.required) and $column.javaField != ''#end">#{$column.javaField},</if>
+#if(!$column.isSubI18n)
+            <if test="$param != null#if($column.javaType == 'String' && $column.required) and $param != ''#end">#{$param},</if>
+#if($column.isI18n)
+#set($columnNameEn=$column.columnName + '_en')
+#set($columnNameId=$column.columnName + '_id')
+            <if test="$param != null#if($column.javaType == 'String' && $column.required) and $param != ''#end">$columnNameEn,</if>
+            <if test="$param != null#if($column.javaType == 'String' && $column.required) and $param != ''#end">$columnNameId,</if>
+#end
+#end
 #end
 #end
          </trim>

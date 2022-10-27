@@ -85,6 +85,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			<if test="isList != null and isList != ''">#{isList},</if>
 			<if test="isQuery != null and isQuery != ''">#{isQuery},</if>
             <if test="isI18n != null and isI18n != ''">#{isI18n},</if>
+            <if test="isSubI18n != null and isSubI18n != ''">#{isSubI18n},</if>
 			<if test="queryType != null and queryType != ''">#{queryType},</if>
 			<if test="htmlType != null and htmlType != ''">#{htmlType},</if>
 			<if test="dictType != null and dictType != ''">#{dictType},</if>
