@@ -78,8 +78,6 @@ public class GenUtils
             }
         }
 
-        // 插入字段（默认所有字段都需要插入）
-        column.setIsInsert(GenConstants.REQUIRE);
         //set i8n column
         if (StringUtils.endsWithIgnoreCase(columnName, "_en") || StringUtils.endsWithIgnoreCase(columnName, "_id") || StringUtils.endsWithIgnoreCase(columnName, "_tw"))
         {
@@ -87,6 +85,12 @@ public class GenUtils
                 column.setIsSubI18n(GenConstants.REQUIRE);
             }
         }
+
+        // 插入字段（默认所有字段都需要插入）
+        if (!column.isSubI18n()) {
+            column.setIsInsert(GenConstants.REQUIRE);
+        }
+
         // 编辑字段
         if (!arraysContains(GenConstants.COLUMNNAME_NOT_EDIT, columnName) && !column.isPk() && !column.isSubI18n())
         {

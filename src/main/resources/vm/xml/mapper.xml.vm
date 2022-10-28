@@ -87,7 +87,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         </where>
     </select>
     
-    <select id="select${ClassName}By${pkColumn.capJavaField}" parameterType="${pkColumn.javaType}" resultMap="#if($table.sub)${ClassName}${subClassName}Result#else${ClassName}Result#end">
+    <select id="select${ClassName}By${pkColumn.capJavaField}" resultMap="#if($table.sub)${ClassName}${subClassName}Result#else${ClassName}Result#end">
 #if($table.crud || $table.tree)
         <include refid="select${ClassName}Vo"/>
         where ${pkColumn.columnName} = #{${pkColumn.javaField}}
@@ -128,14 +128,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 #foreach($column in $columns)
 #set($param=$className + '.' + $column.javaField)
 #if($column.columnName != $pkColumn.columnName || !$pkColumn.increment)
-#if(!$column.isSubI18n)
-            <if test="$param != null#if($column.javaType == 'String' && $column.required) and $param != ''#end">#{$param},</if>
 #if($column.isI18n)
-#set($columnNameEn=$column.columnName + '_en')
-#set($columnNameId=$column.columnName + '_id')
-            <if test="$param != null#if($column.javaType == 'String' && $column.required) and $param != ''#end">$columnNameEn,</if>
-            <if test="$param != null#if($column.javaType == 'String' && $column.required) and $param != ''#end">$columnNameId,</if>
-#end
+            <foreach item="$column.javaField" collection="$column.javaField" separator="," close="," >
+                <if test="$param != null#if($column.javaType == 'String' && $column.required) and $param != ''#end">#{$column.javaField}</if>
+            </foreach>
+#else
+            <if test="$param != null#if($column.javaType == 'String' && $column.required) and $param != ''#end">#{$param},</if>
 #end
 #end
 #end
@@ -146,12 +144,33 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         update ${tableName}
         <trim prefix="SET" suffixOverrides=",">
 #foreach($column in $columns)
+#set($columnNameEn=$column.columnName + '_en')
+#set($columnNameId=$column.columnName + '_id')
+#set($param=$className + '.' + $column.javaField)
 #if($column.columnName != $pkColumn.columnName)
-            <if test="$column.javaField != null#if($column.javaType == 'String' && $column.required) and $column.javaField != ''#end">$column.columnName = #{$column.javaField},</if>
+#if(!$column.isSubI18n && !$column.isI18n)
+            <if test="$param != null#if($column.javaType == 'String' && $column.required) and $param != ''#end">$column.columnName = #{$param},</if>
+#elseif(!$column.isSubI18n && $column.isI18n)
+            <if test="$param != null#if($column.javaType == 'String' && $column.required) and $param != ''#end">
+                $columnNameEn = <include refid="case"/>
+                when "en" then #{$param}
+                else $columnNameEn
+                end,
+                $column.columnName = <include refid="case"/>
+                when "zh" then #{$param}
+                else $column.columnName
+                end,
+                $columnNameId = <include refid="case"/>
+                when "id" then #{$param}
+                else $columnNameId
+                end,
+            </if>
 #end
 #end
+#end
+#set($param=$className + '.' + $pkColumn.javaField)
         </trim>
-        where ${pkColumn.columnName} = #{${pkColumn.javaField}}
+        where ${pkColumn.columnName} = #{${param}}
     </update>
 
     <delete id="delete${ClassName}By${pkColumn.capJavaField}" parameterType="${pkColumn.javaType}">
