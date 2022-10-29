@@ -100,8 +100,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         where a.${pkColumn.columnName} = #{${pkColumn.javaField}}
 #end
     </select>
-        
-    <insert id="insert${ClassName}" parameterType="${ClassName}"#if($pkColumn.increment) useGeneratedKeys="true" keyProperty="$pkColumn.javaField"#end>
+    #set($param=$className + '.' + $pkColumn.javaField)
+    <insert id="insert${ClassName}" parameterType="${ClassName}"#if($pkColumn.increment) useGeneratedKeys="true" keyProperty="$param"#end>
         #if($pkColumn.javaType == 'String' && !$pkColumn.increment)
             <selectKey keyProperty="$pkColumn.javaField" resultType="String" order="BEFORE">
                 select REPLACE(UUID(),"-","")
@@ -132,7 +132,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <foreach item="$column.javaField" collection="$column.javaField" separator="," close="," >
                 <if test="$param != null#if($column.javaType == 'String' && $column.required) and $param != ''#end">#{$column.javaField}</if>
             </foreach>
-#else
+#elseif(!$column.isSubI18n)
             <if test="$param != null#if($column.javaType == 'String' && $column.required) and $param != ''#end">#{$param},</if>
 #end
 #end

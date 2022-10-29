@@ -69,25 +69,20 @@ public class ${ClassName}ServiceImpl implements I${ClassName}Service
     public int insert${ClassName}(${ClassName} ${className})
     {
 #foreach ($column in $columns)
-#if($column.javaField.length() > 2 && $column.javaField.substring(1,2).matches("[A-Z]"))
-#set($AttrName=$column.javaField)
-#else
-#set($AttrName=$column.javaField.substring(0,1).toUpperCase() + ${column.javaField.substring(1)})
-#end
 #if($column.javaField == 'createTime')
         ${className}.setCreateTime(DateUtils.getNowDate());
 #end
 #end
 #if($table.sub)
-        int rows = ${className}Mapper.insert${ClassName}(${className}#foreach($column in $columns)#set($param=$className + '.get' + $AttrName + '()')#if($column.isI18n),  translateAll($param)#end#end);
+        int rows = ${className}Mapper.insert${ClassName}(${className}#foreach($column in $columns)#if($column.javaField.length() > 2 && $column.javaField.substring(1,2).matches("[A-Z]"))#set($AttrName=$column.javaField)#else#set($AttrName=$column.javaField.substring(0,1).toUpperCase() + ${column.javaField.substring(1)})#end#set($param=$className + '.get' + $AttrName + '()')#if($column.isI18n),  translateAll($param)#end#end);
         insert${subClassName}(${className});
         return rows;
 #else
         try {
-            return ${className}Mapper.insert${ClassName}(${className}#foreach($column in $columns)#set($param=$className + '.get' + $AttrName + '()')#if($column.isI18n), translateAll($param)#end#end);
+            return ${className}Mapper.insert${ClassName}(${className}#foreach($column in $columns)#if($column.javaField.length() > 2 && $column.javaField.substring(1,2).matches("[A-Z]"))#set($AttrName=$column.javaField)#else#set($AttrName=$column.javaField.substring(0,1).toUpperCase() + ${column.javaField.substring(1)})#end#set($param=$className + '.get' + $AttrName + '()')#if($column.isI18n),  translateAll($param)#end#end);
         } catch (Exception e) {
             try{
-                return ${className}Mapper.insert${ClassName}(${className}#foreach($column in $columns)#set($param=$className + '.get' + $AttrName + '()')#if($column.isI18n), translateOffline($param)#end#end);
+                return ${className}Mapper.insert${ClassName}(${className}#foreach($column in $columns)#if($column.javaField.length() > 2 && $column.javaField.substring(1,2).matches("[A-Z]"))#set($AttrName=$column.javaField)#else#set($AttrName=$column.javaField.substring(0,1).toUpperCase() + ${column.javaField.substring(1)})#end#set($param=$className + '.get' + $AttrName + '()')#if($column.isI18n),  translateAll($param)#end#end);
             } catch (Exception e2) {
                 throw new RuntimeException(e2);
             }

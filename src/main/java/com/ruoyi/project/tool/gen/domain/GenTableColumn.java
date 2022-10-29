@@ -25,6 +25,13 @@ public class GenTableColumn extends BaseEntity
     /** 列描述 */
     private String columnComment;
 
+    /** 列描述 */
+    private String columnCommentEn;
+
+
+    /** 列描述 */
+    private String columnCommentId;
+
     /** 列类型 */
     private String columnType;
 
@@ -100,6 +107,22 @@ public class GenTableColumn extends BaseEntity
     public String getColumnName()
     {
         return columnName;
+    }
+
+    public String getColumnCommentEn() {
+        return columnCommentEn;
+    }
+
+    public void setColumnCommentEn(String columnCommentEn) {
+        this.columnCommentEn = columnCommentEn;
+    }
+
+    public String getColumnCommentId() {
+        return columnCommentId;
+    }
+
+    public void setColumnCommentId(String columnCommentId) {
+        this.columnCommentId = columnCommentId;
     }
 
     public void setColumnComment(String columnComment)
