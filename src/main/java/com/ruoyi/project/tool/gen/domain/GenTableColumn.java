@@ -28,7 +28,6 @@ public class GenTableColumn extends BaseEntity
     /** 列描述 */
     private String columnCommentEn;
 
-
     /** 列描述 */
     private String columnCommentId;
 

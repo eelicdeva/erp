@@ -12,16 +12,16 @@
 #set($comment=$column.columnComment)
 #end
 #if($column.htmlType == "input")
-      <el-form-item label="${comment}" prop="${column.javaField}">
+      <el-form-item :label="$t(${ClassName}.${column.javaField})" prop="${column.javaField}">
         <el-input
           v-model="queryParams.${column.javaField}"
-          placeholder="请输入${comment}"
+          placeholder="${ClassName}.${column.javaField}"
           clearable
           @keyup.enter="handleQuery"
         />
       </el-form-item>
 #elseif(($column.htmlType == "select" || $column.htmlType == "radio") && "" != $dictType)
-      <el-form-item label="${comment}" prop="${column.javaField}">
+      <el-form-item :label="$t(${ClassName}.${column.javaField})" prop="${column.javaField}">
         <el-select v-model="queryParams.${column.javaField}" placeholder="请选择${comment}" clearable>
           <el-option
             v-for="dict in ${dictType}"
@@ -32,13 +32,13 @@
         </el-select>
       </el-form-item>
 #elseif(($column.htmlType == "select" || $column.htmlType == "radio") && $dictType)
-      <el-form-item label="${comment}" prop="${column.javaField}">
+      <el-form-item :label="$t(${ClassName}.${column.javaField})" prop="${column.javaField}">
         <el-select v-model="queryParams.${column.javaField}" placeholder="请选择${comment}" clearable>
           <el-option label="请选择字典生成" value="" />
         </el-select>
       </el-form-item>
 #elseif($column.htmlType == "datetime" && $column.queryType != "BETWEEN")
-      <el-form-item label="${comment}" prop="${column.javaField}">
+      <el-form-item :label="$t(${ClassName}.${column.javaField})" prop="${column.javaField}">
         <el-date-picker clearable
           v-model="queryParams.${column.javaField}"
           type="date"
@@ -47,7 +47,7 @@
         </el-date-picker>
       </el-form-item>
 #elseif($column.htmlType == "datetime" && $column.queryType == "BETWEEN")
-      <el-form-item label="${comment}" style="width: 308px">
+      <el-form-item :label="$t(${ClassName}.${column.javaField})" style="width: 308px">
         <el-date-picker
           v-model="daterange${AttrName}"
           value-format="YYYY-MM-DD"

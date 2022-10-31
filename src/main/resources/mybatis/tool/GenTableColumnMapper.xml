@@ -54,6 +54,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			<if test="tableId != null and tableId != ''">table_id,</if>
 			<if test="columnName != null and columnName != ''">column_name,</if>
 			<if test="columnComment != null and columnComment != ''">column_comment,</if>
+            <if test="columnCommentEn != null and columnCommentEn != ''">column_comment_en,</if>
+            <if test="columnCommentId != null and columnCommentId != ''">column_comment_id,</if>
 			<if test="columnType != null and columnType != ''">column_type,</if>
 			<if test="javaType != null and javaType != ''">java_type,</if>
 			<if test="javaField != null  and javaField != ''">java_field,</if>
@@ -76,6 +78,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			<if test="tableId != null and tableId != ''">#{tableId},</if>
 			<if test="columnName != null and columnName != ''">#{columnName},</if>
 			<if test="columnComment != null and columnComment != ''">#{columnComment},</if>
+            <if test="columnCommentEn != null and columnCommentEn != ''">#{columnCommentEn},</if>
+            <if test="columnCommentId != null and columnCommentId != ''">#{columnCommentId},</if>
 			<if test="columnType != null and columnType != ''">#{columnType},</if>
 			<if test="javaType != null and javaType != ''">#{javaType},</if>
 			<if test="javaField != null and javaField != ''">#{javaField},</if>
@@ -101,6 +105,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         update gen_table_column
         <set>
             column_comment = #{columnComment},
+            column_comment_en = #{columnCommentEn},
+            column_comment_id = #{columnCommentId},
             java_type = #{javaType},
             java_field = #{javaField},
             is_insert = #{isInsert},

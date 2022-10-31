@@ -137,6 +137,9 @@ public class VelocityUtils
         templates.add("vm/xml/mapper.xml.vm");
         templates.add("vm/sql/sql.vm");
         templates.add("vm/js/api.js.vm");
+        templates.add("vm/lang/en.js.vm");
+        templates.add("vm/lang/id.js.vm");
+        templates.add("vm/lang/zh.js.vm");
         if (GenConstants.TPL_CRUD.equals(tplCategory))
         {
             templates.add("vm/vue/v3/index.vue.vm");
