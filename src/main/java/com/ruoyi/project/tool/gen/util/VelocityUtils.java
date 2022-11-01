@@ -220,6 +220,18 @@ public class VelocityUtils
         {
             fileName = StringUtils.format("{}/views/{}/{}/index.vue", vuePath, moduleName, businessName);
         }
+        else if (template.contains("en.js.vm"))
+        {
+            fileName = StringUtils.format("{}/lang/en.js", vuePath);
+        }
+        else if (template.contains("id.js.vm"))
+        {
+            fileName = StringUtils.format("{}/lang/id.js", vuePath);
+        }
+        else if (template.contains("zh.js.vm"))
+        {
+            fileName = StringUtils.format("{}/lang/zh.js", vuePath);
+        }
         return fileName;
     }
 
