@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
+import com.eelic.common.constant.GenConstantsI18n;
 import org.apache.velocity.VelocityContext;
 import com.alibaba.fastjson2.JSON;
 import com.alibaba.fastjson2.JSONObject;
@@ -129,29 +131,91 @@ public class VelocityUtils
     public static List<String> getTemplateList(String tplCategory)
     {
         List<String> templates = new ArrayList<String>();
-        templates.add("vm/java/domain.java.vm");
-        templates.add("vm/java/mapper.java.vm");
-        templates.add("vm/java/service.java.vm");
-        templates.add("vm/java/serviceImpl.java.vm");
-        templates.add("vm/java/controller.java.vm");
-        templates.add("vm/xml/mapper.xml.vm");
-        templates.add("vm/sql/sql.vm");
-        templates.add("vm/js/api.js.vm");
-        templates.add("vm/lang/en.js.vm");
-        templates.add("vm/lang/id.js.vm");
-        templates.add("vm/lang/zh.js.vm");
+
         if (GenConstants.TPL_CRUD.equals(tplCategory))
         {
+            templates.add("vm/java/domain.java.vm");
+            templates.add("vm/java/mapper.java.vm");
+            templates.add("vm/java/service.java.vm");
+            templates.add("vm/java/serviceImpl.java.vm");
+            templates.add("vm/java/controller.java.vm");
+            templates.add("vm/xml/mapper.xml.vm");
+            templates.add("vm/sql/sql.vm");
+            templates.add("vm/js/api.js.vm");
             templates.add("vm/vue/v3/index.vue.vm");
         }
         else if (GenConstants.TPL_TREE.equals(tplCategory))
         {
+            templates.add("vm/java/domain.java.vm");
+            templates.add("vm/java/mapper.java.vm");
+            templates.add("vm/java/service.java.vm");
+            templates.add("vm/java/serviceImpl.java.vm");
+            templates.add("vm/java/controller.java.vm");
+            templates.add("vm/xml/mapper.xml.vm");
+            templates.add("vm/sql/sql.vm");
+            templates.add("vm/js/api.js.vm");
             templates.add("vm/vue/v3/index-tree.vue.vm");
         }
         else if (GenConstants.TPL_SUB.equals(tplCategory))
         {
+            templates.add("vm/java/domain.java.vm");
+            templates.add("vm/java/mapper.java.vm");
+            templates.add("vm/java/service.java.vm");
+            templates.add("vm/java/serviceImpl.java.vm");
+            templates.add("vm/java/controller.java.vm");
+            templates.add("vm/xml/mapper.xml.vm");
+            templates.add("vm/sql/sql.vm");
+            templates.add("vm/js/api.js.vm");
             templates.add("vm/vue/v3/index.vue.vm");
             templates.add("vm/java/sub-domain.java.vm");
+        }
+        else if (GenConstantsI18n.TPL_CRUD.equals(tplCategory))
+        {
+            templates.add("vmi18n/java/domain.java.vm");
+            templates.add("vmi18n/java/mapper.java.vm");
+            templates.add("vmi18n/java/service.java.vm");
+            templates.add("vmi18n/java/serviceImpl.java.vm");
+            templates.add("vmi18n/java/controller.java.vm");
+            templates.add("vmi18n/xml/mapper.xml.vm");
+            templates.add("vmi18n/sql/sql.vm");
+            templates.add("vmi18n/js/api.js.vm");
+            templates.add("vmi18n/vue/v3/index.vue.vm");
+            templates.add("vmi18n/lang/en.js.vm");
+            templates.add("vmi18n/lang/id.js.vm");
+            templates.add("vmi18n/lang/zh.js.vm");
+
+        }
+        else if (GenConstantsI18n.TPL_TREE.equals(tplCategory))
+        {
+            templates.add("vmi18n/java/domain.java.vm");
+            templates.add("vmi18n/java/mapper.java.vm");
+            templates.add("vmi18n/java/service.java.vm");
+            templates.add("vmi18n/java/serviceImpl.java.vm");
+            templates.add("vmi18n/java/controller.java.vm");
+            templates.add("vmi18n/xml/mapper.xml.vm");
+            templates.add("vmi18n/sql/sql.vm");
+            templates.add("vmi18n/js/api.js.vm");
+            templates.add("vmi18n/vue/v3/index-tree.vue.vm");
+            templates.add("vmi18n/lang/en.js.vm");
+            templates.add("vmi18n/lang/id.js.vm");
+            templates.add("vmi18n/lang/zh.js.vm");
+        }
+
+        else if (GenConstantsI18n.TPL_SUB.equals(tplCategory))
+        {
+            templates.add("vmi18n/java/domain.java.vm");
+            templates.add("vmi18n/java/mapper.java.vm");
+            templates.add("vmi18n/java/service.java.vm");
+            templates.add("vmi18n/java/serviceImpl.java.vm");
+            templates.add("vmi18n/java/controller.java.vm");
+            templates.add("vmi18n/xml/mapper.xml.vm");
+            templates.add("vmi18n/sql/sql.vm");
+            templates.add("vmi18n/js/api.js.vm");
+            templates.add("vmi18n/vue/v3/index.vue.vm");
+            templates.add("vmi18n/java/sub-domain.java.vm");
+            templates.add("vmi18n/lang/en.js.vm");
+            templates.add("vmi18n/lang/id.js.vm");
+            templates.add("vmi18n/lang/zh.js.vm");
         }
         return templates;
     }
