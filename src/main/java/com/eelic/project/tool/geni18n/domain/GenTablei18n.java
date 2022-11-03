@@ -1,20 +1,19 @@
-package com.ruoyi.project.tool.gen.domain;
+package com.eelic.project.tool.geni18n.domain;
 
+import java.util.List;
+import javax.validation.Valid;
+import javax.validation.constraints.NotBlank;
+import org.apache.commons.lang3.ArrayUtils;
 import com.ruoyi.common.constant.GenConstants;
 import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.framework.web.domain.BaseEntity;
-import org.apache.commons.lang3.ArrayUtils;
-
-import javax.validation.Valid;
-import javax.validation.constraints.NotBlank;
-import java.util.List;
 
 /**
  * 业务表 gen_table
  * 
  * @author ruoyi
  */
-public class GenTable extends BaseEntity
+public class GenTablei18n extends BaseEntity
 {
     private static final long serialVersionUID = 1L;
 
@@ -69,14 +68,14 @@ public class GenTable extends BaseEntity
     private String genPath;
 
     /** 主键信息 */
-    private GenTableColumn pkColumn;
+    private GenTableColumni18n pkColumn;
 
     /** 子表信息 */
-    private GenTable subTable;
+    private GenTablei18n subTable;
 
     /** 表列信息 */
     @Valid
-    private List<GenTableColumn> columns;
+    private List<GenTableColumni18n> columns;
 
     /** 其它生成选项 */
     private String options;
@@ -236,32 +235,32 @@ public class GenTable extends BaseEntity
         this.genPath = genPath;
     }
 
-    public GenTableColumn getPkColumn()
+    public GenTableColumni18n getPkColumn()
     {
         return pkColumn;
     }
 
-    public void setPkColumn(GenTableColumn pkColumn)
+    public void setPkColumn(GenTableColumni18n pkColumn)
     {
         this.pkColumn = pkColumn;
     }
 
-    public GenTable getSubTable()
+    public GenTablei18n getSubTable()
     {
         return subTable;
     }
 
-    public void setSubTable(GenTable subTable)
+    public void setSubTable(GenTablei18n subTable)
     {
         this.subTable = subTable;
     }
 
-    public List<GenTableColumn> getColumns()
+    public List<GenTableColumni18n> getColumns()
     {
         return columns;
     }
 
-    public void setColumns(List<GenTableColumn> columns)
+    public void setColumns(List<GenTableColumni18n> columns)
     {
         this.columns = columns;
     }

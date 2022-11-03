@@ -1,9 +1,8 @@
-package com.ruoyi.project.tool.gen.util;
-
-import com.ruoyi.common.constant.Constants;
-import org.apache.velocity.app.Velocity;
+package com.eelic.project.tool.geni18n.util;
 
 import java.util.Properties;
+import org.apache.velocity.app.Velocity;
+import com.ruoyi.common.constant.Constants;
 
 /**
  * VelocityEngine工厂

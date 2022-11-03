@@ -1,26 +1,32 @@
-package com.ruoyi.project.tool.gen.controller;
+package com.eelic.project.tool.geni18n.controller;
 
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import javax.servlet.http.HttpServletResponse;
+import org.apache.commons.io.IOUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import com.ruoyi.common.core.text.Convert;
 import com.ruoyi.framework.aspectj.lang.annotation.Log;
 import com.ruoyi.framework.aspectj.lang.enums.BusinessType;
 import com.ruoyi.framework.web.controller.BaseController;
 import com.ruoyi.framework.web.domain.AjaxResult;
 import com.ruoyi.framework.web.page.TableDataInfo;
-import com.ruoyi.project.tool.gen.domain.GenTable;
-import com.ruoyi.project.tool.gen.domain.GenTableColumn;
-import com.ruoyi.project.tool.gen.service.IGenTableColumnService;
-import com.ruoyi.project.tool.gen.service.IGenTableService;
-import org.apache.commons.io.IOUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
-
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import com.eelic.project.tool.geni18n.domain.GenTablei18n;
+import com.eelic.project.tool.geni18n.domain.GenTableColumni18n;
+import com.eelic.project.tool.geni18n.service.IGenTableColumnService;
+import com.eelic.project.tool.geni18n.service.IGenTableService;
 
 /**
  * 代码生成 操作处理
@@ -28,8 +34,8 @@ import java.util.Map;
  * @author ruoyi
  */
 @RestController
-@RequestMapping("/tool/gen")
-public class GenController extends BaseController
+@RequestMapping("/tool/geni18n")
+public class GenControlleri18n extends BaseController
 {
     @Autowired
     private IGenTableService genTableService;
@@ -42,10 +48,10 @@ public class GenController extends BaseController
      */
     @PreAuthorize("@ss.hasPermi('tool:gen:list')")
     @GetMapping("/list")
-    public TableDataInfo genList(GenTable genTable)
+    public TableDataInfo genList(GenTablei18n genTablei18n)
     {
         startPage();
-        List<GenTable> list = genTableService.selectGenTableList(genTable);
+        List<GenTablei18n> list = genTableService.selectGenTableList(genTablei18n);
         return getDataTable(list);
     }
 
@@ -56,9 +62,9 @@ public class GenController extends BaseController
     @GetMapping(value = "/{talbleId}")
     public AjaxResult getInfo(@PathVariable Long talbleId)
     {
-        GenTable table = genTableService.selectGenTableById(talbleId);
-        List<GenTable> tables = genTableService.selectGenTableAll();
-        List<GenTableColumn> list = genTableColumnService.selectGenTableColumnListByTableId(talbleId);
+        GenTablei18n table = genTableService.selectGenTableById(talbleId);
+        List<GenTablei18n> tables = genTableService.selectGenTableAll();
+        List<GenTableColumni18n> list = genTableColumnService.selectGenTableColumnListByTableId(talbleId);
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("info", table);
         map.put("rows", list);
@@ -71,10 +77,10 @@ public class GenController extends BaseController
      */
     @PreAuthorize("@ss.hasPermi('tool:gen:list')")
     @GetMapping("/db/list")
-    public TableDataInfo dataList(GenTable genTable)
+    public TableDataInfo dataList(GenTablei18n genTablei18n)
     {
         startPage();
-        List<GenTable> list = genTableService.selectDbTableList(genTable);
+        List<GenTablei18n> list = genTableService.selectDbTableList(genTablei18n);
         return getDataTable(list);
     }
 
@@ -86,7 +92,7 @@ public class GenController extends BaseController
     public TableDataInfo columnList(Long tableId)
     {
         TableDataInfo dataInfo = new TableDataInfo();
-        List<GenTableColumn> list = genTableColumnService.selectGenTableColumnListByTableId(tableId);
+        List<GenTableColumni18n> list = genTableColumnService.selectGenTableColumnListByTableId(tableId);
         dataInfo.setRows(list);
         dataInfo.setTotal(list.size());
         return dataInfo;
@@ -102,7 +108,7 @@ public class GenController extends BaseController
     {
         String[] tableNames = Convert.toStrArray(tables);
         // 查询表信息
-        List<GenTable> tableList = genTableService.selectDbTableListByNames(tableNames);
+        List<GenTablei18n> tableList = genTableService.selectDbTableListByNames(tableNames);
         genTableService.importGenTable(tableList);
         return AjaxResult.success();
     }
@@ -113,10 +119,10 @@ public class GenController extends BaseController
     @PreAuthorize("@ss.hasPermi('tool:gen:edit')")
     @Log(title = "代码生成", businessType = BusinessType.UPDATE)
     @PutMapping
-    public AjaxResult editSave(@Validated @RequestBody GenTable genTable)
+    public AjaxResult editSave(@Validated @RequestBody GenTablei18n genTablei18n)
     {
-        genTableService.validateEdit(genTable);
-        genTableService.updateGenTable(genTable);
+        genTableService.validateEdit(genTablei18n);
+        genTableService.updateGenTable(genTablei18n);
         return AjaxResult.success();
     }
 

@@ -1,16 +1,15 @@
-package com.ruoyi.project.tool.gen.domain;
-
-import com.ruoyi.common.utils.StringUtils;
-import com.ruoyi.framework.web.domain.BaseEntity;
+package com.eelic.project.tool.geni18n.domain;
 
 import javax.validation.constraints.NotBlank;
+import com.ruoyi.common.utils.StringUtils;
+import com.ruoyi.framework.web.domain.BaseEntity;
 
 /**
  * 代码生成业务字段表 gen_table_column
  * 
  * @author ruoyi
  */
-public class GenTableColumn extends BaseEntity
+public class GenTableColumni18n extends BaseEntity
 {
     private static final long serialVersionUID = 1L;
 
@@ -25,6 +24,12 @@ public class GenTableColumn extends BaseEntity
 
     /** 列描述 */
     private String columnComment;
+
+    /** 列描述 */
+    private String columnCommentEn;
+
+    /** 列描述 */
+    private String columnCommentId;
 
     /** 列类型 */
     private String columnType;
@@ -56,6 +61,10 @@ public class GenTableColumn extends BaseEntity
 
     /** 是否查询字段（1是） */
     private String isQuery;
+
+    private String isI18n;
+
+    private String isSubI18n;
 
     /** 查询方式（EQ等于、NE不等于、GT大于、LT小于、LIKE模糊、BETWEEN范围） */
     private String queryType;
@@ -97,6 +106,22 @@ public class GenTableColumn extends BaseEntity
     public String getColumnName()
     {
         return columnName;
+    }
+
+    public String getColumnCommentEn() {
+        return columnCommentEn;
+    }
+
+    public void setColumnCommentEn(String columnCommentEn) {
+        this.columnCommentEn = columnCommentEn;
+    }
+
+    public String getColumnCommentId() {
+        return columnCommentId;
+    }
+
+    public void setColumnCommentId(String columnCommentId) {
+        this.columnCommentId = columnCommentId;
     }
 
     public void setColumnComment(String columnComment)
@@ -284,6 +309,40 @@ public class GenTableColumn extends BaseEntity
         return isQuery != null && StringUtils.equals("1", isQuery);
     }
 
+    public String getIsI18n() {
+        return isI18n;
+    }
+
+    public void setIsI18n(String isI18n) {
+        this.isI18n = isI18n;
+    }
+
+    public boolean isI18n()
+    {
+        return isI18n(this.isI18n);
+    }
+    public boolean isI18n(String isI18n)
+    {
+        return isI18n != null && StringUtils.equals("1", isI18n);
+    }
+
+    public String getIsSubI18n() {
+        return isSubI18n;
+    }
+
+    public void setIsSubI18n(String isSubI18n) {
+        this.isSubI18n = isSubI18n;
+    }
+
+    public boolean isSubI18n()
+    {
+        return isSubI18n(this.isSubI18n);
+    }
+    public boolean isSubI18n(String isSubI18n)
+    {
+        return isSubI18n != null && StringUtils.equals("1", isSubI18n);
+    }
+
     public void setQueryType(String queryType)
     {
         this.queryType = queryType;
@@ -371,4 +430,5 @@ public class GenTableColumn extends BaseEntity
             return this.columnComment;
         }
     }
+
 }

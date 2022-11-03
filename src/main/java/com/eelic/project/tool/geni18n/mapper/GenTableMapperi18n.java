@@ -1,31 +1,30 @@
-package com.ruoyi.project.tool.gen.mapper;
-
-import com.ruoyi.project.tool.gen.domain.GenTable;
+package com.eelic.project.tool.geni18n.mapper;
 
 import java.util.List;
+import com.eelic.project.tool.geni18n.domain.GenTablei18n;
 
 /**
  * 业务 数据层
  * 
  * @author ruoyi
  */
-public interface GenTableMapper
+public interface GenTableMapperi18n
 {
     /**
      * 查询业务列表
      * 
-     * @param genTable 业务信息
+     * @param genTablei18n 业务信息
      * @return 业务集合
      */
-    public List<GenTable> selectGenTableList(GenTable genTable);
+    public List<GenTablei18n> selectGenTableList(GenTablei18n genTablei18n);
 
     /**
      * 查询据库列表
      * 
-     * @param genTable 业务信息
+     * @param genTablei18n 业务信息
      * @return 数据库表集合
      */
-    public List<GenTable> selectDbTableList(GenTable genTable);
+    public List<GenTablei18n> selectDbTableList(GenTablei18n genTablei18n);
 
     /**
      * 查询据库列表
@@ -33,14 +32,14 @@ public interface GenTableMapper
      * @param tableNames 表名称组
      * @return 数据库表集合
      */
-    public List<GenTable> selectDbTableListByNames(String[] tableNames);
+    public List<GenTablei18n> selectDbTableListByNames(String[] tableNames);
 
     /**
      * 查询所有表信息
      * 
      * @return 表信息集合
      */
-    public List<GenTable> selectGenTableAll();
+    public List<GenTablei18n> selectGenTableAll();
 
     /**
      * 查询表ID业务信息
@@ -48,7 +47,7 @@ public interface GenTableMapper
      * @param id 业务ID
      * @return 业务信息
      */
-    public GenTable selectGenTableById(Long id);
+    public GenTablei18n selectGenTableById(Long id);
 
     /**
      * 查询表名称业务信息
@@ -56,23 +55,23 @@ public interface GenTableMapper
      * @param tableName 表名称
      * @return 业务信息
      */
-    public GenTable selectGenTableByName(String tableName);
+    public GenTablei18n selectGenTableByName(String tableName);
 
     /**
      * 新增业务
      * 
-     * @param genTable 业务信息
+     * @param genTablei18n 业务信息
      * @return 结果
      */
-    public int insertGenTable(GenTable genTable);
+    public int insertGenTable(GenTablei18n genTablei18n);
 
     /**
      * 修改业务
      * 
-     * @param genTable 业务信息
+     * @param genTablei18n 业务信息
      * @return 结果
      */
-    public int updateGenTable(GenTable genTable);
+    public int updateGenTable(GenTablei18n genTablei18n);
 
     /**
      * 批量删除业务

@@ -1,18 +1,19 @@
-package com.ruoyi.project.tool.gen.util;
-
-import com.alibaba.fastjson2.JSON;
-import com.alibaba.fastjson2.JSONObject;
-import com.ruoyi.common.constant.GenConstants;
-import com.ruoyi.common.utils.DateUtils;
-import com.ruoyi.common.utils.StringUtils;
-import com.ruoyi.project.tool.gen.domain.GenTable;
-import com.ruoyi.project.tool.gen.domain.GenTableColumn;
-import org.apache.velocity.VelocityContext;
+package com.eelic.project.tool.geni18n.util;
 
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
+import com.eelic.common.constant.GenConstantsI18n;
+import org.apache.velocity.VelocityContext;
+import com.alibaba.fastjson2.JSON;
+import com.alibaba.fastjson2.JSONObject;
+import com.ruoyi.common.constant.GenConstants;
+import com.ruoyi.common.utils.DateUtils;
+import com.ruoyi.common.utils.StringUtils;
+import com.eelic.project.tool.geni18n.domain.GenTablei18n;
+import com.eelic.project.tool.geni18n.domain.GenTableColumni18n;
 
 /**
  * 模板处理工具类
@@ -35,56 +36,56 @@ public class VelocityUtils
      *
      * @return 模板列表
      */
-    public static VelocityContext prepareContext(GenTable genTable)
+    public static VelocityContext prepareContext(GenTablei18n genTablei18n)
     {
-        String moduleName = genTable.getModuleName();
-        String businessName = genTable.getBusinessName();
-        String packageName = genTable.getPackageName();
-        String tplCategory = genTable.getTplCategory();
-        String functionName = genTable.getFunctionName();
+        String moduleName = genTablei18n.getModuleName();
+        String businessName = genTablei18n.getBusinessName();
+        String packageName = genTablei18n.getPackageName();
+        String tplCategory = genTablei18n.getTplCategory();
+        String functionName = genTablei18n.getFunctionName();
 
         VelocityContext velocityContext = new VelocityContext();
-        velocityContext.put("tplCategory", genTable.getTplCategory());
-        velocityContext.put("tableName", genTable.getTableName());
+        velocityContext.put("tplCategory", genTablei18n.getTplCategory());
+        velocityContext.put("tableName", genTablei18n.getTableName());
         velocityContext.put("functionName", StringUtils.isNotEmpty(functionName) ? functionName : "【请填写功能名称】");
-        velocityContext.put("ClassName", genTable.getClassName());
-        velocityContext.put("className", StringUtils.uncapitalize(genTable.getClassName()));
-        velocityContext.put("moduleName", genTable.getModuleName());
-        velocityContext.put("BusinessName", StringUtils.capitalize(genTable.getBusinessName()));
-        velocityContext.put("businessName", genTable.getBusinessName());
+        velocityContext.put("ClassName", genTablei18n.getClassName());
+        velocityContext.put("className", StringUtils.uncapitalize(genTablei18n.getClassName()));
+        velocityContext.put("moduleName", genTablei18n.getModuleName());
+        velocityContext.put("BusinessName", StringUtils.capitalize(genTablei18n.getBusinessName()));
+        velocityContext.put("businessName", genTablei18n.getBusinessName());
         velocityContext.put("basePackage", getPackagePrefix(packageName));
         velocityContext.put("packageName", packageName);
-        velocityContext.put("author", genTable.getFunctionAuthor());
+        velocityContext.put("author", genTablei18n.getFunctionAuthor());
         velocityContext.put("datetime", DateUtils.getDate());
-        velocityContext.put("pkColumn", genTable.getPkColumn());
-        velocityContext.put("importList", getImportList(genTable));
+        velocityContext.put("pkColumn", genTablei18n.getPkColumn());
+        velocityContext.put("importList", getImportList(genTablei18n));
         velocityContext.put("permissionPrefix", getPermissionPrefix(moduleName, businessName));
-        velocityContext.put("columns", genTable.getColumns());
-        velocityContext.put("table", genTable);
-        velocityContext.put("dicts", getDicts(genTable));
-        setMenuVelocityContext(velocityContext, genTable);
+        velocityContext.put("columns", genTablei18n.getColumns());
+        velocityContext.put("table", genTablei18n);
+        velocityContext.put("dicts", getDicts(genTablei18n));
+        setMenuVelocityContext(velocityContext, genTablei18n);
         if (GenConstants.TPL_TREE.equals(tplCategory))
         {
-            setTreeVelocityContext(velocityContext, genTable);
+            setTreeVelocityContext(velocityContext, genTablei18n);
         }
         if (GenConstants.TPL_SUB.equals(tplCategory))
         {
-            setSubVelocityContext(velocityContext, genTable);
+            setSubVelocityContext(velocityContext, genTablei18n);
         }
         return velocityContext;
     }
 
-    public static void setMenuVelocityContext(VelocityContext context, GenTable genTable)
+    public static void setMenuVelocityContext(VelocityContext context, GenTablei18n genTablei18n)
     {
-        String options = genTable.getOptions();
+        String options = genTablei18n.getOptions();
         JSONObject paramsObj = JSON.parseObject(options);
         String parentMenuId = getParentMenuId(paramsObj);
         context.put("parentMenuId", parentMenuId);
     }
 
-    public static void setTreeVelocityContext(VelocityContext context, GenTable genTable)
+    public static void setTreeVelocityContext(VelocityContext context, GenTablei18n genTablei18n)
     {
-        String options = genTable.getOptions();
+        String options = genTablei18n.getOptions();
         JSONObject paramsObj = JSON.parseObject(options);
         String treeCode = getTreecode(paramsObj);
         String treeParentCode = getTreeParentCode(paramsObj);
@@ -93,7 +94,7 @@ public class VelocityUtils
         context.put("treeCode", treeCode);
         context.put("treeParentCode", treeParentCode);
         context.put("treeName", treeName);
-        context.put("expandColumn", getExpandColumn(genTable));
+        context.put("expandColumn", getExpandColumn(genTablei18n));
         if (paramsObj.containsKey(GenConstants.TREE_PARENT_CODE))
         {
             context.put("tree_parent_code", paramsObj.getString(GenConstants.TREE_PARENT_CODE));
@@ -104,12 +105,12 @@ public class VelocityUtils
         }
     }
 
-    public static void setSubVelocityContext(VelocityContext context, GenTable genTable)
+    public static void setSubVelocityContext(VelocityContext context, GenTablei18n genTablei18n)
     {
-        GenTable subTable = genTable.getSubTable();
-        String subTableName = genTable.getSubTableName();
-        String subTableFkName = genTable.getSubTableFkName();
-        String subClassName = genTable.getSubTable().getClassName();
+        GenTablei18n subTable = genTablei18n.getSubTable();
+        String subTableName = genTablei18n.getSubTableName();
+        String subTableFkName = genTablei18n.getSubTableFkName();
+        String subClassName = genTablei18n.getSubTable().getClassName();
         String subTableFkClassName = StringUtils.convertToCamelCase(subTableFkName);
 
         context.put("subTable", subTable);
@@ -119,7 +120,7 @@ public class VelocityUtils
         context.put("subTableFkclassName", StringUtils.uncapitalize(subTableFkClassName));
         context.put("subClassName", subClassName);
         context.put("subclassName", StringUtils.uncapitalize(subClassName));
-        context.put("subImportList", getImportList(genTable.getSubTable()));
+        context.put("subImportList", getImportList(genTablei18n.getSubTable()));
     }
 
     /**
@@ -130,26 +131,91 @@ public class VelocityUtils
     public static List<String> getTemplateList(String tplCategory)
     {
         List<String> templates = new ArrayList<String>();
-        templates.add("vm/java/domain.java.vm");
-        templates.add("vm/java/mapper.java.vm");
-        templates.add("vm/java/service.java.vm");
-        templates.add("vm/java/serviceImpl.java.vm");
-        templates.add("vm/java/controller.java.vm");
-        templates.add("vm/xml/mapper.xml.vm");
-        templates.add("vm/sql/sql.vm");
-        templates.add("vm/js/api.js.vm");
+
         if (GenConstants.TPL_CRUD.equals(tplCategory))
         {
-            templates.add("vm/vue/index.vue.vm");
+            templates.add("vm/java/domain.java.vm");
+            templates.add("vm/java/mapper.java.vm");
+            templates.add("vm/java/service.java.vm");
+            templates.add("vm/java/serviceImpl.java.vm");
+            templates.add("vm/java/controller.java.vm");
+            templates.add("vm/xml/mapper.xml.vm");
+            templates.add("vm/sql/sql.vm");
+            templates.add("vm/js/api.js.vm");
+            templates.add("vm/vue/v3/index.vue.vm");
         }
         else if (GenConstants.TPL_TREE.equals(tplCategory))
         {
-            templates.add("vm/vue/index-tree.vue.vm");
+            templates.add("vm/java/domain.java.vm");
+            templates.add("vm/java/mapper.java.vm");
+            templates.add("vm/java/service.java.vm");
+            templates.add("vm/java/serviceImpl.java.vm");
+            templates.add("vm/java/controller.java.vm");
+            templates.add("vm/xml/mapper.xml.vm");
+            templates.add("vm/sql/sql.vm");
+            templates.add("vm/js/api.js.vm");
+            templates.add("vm/vue/v3/index-tree.vue.vm");
         }
         else if (GenConstants.TPL_SUB.equals(tplCategory))
         {
-            templates.add("vm/vue/index.vue.vm");
+            templates.add("vm/java/domain.java.vm");
+            templates.add("vm/java/mapper.java.vm");
+            templates.add("vm/java/service.java.vm");
+            templates.add("vm/java/serviceImpl.java.vm");
+            templates.add("vm/java/controller.java.vm");
+            templates.add("vm/xml/mapper.xml.vm");
+            templates.add("vm/sql/sql.vm");
+            templates.add("vm/js/api.js.vm");
+            templates.add("vm/vue/v3/index.vue.vm");
             templates.add("vm/java/sub-domain.java.vm");
+        }
+        else if (GenConstantsI18n.TPL_CRUD.equals(tplCategory))
+        {
+            templates.add("vmi18n/java/domain.java.vm");
+            templates.add("vmi18n/java/mapper.java.vm");
+            templates.add("vmi18n/java/service.java.vm");
+            templates.add("vmi18n/java/serviceImpl.java.vm");
+            templates.add("vmi18n/java/controller.java.vm");
+            templates.add("vmi18n/xml/mapper.xml.vm");
+            templates.add("vmi18n/sql/sql.vm");
+            templates.add("vmi18n/js/api.js.vm");
+            templates.add("vmi18n/vue/v3/index.vue.vm");
+            templates.add("vmi18n/lang/en.js.vm");
+            templates.add("vmi18n/lang/id.js.vm");
+            templates.add("vmi18n/lang/zh.js.vm");
+
+        }
+        else if (GenConstantsI18n.TPL_TREE.equals(tplCategory))
+        {
+            templates.add("vmi18n/java/domain.java.vm");
+            templates.add("vmi18n/java/mapper.java.vm");
+            templates.add("vmi18n/java/service.java.vm");
+            templates.add("vmi18n/java/serviceImpl.java.vm");
+            templates.add("vmi18n/java/controller.java.vm");
+            templates.add("vmi18n/xml/mapper.xml.vm");
+            templates.add("vmi18n/sql/sql.vm");
+            templates.add("vmi18n/js/api.js.vm");
+            templates.add("vmi18n/vue/v3/index-tree.vue.vm");
+            templates.add("vmi18n/lang/en.js.vm");
+            templates.add("vmi18n/lang/id.js.vm");
+            templates.add("vmi18n/lang/zh.js.vm");
+        }
+
+        else if (GenConstantsI18n.TPL_SUB.equals(tplCategory))
+        {
+            templates.add("vmi18n/java/domain.java.vm");
+            templates.add("vmi18n/java/mapper.java.vm");
+            templates.add("vmi18n/java/service.java.vm");
+            templates.add("vmi18n/java/serviceImpl.java.vm");
+            templates.add("vmi18n/java/controller.java.vm");
+            templates.add("vmi18n/xml/mapper.xml.vm");
+            templates.add("vmi18n/sql/sql.vm");
+            templates.add("vmi18n/js/api.js.vm");
+            templates.add("vmi18n/vue/v3/index.vue.vm");
+            templates.add("vmi18n/java/sub-domain.java.vm");
+            templates.add("vmi18n/lang/en.js.vm");
+            templates.add("vmi18n/lang/id.js.vm");
+            templates.add("vmi18n/lang/zh.js.vm");
         }
         return templates;
     }
@@ -157,18 +223,18 @@ public class VelocityUtils
     /**
      * 获取文件名
      */
-    public static String getFileName(String template, GenTable genTable)
+    public static String getFileName(String template, GenTablei18n genTablei18n)
     {
         // 文件名称
         String fileName = "";
         // 包路径
-        String packageName = genTable.getPackageName();
+        String packageName = genTablei18n.getPackageName();
         // 模块名
-        String moduleName = genTable.getModuleName();
+        String moduleName = genTablei18n.getModuleName();
         // 大写类名
-        String className = genTable.getClassName();
+        String className = genTablei18n.getClassName();
         // 业务名称
-        String businessName = genTable.getBusinessName();
+        String businessName = genTablei18n.getBusinessName();
 
         String javaPath = PROJECT_PATH + "/" + StringUtils.replace(packageName, ".", "/");
         String mybatisPath = MYBATIS_PATH + "/" + moduleName;
@@ -178,9 +244,9 @@ public class VelocityUtils
         {
             fileName = StringUtils.format("{}/domain/{}.java", javaPath, className);
         }
-        if (template.contains("sub-domain.java.vm") && StringUtils.equals(GenConstants.TPL_SUB, genTable.getTplCategory()))
+        if (template.contains("sub-domain.java.vm") && StringUtils.equals(GenConstants.TPL_SUB, genTablei18n.getTplCategory()))
         {
-            fileName = StringUtils.format("{}/domain/{}.java", javaPath, genTable.getSubTable().getClassName());
+            fileName = StringUtils.format("{}/domain/{}.java", javaPath, genTablei18n.getSubTable().getClassName());
         }
         else if (template.contains("mapper.java.vm"))
         {
@@ -218,6 +284,18 @@ public class VelocityUtils
         {
             fileName = StringUtils.format("{}/views/{}/{}/index.vue", vuePath, moduleName, businessName);
         }
+        else if (template.contains("en.js.vm"))
+        {
+            fileName = StringUtils.format("{}/lang/en.js", vuePath);
+        }
+        else if (template.contains("id.js.vm"))
+        {
+            fileName = StringUtils.format("{}/lang/id.js", vuePath);
+        }
+        else if (template.contains("zh.js.vm"))
+        {
+            fileName = StringUtils.format("{}/lang/zh.js", vuePath);
+        }
         return fileName;
     }
 
@@ -236,19 +314,19 @@ public class VelocityUtils
     /**
      * 根据列类型获取导入包
      * 
-     * @param genTable 业务表对象
+     * @param genTablei18n 业务表对象
      * @return 返回需要导入的包列表
      */
-    public static HashSet<String> getImportList(GenTable genTable)
+    public static HashSet<String> getImportList(GenTablei18n genTablei18n)
     {
-        List<GenTableColumn> columns = genTable.getColumns();
-        GenTable subGenTable = genTable.getSubTable();
+        List<GenTableColumni18n> columns = genTablei18n.getColumns();
+        GenTablei18n subGenTablei18n = genTablei18n.getSubTable();
         HashSet<String> importList = new HashSet<String>();
-        if (StringUtils.isNotNull(subGenTable))
+        if (StringUtils.isNotNull(subGenTablei18n))
         {
             importList.add("java.util.List");
         }
-        for (GenTableColumn column : columns)
+        for (GenTableColumni18n column : columns)
         {
             if (!column.isSuperColumn() && GenConstants.TYPE_DATE.equals(column.getJavaType()))
             {
@@ -266,17 +344,17 @@ public class VelocityUtils
     /**
      * 根据列类型获取字典组
      * 
-     * @param genTable 业务表对象
+     * @param genTablei18n 业务表对象
      * @return 返回字典组
      */
-    public static String getDicts(GenTable genTable)
+    public static String getDicts(GenTablei18n genTablei18n)
     {
-        List<GenTableColumn> columns = genTable.getColumns();
+        List<GenTableColumni18n> columns = genTablei18n.getColumns();
         Set<String> dicts = new HashSet<String>();
         addDicts(dicts, columns);
-        if (StringUtils.isNotNull(genTable.getSubTable()))
+        if (StringUtils.isNotNull(genTablei18n.getSubTable()))
         {
-            List<GenTableColumn> subColumns = genTable.getSubTable().getColumns();
+            List<GenTableColumni18n> subColumns = genTablei18n.getSubTable().getColumns();
             addDicts(dicts, subColumns);
         }
         return StringUtils.join(dicts, ", ");
@@ -288,9 +366,9 @@ public class VelocityUtils
      * @param dicts 字典列表
      * @param columns 列集合
      */
-    public static void addDicts(Set<String> dicts, List<GenTableColumn> columns)
+    public static void addDicts(Set<String> dicts, List<GenTableColumni18n> columns)
     {
-        for (GenTableColumn column : columns)
+        for (GenTableColumni18n column : columns)
         {
             if (!column.isSuperColumn() && StringUtils.isNotEmpty(column.getDictType()) && StringUtils.equalsAny(
                     column.getHtmlType(),
@@ -377,16 +455,16 @@ public class VelocityUtils
     /**
      * 获取需要在哪一列上面显示展开按钮
      *
-     * @param genTable 业务表对象
+     * @param genTablei18n 业务表对象
      * @return 展开按钮列序号
      */
-    public static int getExpandColumn(GenTable genTable)
+    public static int getExpandColumn(GenTablei18n genTablei18n)
     {
-        String options = genTable.getOptions();
+        String options = genTablei18n.getOptions();
         JSONObject paramsObj = JSON.parseObject(options);
         String treeName = paramsObj.getString(GenConstants.TREE_NAME);
         int num = 0;
-        for (GenTableColumn column : genTable.getColumns())
+        for (GenTableColumni18n column : genTablei18n.getColumns())
         {
             if (column.isList())
             {

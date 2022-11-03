@@ -1,13 +1,12 @@
-package com.ruoyi.project.tool.gen.util;
+package com.eelic.project.tool.geni18n.util;
 
+import java.util.Arrays;
+import org.apache.commons.lang3.RegExUtils;
 import com.ruoyi.common.constant.GenConstants;
 import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.framework.config.GenConfig;
-import com.ruoyi.project.tool.gen.domain.GenTable;
-import com.ruoyi.project.tool.gen.domain.GenTableColumn;
-import org.apache.commons.lang3.RegExUtils;
-
-import java.util.Arrays;
+import com.eelic.project.tool.geni18n.domain.GenTablei18n;
+import com.eelic.project.tool.geni18n.domain.GenTableColumni18n;
 
 /**
  * 代码生成器 工具类
@@ -19,21 +18,21 @@ public class GenUtils
     /**
      * 初始化表信息
      */
-    public static void initTable(GenTable genTable, String operName)
+    public static void initTable(GenTablei18n genTablei18n, String operName)
     {
-        genTable.setClassName(convertClassName(genTable.getTableName()));
-        genTable.setPackageName(GenConfig.getPackageName());
-        genTable.setModuleName(getModuleName(GenConfig.getPackageName()));
-        genTable.setBusinessName(getBusinessName(genTable.getTableName()));
-        genTable.setFunctionName(replaceText(genTable.getTableComment()));
-        genTable.setFunctionAuthor(GenConfig.getAuthor());
-        genTable.setCreateBy(operName);
+        genTablei18n.setClassName(convertClassName(genTablei18n.getTableName()));
+        genTablei18n.setPackageName(GenConfig.getPackageName());
+        genTablei18n.setModuleName(getModuleName(GenConfig.getPackageName()));
+        genTablei18n.setBusinessName(getBusinessName(genTablei18n.getTableName()));
+        genTablei18n.setFunctionName(replaceText(genTablei18n.getTableComment()));
+        genTablei18n.setFunctionAuthor(GenConfig.getAuthor());
+        genTablei18n.setCreateBy(operName);
     }
 
     /**
      * 初始化列属性字段
      */
-    public static void initColumnField(GenTableColumn column, GenTable table)
+    public static void initColumnField(GenTableColumni18n column, GenTablei18n table)
     {
         String dataType = getDbType(column.getColumnType());
         String columnName = column.getColumnName();
@@ -79,27 +78,37 @@ public class GenUtils
             }
         }
 
+        //set i8n column
+        if (StringUtils.endsWithIgnoreCase(columnName, "_en") || StringUtils.endsWithIgnoreCase(columnName, "_id") || StringUtils.endsWithIgnoreCase(columnName, "_tw"))
+        {
+                if (!column.isPk() && !StringUtils.equals(columnName,"parent_id")) {
+                    column.setIsSubI18n(GenConstants.REQUIRE);
+                }
+        }
+
         // 插入字段（默认所有字段都需要插入）
-        column.setIsInsert(GenConstants.REQUIRE);
+        if (!column.isSubI18n()) {
+            column.setIsInsert(GenConstants.REQUIRE);
+        }
 
         // 编辑字段
-        if (!arraysContains(GenConstants.COLUMNNAME_NOT_EDIT, columnName) && !column.isPk())
+        if (!arraysContains(GenConstants.COLUMNNAME_NOT_EDIT, columnName) && !column.isPk() && !column.isSubI18n())
         {
             column.setIsEdit(GenConstants.REQUIRE);
         }
         // 列表字段
-        if (!arraysContains(GenConstants.COLUMNNAME_NOT_LIST, columnName) && !column.isPk())
+        if (!arraysContains(GenConstants.COLUMNNAME_NOT_LIST, columnName) && !column.isPk() && !column.isSubI18n())
         {
             column.setIsList(GenConstants.REQUIRE);
         }
         // 查询字段
-        if (!arraysContains(GenConstants.COLUMNNAME_NOT_QUERY, columnName) && !column.isPk())
+        if (!arraysContains(GenConstants.COLUMNNAME_NOT_QUERY, columnName) && !column.isPk() && !column.isSubI18n())
         {
             column.setIsQuery(GenConstants.REQUIRE);
         }
 
         // 查询字段类型
-        if (StringUtils.endsWithIgnoreCase(columnName, "name"))
+        if (StringUtils.endsWithIgnoreCase(columnName, "name") || column.isI18n())
         {
             column.setQueryType(GenConstants.QUERY_LIKE);
         }
