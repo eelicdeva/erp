@@ -16,7 +16,7 @@ import com.eelic.project.tool.geni18n.mapper.GenI18nTableColumnMapper;
 public class GenI18nTableColumnServiceImpl implements IGenI18nTableColumnService
 {
 	@Autowired
-	private GenI18nTableColumnMapper genI18NTableColumnMapper;
+	private GenI18nTableColumnMapper genI18nTableColumnMapper;
 
 	/**
      * 查询业务字段列表
@@ -27,31 +27,31 @@ public class GenI18nTableColumnServiceImpl implements IGenI18nTableColumnService
 	@Override
 	public List<GenI18nTableColumn> selectGenTableColumnListByTableId(Long tableId)
 	{
-	    return genI18NTableColumnMapper.selectGenTableColumnListByTableId(tableId);
+	    return genI18nTableColumnMapper.selectGenTableColumnListByTableId(tableId);
 	}
 	
     /**
      * 新增业务字段
      * 
-     * @param genI18NTableColumn 业务字段信息
+     * @param genI18nTableColumn 业务字段信息
      * @return 结果
      */
 	@Override
-	public int insertGenTableColumn(GenI18nTableColumn genI18NTableColumn)
+	public int insertGenTableColumn(GenI18nTableColumn genI18nTableColumn)
 	{
-	    return genI18NTableColumnMapper.insertGenTableColumn(genI18NTableColumn);
+	    return genI18nTableColumnMapper.insertGenTableColumn(genI18nTableColumn);
 	}
 	
 	/**
      * 修改业务字段
      * 
-     * @param genI18NTableColumn 业务字段信息
+     * @param genI18nTableColumn 业务字段信息
      * @return 结果
      */
 	@Override
-	public int updateGenTableColumn(GenI18nTableColumn genI18NTableColumn)
+	public int updateGenTableColumn(GenI18nTableColumn genI18nTableColumn)
 	{
-	    return genI18NTableColumnMapper.updateGenTableColumn(genI18NTableColumn);
+	    return genI18nTableColumnMapper.updateGenTableColumn(genI18nTableColumn);
 	}
 
 	/**
@@ -63,6 +63,6 @@ public class GenI18nTableColumnServiceImpl implements IGenI18nTableColumnService
 	@Override
 	public int deleteGenTableColumnByIds(String ids)
 	{
-		return genI18NTableColumnMapper.deleteGenTableColumnByIds(Convert.toLongArray(ids));
+		return genI18nTableColumnMapper.deleteGenTableColumnByIds(Convert.toLongArray(ids));
 	}
 }

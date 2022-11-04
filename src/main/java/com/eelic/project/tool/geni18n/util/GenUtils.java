@@ -18,15 +18,15 @@ public class GenUtils
     /**
      * 初始化表信息
      */
-    public static void initTable(GenI18nTable genI18NTable, String operName)
+    public static void initTable(GenI18nTable genI18nTable, String operName)
     {
-        genI18NTable.setClassName(convertClassName(genI18NTable.getTableName()));
-        genI18NTable.setPackageName(GenConfig.getPackageName());
-        genI18NTable.setModuleName(getModuleName(GenConfig.getPackageName()));
-        genI18NTable.setBusinessName(getBusinessName(genI18NTable.getTableName()));
-        genI18NTable.setFunctionName(replaceText(genI18NTable.getTableComment()));
-        genI18NTable.setFunctionAuthor(GenConfig.getAuthor());
-        genI18NTable.setCreateBy(operName);
+        genI18nTable.setClassName(convertClassName(genI18nTable.getTableName()));
+        genI18nTable.setPackageName(GenConfig.getPackageName());
+        genI18nTable.setModuleName(getModuleName(GenConfig.getPackageName()));
+        genI18nTable.setBusinessName(getBusinessName(genI18nTable.getTableName()));
+        genI18nTable.setFunctionName(replaceText(genI18nTable.getTableComment()));
+        genI18nTable.setFunctionAuthor(GenConfig.getAuthor());
+        genI18nTable.setCreateBy(operName);
     }
 
     /**

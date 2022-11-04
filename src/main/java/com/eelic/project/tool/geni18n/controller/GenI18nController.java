@@ -48,10 +48,10 @@ public class GenI18nController extends BaseController
      */
     @PreAuthorize("@ss.hasPermi('tool:gen:list')")
     @GetMapping("/list")
-    public TableDataInfo genList(GenI18nTable genI18NTable)
+    public TableDataInfo genList(GenI18nTable genI18nTable)
     {
         startPage();
-        List<GenI18nTable> list = genTableService.selectGenTableList(genI18NTable);
+        List<GenI18nTable> list = genTableService.selectGenTableList(genI18nTable);
         return getDataTable(list);
     }
 
@@ -77,10 +77,10 @@ public class GenI18nController extends BaseController
      */
     @PreAuthorize("@ss.hasPermi('tool:gen:list')")
     @GetMapping("/db/list")
-    public TableDataInfo dataList(GenI18nTable genI18NTable)
+    public TableDataInfo dataList(GenI18nTable genI18nTable)
     {
         startPage();
-        List<GenI18nTable> list = genTableService.selectDbTableList(genI18NTable);
+        List<GenI18nTable> list = genTableService.selectDbTableList(genI18nTable);
         return getDataTable(list);
     }
 
@@ -119,10 +119,10 @@ public class GenI18nController extends BaseController
     @PreAuthorize("@ss.hasPermi('tool:gen:edit')")
     @Log(title = "代码生成", businessType = BusinessType.UPDATE)
     @PutMapping
-    public AjaxResult editSave(@Validated @RequestBody GenI18nTable genI18NTable)
+    public AjaxResult editSave(@Validated @RequestBody GenI18nTable genI18nTable)
     {
-        genTableService.validateEdit(genI18NTable);
-        genTableService.updateGenTable(genI18NTable);
+        genTableService.validateEdit(genI18nTable);
+        genTableService.updateGenTable(genI18nTable);
         return AjaxResult.success();
     }
 

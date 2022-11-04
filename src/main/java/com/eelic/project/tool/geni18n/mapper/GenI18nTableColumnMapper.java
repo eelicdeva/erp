@@ -29,26 +29,26 @@ public interface GenI18nTableColumnMapper
     /**
      * 新增业务字段
      * 
-     * @param genI18NTableColumn 业务字段信息
+     * @param genI18nTableColumn 业务字段信息
      * @return 结果
      */
-    public int insertGenTableColumn(GenI18nTableColumn genI18NTableColumn);
+    public int insertGenTableColumn(GenI18nTableColumn genI18nTableColumn);
 
     /**
      * 修改业务字段
      * 
-     * @param genI18NTableColumn 业务字段信息
+     * @param genI18nTableColumn 业务字段信息
      * @return 结果
      */
-    public int updateGenTableColumn(GenI18nTableColumn genI18NTableColumn);
+    public int updateGenTableColumn(GenI18nTableColumn genI18nTableColumn);
 
     /**
      * 删除业务字段
      * 
-     * @param genI18NTableColumns 列数据
+     * @param genI18nTableColumns 列数据
      * @return 结果
      */
-    public int deleteGenTableColumns(List<GenI18nTableColumn> genI18NTableColumns);
+    public int deleteGenTableColumns(List<GenI18nTableColumn> genI18nTableColumns);
 
     /**
      * 批量删除业务字段

@@ -14,18 +14,18 @@ public interface IGenI18nTableService
     /**
      * 查询业务列表
      * 
-     * @param genI18NTable 业务信息
+     * @param genI18nTable 业务信息
      * @return 业务集合
      */
-    public List<GenI18nTable> selectGenTableList(GenI18nTable genI18NTable);
+    public List<GenI18nTable> selectGenTableList(GenI18nTable genI18nTable);
 
     /**
      * 查询据库列表
      * 
-     * @param genI18NTable 业务信息
+     * @param genI18nTable 业务信息
      * @return 数据库表集合
      */
-    public List<GenI18nTable> selectDbTableList(GenI18nTable genI18NTable);
+    public List<GenI18nTable> selectDbTableList(GenI18nTable genI18nTable);
 
     /**
      * 查询据库列表
@@ -53,10 +53,10 @@ public interface IGenI18nTableService
     /**
      * 修改业务
      * 
-     * @param genI18NTable 业务信息
+     * @param genI18nTable 业务信息
      * @return 结果
      */
-    public void updateGenTable(GenI18nTable genI18NTable);
+    public void updateGenTable(GenI18nTable genI18nTable);
 
     /**
      * 删除业务信息
@@ -115,7 +115,7 @@ public interface IGenI18nTableService
     /**
      * 修改保存参数校验
      * 
-     * @param genI18NTable 业务信息
+     * @param genI18nTable 业务信息
      */
-    public void validateEdit(GenI18nTable genI18NTable);
+    public void validateEdit(GenI18nTable genI18nTable);
 }

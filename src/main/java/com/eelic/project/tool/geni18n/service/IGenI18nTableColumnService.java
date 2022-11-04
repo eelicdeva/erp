@@ -21,18 +21,18 @@ public interface IGenI18nTableColumnService
     /**
      * 新增业务字段
      * 
-     * @param genI18NTableColumn 业务字段信息
+     * @param genI18nTableColumn 业务字段信息
      * @return 结果
      */
-    public int insertGenTableColumn(GenI18nTableColumn genI18NTableColumn);
+    public int insertGenTableColumn(GenI18nTableColumn genI18nTableColumn);
 
     /**
      * 修改业务字段
      * 
-     * @param genI18NTableColumn 业务字段信息
+     * @param genI18nTableColumn 业务字段信息
      * @return 结果
      */
-    public int updateGenTableColumn(GenI18nTableColumn genI18NTableColumn);
+    public int updateGenTableColumn(GenI18nTableColumn genI18nTableColumn);
 
     /**
      * 删除业务字段信息
