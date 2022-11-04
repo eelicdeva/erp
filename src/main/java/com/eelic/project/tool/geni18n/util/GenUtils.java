@@ -5,8 +5,8 @@ import org.apache.commons.lang3.RegExUtils;
 import com.ruoyi.common.constant.GenConstants;
 import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.framework.config.GenConfig;
-import com.eelic.project.tool.geni18n.domain.GenTablei18n;
-import com.eelic.project.tool.geni18n.domain.GenTableColumni18n;
+import com.eelic.project.tool.geni18n.domain.GenI18nTable;
+import com.eelic.project.tool.geni18n.domain.GenI18nTableColumn;
 
 /**
  * 代码生成器 工具类
@@ -18,21 +18,21 @@ public class GenUtils
     /**
      * 初始化表信息
      */
-    public static void initTable(GenTablei18n genTablei18n, String operName)
+    public static void initTable(GenI18nTable genI18NTable, String operName)
     {
-        genTablei18n.setClassName(convertClassName(genTablei18n.getTableName()));
-        genTablei18n.setPackageName(GenConfig.getPackageName());
-        genTablei18n.setModuleName(getModuleName(GenConfig.getPackageName()));
-        genTablei18n.setBusinessName(getBusinessName(genTablei18n.getTableName()));
-        genTablei18n.setFunctionName(replaceText(genTablei18n.getTableComment()));
-        genTablei18n.setFunctionAuthor(GenConfig.getAuthor());
-        genTablei18n.setCreateBy(operName);
+        genI18NTable.setClassName(convertClassName(genI18NTable.getTableName()));
+        genI18NTable.setPackageName(GenConfig.getPackageName());
+        genI18NTable.setModuleName(getModuleName(GenConfig.getPackageName()));
+        genI18NTable.setBusinessName(getBusinessName(genI18NTable.getTableName()));
+        genI18NTable.setFunctionName(replaceText(genI18NTable.getTableComment()));
+        genI18NTable.setFunctionAuthor(GenConfig.getAuthor());
+        genI18NTable.setCreateBy(operName);
     }
 
     /**
      * 初始化列属性字段
      */
-    public static void initColumnField(GenTableColumni18n column, GenTablei18n table)
+    public static void initColumnField(GenI18nTableColumn column, GenI18nTable table)
     {
         String dataType = getDbType(column.getColumnType());
         String columnName = column.getColumnName();

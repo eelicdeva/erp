@@ -9,7 +9,7 @@ import com.ruoyi.framework.web.domain.BaseEntity;
  * 
  * @author ruoyi
  */
-public class GenTableColumni18n extends BaseEntity
+public class GenI18nTableColumn extends BaseEntity
 {
     private static final long serialVersionUID = 1L;
 

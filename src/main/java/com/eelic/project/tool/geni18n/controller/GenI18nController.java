@@ -23,10 +23,10 @@ import com.ruoyi.framework.aspectj.lang.enums.BusinessType;
 import com.ruoyi.framework.web.controller.BaseController;
 import com.ruoyi.framework.web.domain.AjaxResult;
 import com.ruoyi.framework.web.page.TableDataInfo;
-import com.eelic.project.tool.geni18n.domain.GenTablei18n;
-import com.eelic.project.tool.geni18n.domain.GenTableColumni18n;
-import com.eelic.project.tool.geni18n.service.IGenTableColumnServicei18n;
-import com.eelic.project.tool.geni18n.service.IGenTableServicei18n;
+import com.eelic.project.tool.geni18n.domain.GenI18nTable;
+import com.eelic.project.tool.geni18n.domain.GenI18nTableColumn;
+import com.eelic.project.tool.geni18n.service.IGenI18nTableColumnService;
+import com.eelic.project.tool.geni18n.service.IGenI18nTableService;
 
 /**
  * 代码生成 操作处理
@@ -35,23 +35,23 @@ import com.eelic.project.tool.geni18n.service.IGenTableServicei18n;
  */
 @RestController
 @RequestMapping("/tool/geni18n")
-public class GenControlleri18n extends BaseController
+public class GenI18nController extends BaseController
 {
     @Autowired
-    private IGenTableServicei18n genTableService;
+    private IGenI18nTableService genTableService;
 
     @Autowired
-    private IGenTableColumnServicei18n genTableColumnService;
+    private IGenI18nTableColumnService genTableColumnService;
 
     /**
      * 查询代码生成列表
      */
     @PreAuthorize("@ss.hasPermi('tool:gen:list')")
     @GetMapping("/list")
-    public TableDataInfo genList(GenTablei18n genTablei18n)
+    public TableDataInfo genList(GenI18nTable genI18NTable)
     {
         startPage();
-        List<GenTablei18n> list = genTableService.selectGenTableList(genTablei18n);
+        List<GenI18nTable> list = genTableService.selectGenTableList(genI18NTable);
         return getDataTable(list);
     }
 
@@ -62,9 +62,9 @@ public class GenControlleri18n extends BaseController
     @GetMapping(value = "/{talbleId}")
     public AjaxResult getInfo(@PathVariable Long talbleId)
     {
-        GenTablei18n table = genTableService.selectGenTableById(talbleId);
-        List<GenTablei18n> tables = genTableService.selectGenTableAll();
-        List<GenTableColumni18n> list = genTableColumnService.selectGenTableColumnListByTableId(talbleId);
+        GenI18nTable table = genTableService.selectGenTableById(talbleId);
+        List<GenI18nTable> tables = genTableService.selectGenTableAll();
+        List<GenI18nTableColumn> list = genTableColumnService.selectGenTableColumnListByTableId(talbleId);
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("info", table);
         map.put("rows", list);
@@ -77,10 +77,10 @@ public class GenControlleri18n extends BaseController
      */
     @PreAuthorize("@ss.hasPermi('tool:gen:list')")
     @GetMapping("/db/list")
-    public TableDataInfo dataList(GenTablei18n genTablei18n)
+    public TableDataInfo dataList(GenI18nTable genI18NTable)
     {
         startPage();
-        List<GenTablei18n> list = genTableService.selectDbTableList(genTablei18n);
+        List<GenI18nTable> list = genTableService.selectDbTableList(genI18NTable);
         return getDataTable(list);
     }
 
@@ -92,7 +92,7 @@ public class GenControlleri18n extends BaseController
     public TableDataInfo columnList(Long tableId)
     {
         TableDataInfo dataInfo = new TableDataInfo();
-        List<GenTableColumni18n> list = genTableColumnService.selectGenTableColumnListByTableId(tableId);
+        List<GenI18nTableColumn> list = genTableColumnService.selectGenTableColumnListByTableId(tableId);
         dataInfo.setRows(list);
         dataInfo.setTotal(list.size());
         return dataInfo;
@@ -108,7 +108,7 @@ public class GenControlleri18n extends BaseController
     {
         String[] tableNames = Convert.toStrArray(tables);
         // 查询表信息
-        List<GenTablei18n> tableList = genTableService.selectDbTableListByNames(tableNames);
+        List<GenI18nTable> tableList = genTableService.selectDbTableListByNames(tableNames);
         genTableService.importGenTable(tableList);
         return AjaxResult.success();
     }
@@ -119,10 +119,10 @@ public class GenControlleri18n extends BaseController
     @PreAuthorize("@ss.hasPermi('tool:gen:edit')")
     @Log(title = "代码生成", businessType = BusinessType.UPDATE)
     @PutMapping
-    public AjaxResult editSave(@Validated @RequestBody GenTablei18n genTablei18n)
+    public AjaxResult editSave(@Validated @RequestBody GenI18nTable genI18NTable)
     {
-        genTableService.validateEdit(genTablei18n);
-        genTableService.updateGenTable(genTablei18n);
+        genTableService.validateEdit(genI18NTable);
+        genTableService.updateGenTable(genI18NTable);
         return AjaxResult.success();
     }
 

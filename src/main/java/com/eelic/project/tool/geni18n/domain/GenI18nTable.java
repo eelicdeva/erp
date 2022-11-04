@@ -13,7 +13,7 @@ import com.ruoyi.framework.web.domain.BaseEntity;
  * 
  * @author ruoyi
  */
-public class GenTablei18n extends BaseEntity
+public class GenI18nTable extends BaseEntity
 {
     private static final long serialVersionUID = 1L;
 
@@ -68,14 +68,14 @@ public class GenTablei18n extends BaseEntity
     private String genPath;
 
     /** 主键信息 */
-    private GenTableColumni18n pkColumn;
+    private GenI18nTableColumn pkColumn;
 
     /** 子表信息 */
-    private GenTablei18n subTable;
+    private GenI18nTable subTable;
 
     /** 表列信息 */
     @Valid
-    private List<GenTableColumni18n> columns;
+    private List<GenI18nTableColumn> columns;
 
     /** 其它生成选项 */
     private String options;
@@ -235,32 +235,32 @@ public class GenTablei18n extends BaseEntity
         this.genPath = genPath;
     }
 
-    public GenTableColumni18n getPkColumn()
+    public GenI18nTableColumn getPkColumn()
     {
         return pkColumn;
     }
 
-    public void setPkColumn(GenTableColumni18n pkColumn)
+    public void setPkColumn(GenI18nTableColumn pkColumn)
     {
         this.pkColumn = pkColumn;
     }
 
-    public GenTablei18n getSubTable()
+    public GenI18nTable getSubTable()
     {
         return subTable;
     }
 
-    public void setSubTable(GenTablei18n subTable)
+    public void setSubTable(GenI18nTable subTable)
     {
         this.subTable = subTable;
     }
 
-    public List<GenTableColumni18n> getColumns()
+    public List<GenI18nTableColumn> getColumns()
     {
         return columns;
     }
 
-    public void setColumns(List<GenTableColumni18n> columns)
+    public void setColumns(List<GenI18nTableColumn> columns)
     {
         this.columns = columns;
     }

@@ -2,30 +2,30 @@ package com.eelic.project.tool.geni18n.service;
 
 import java.util.List;
 import java.util.Map;
-import com.eelic.project.tool.geni18n.domain.GenTablei18n;
+import com.eelic.project.tool.geni18n.domain.GenI18nTable;
 
 /**
  * 业务 服务层
  * 
  * @author ruoyi
  */
-public interface IGenTableServicei18n
+public interface IGenI18nTableService
 {
     /**
      * 查询业务列表
      * 
-     * @param genTablei18n 业务信息
+     * @param genI18NTable 业务信息
      * @return 业务集合
      */
-    public List<GenTablei18n> selectGenTableList(GenTablei18n genTablei18n);
+    public List<GenI18nTable> selectGenTableList(GenI18nTable genI18NTable);
 
     /**
      * 查询据库列表
      * 
-     * @param genTablei18n 业务信息
+     * @param genI18NTable 业务信息
      * @return 数据库表集合
      */
-    public List<GenTablei18n> selectDbTableList(GenTablei18n genTablei18n);
+    public List<GenI18nTable> selectDbTableList(GenI18nTable genI18NTable);
 
     /**
      * 查询据库列表
@@ -33,14 +33,14 @@ public interface IGenTableServicei18n
      * @param tableNames 表名称组
      * @return 数据库表集合
      */
-    public List<GenTablei18n> selectDbTableListByNames(String[] tableNames);
+    public List<GenI18nTable> selectDbTableListByNames(String[] tableNames);
 
     /**
      * 查询所有表信息
      * 
      * @return 表信息集合
      */
-    public List<GenTablei18n> selectGenTableAll();
+    public List<GenI18nTable> selectGenTableAll();
 
     /**
      * 查询业务信息
@@ -48,15 +48,15 @@ public interface IGenTableServicei18n
      * @param id 业务ID
      * @return 业务信息
      */
-    public GenTablei18n selectGenTableById(Long id);
+    public GenI18nTable selectGenTableById(Long id);
 
     /**
      * 修改业务
      * 
-     * @param genTablei18n 业务信息
+     * @param genI18NTable 业务信息
      * @return 结果
      */
-    public void updateGenTable(GenTablei18n genTablei18n);
+    public void updateGenTable(GenI18nTable genI18NTable);
 
     /**
      * 删除业务信息
@@ -71,7 +71,7 @@ public interface IGenTableServicei18n
      * 
      * @param tableList 导入表列表
      */
-    public void importGenTable(List<GenTablei18n> tableList);
+    public void importGenTable(List<GenI18nTable> tableList);
 
     /**
      * 预览代码
@@ -115,7 +115,7 @@ public interface IGenTableServicei18n
     /**
      * 修改保存参数校验
      * 
-     * @param genTablei18n 业务信息
+     * @param genI18NTable 业务信息
      */
-    public void validateEdit(GenTablei18n genTablei18n);
+    public void validateEdit(GenI18nTable genI18NTable);
 }
