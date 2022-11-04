@@ -95,6 +95,12 @@ public class GenTablei18n extends BaseEntity
     /** 上级菜单名称字段 */
     private String parentMenuName;
 
+    private String chartType;
+
+    private String xAxisChart;
+
+    private String yAxisChart;
+
     public Long getTableId()
     {
         return tableId;
@@ -368,5 +374,29 @@ public class GenTablei18n extends BaseEntity
                     ArrayUtils.addAll(GenConstants.TREE_ENTITY, GenConstants.BASE_ENTITY));
         }
         return StringUtils.equalsAnyIgnoreCase(javaField, GenConstants.BASE_ENTITY);
+    }
+
+    public String getChartType() {
+        return chartType;
+    }
+
+    public void setChartType(String chartType) {
+        this.chartType = chartType;
+    }
+
+    public String getxAxisChart() {
+        return xAxisChart;
+    }
+
+    public void setxAxisChart(String xAxisChart) {
+        this.xAxisChart = xAxisChart;
+    }
+
+    public String getyAxisChart() {
+        return yAxisChart;
+    }
+
+    public void setyAxisChart(String yAxisChart) {
+        this.yAxisChart = yAxisChart;
     }
 }
