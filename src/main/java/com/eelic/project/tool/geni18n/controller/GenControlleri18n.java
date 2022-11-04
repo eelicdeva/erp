@@ -25,8 +25,8 @@ import com.ruoyi.framework.web.domain.AjaxResult;
 import com.ruoyi.framework.web.page.TableDataInfo;
 import com.eelic.project.tool.geni18n.domain.GenTablei18n;
 import com.eelic.project.tool.geni18n.domain.GenTableColumni18n;
-import com.eelic.project.tool.geni18n.service.IGenTableColumnService;
-import com.eelic.project.tool.geni18n.service.IGenTableService;
+import com.eelic.project.tool.geni18n.service.IGenTableColumnServicei18n;
+import com.eelic.project.tool.geni18n.service.IGenTableServicei18n;
 
 /**
  * 代码生成 操作处理
@@ -38,10 +38,10 @@ import com.eelic.project.tool.geni18n.service.IGenTableService;
 public class GenControlleri18n extends BaseController
 {
     @Autowired
-    private IGenTableService genTableService;
+    private IGenTableServicei18n genTableService;
 
     @Autowired
-    private IGenTableColumnService genTableColumnService;
+    private IGenTableColumnServicei18n genTableColumnService;
 
     /**
      * 查询代码生成列表

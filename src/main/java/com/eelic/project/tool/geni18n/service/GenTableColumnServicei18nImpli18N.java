@@ -13,7 +13,7 @@ import com.eelic.project.tool.geni18n.mapper.GenTableColumnMapperi18n;
  * @author ruoyi
  */
 @Service
-public class GenTableColumnServiceImpl implements IGenTableColumnService 
+public class GenTableColumnServicei18nImpli18N implements IGenTableColumnServicei18n
 {
 	@Autowired
 	private GenTableColumnMapperi18n genTableColumnMapperi18n;

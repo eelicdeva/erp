@@ -43,9 +43,9 @@ import com.eelic.project.tool.geni18n.util.VelocityUtils;
  * @author ruoyi
  */
 @Service
-public class GenTableServiceImpl implements IGenTableService
+public class GenTableServiceImpli18n implements IGenTableServicei18n
 {
-    private static final Logger log = LoggerFactory.getLogger(GenTableServiceImpl.class);
+    private static final Logger log = LoggerFactory.getLogger(GenTableServiceImpli18n.class);
 
     @Autowired
     private GenTableMapperi18n genTableMapper;

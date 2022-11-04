@@ -8,7 +8,7 @@ import com.eelic.project.tool.geni18n.domain.GenTableColumni18n;
  * 
  * @author ruoyi
  */
-public interface IGenTableColumnService
+public interface IGenTableColumnServicei18n
 {
     /**
      * 查询业务字段列表

@@ -9,7 +9,7 @@ import com.eelic.project.tool.geni18n.domain.GenTablei18n;
  * 
  * @author ruoyi
  */
-public interface IGenTableService
+public interface IGenTableServicei18n
 {
     /**
      * 查询业务列表
