@@ -5,7 +5,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import com.eelic.common.constant.GenConstantsI18n;
+import com.eelic.common.constant.GenI18nConstants;
 import org.apache.velocity.VelocityContext;
 import com.alibaba.fastjson2.JSON;
 import com.alibaba.fastjson2.JSONObject;
@@ -169,7 +169,7 @@ public class VelocityUtils
             templates.add("vm/vue/v3/index.vue.vm");
             templates.add("vm/java/sub-domain.java.vm");
         }
-        else if (GenConstantsI18n.TPL_CRUD.equals(tplCategory))
+        else if (GenI18nConstants.TPL_CRUD.equals(tplCategory))
         {
             templates.add("vmi18n/java/domain.java.vm");
             templates.add("vmi18n/java/mapper.java.vm");
@@ -185,7 +185,7 @@ public class VelocityUtils
             templates.add("vmi18n/lang/zh.js.vm");
 
         }
-        else if (GenConstantsI18n.TPL_TREE.equals(tplCategory))
+        else if (GenI18nConstants.TPL_TREE.equals(tplCategory))
         {
             templates.add("vmi18n/java/domain.java.vm");
             templates.add("vmi18n/java/mapper.java.vm");
@@ -201,7 +201,7 @@ public class VelocityUtils
             templates.add("vmi18n/lang/zh.js.vm");
         }
 
-        else if (GenConstantsI18n.TPL_SUB.equals(tplCategory))
+        else if (GenI18nConstants.TPL_SUB.equals(tplCategory))
         {
             templates.add("vmi18n/java/domain.java.vm");
             templates.add("vmi18n/java/mapper.java.vm");

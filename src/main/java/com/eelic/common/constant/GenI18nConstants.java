@@ -5,7 +5,7 @@ package com.eelic.common.constant;
  * 
  * @author ruoyi
  */
-public class GenConstantsI18n
+public class GenI18nConstants
 {
     /** 单表（增删改查） */
     public static final String TPL_CRUD = "crudi18n";
