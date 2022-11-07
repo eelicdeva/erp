@@ -217,6 +217,7 @@ public class VelocityUtils
             templates.add("vmi18n/lang/id.js.vm");
             templates.add("vmi18n/lang/zh.js.vm");
         }
+        templates.add("vmi18n/vue/v3/statistics.vue.vm");
         return templates;
     }
 
@@ -283,6 +284,10 @@ public class VelocityUtils
         else if (template.contains("index-tree.vue.vm"))
         {
             fileName = StringUtils.format("{}/views/{}/{}/index.vue", vuePath, moduleName, businessName);
+        }
+        else if (template.contains("statistics.vue.vm"))
+        {
+            fileName = StringUtils.format("{}/views/{}/{}/statistics.vue", vuePath, moduleName, businessName);
         }
         else if (template.contains("en.js.vm"))
         {
