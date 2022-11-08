@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.eelic.project.tool.demo.mapper.ErpProductDemoMapper">
+    
+    <resultMap type="ErpProductDemo" id="ErpProductDemoResult">
+        <result property="idProductLa"    column="id_product_la"    />
+        <result property="skuLazada"    column="sku_lazada"    />
+        <result property="skuEelic"    column="sku_eelic"    />
+        <result property="skuNameLa"    column="sku_name_la"    />
+        <result property="skuNameLaId"    column="sku_name_la_id"    />
+        <result property="skuNameLaEn"    column="sku_name_la_en"    />
+        <result property="shortDescription"    column="short_description"    />
+        <result property="shortDescriptionEn"    column="short_description_en"    />
+        <result property="shortDescriptionId"    column="short_description_id"    />
+        <result property="description"    column="description"    />
+        <result property="descriptionId"    column="description_id"    />
+        <result property="descriptionEn"    column="description_en"    />
+        <result property="model"    column="model"    />
+        <result property="packageContent"    column="package_content"    />
+        <result property="packageWeight"    column="package_weight"    />
+        <result property="packageLength"    column="package_length"    />
+        <result property="packageWidth"    column="package_width"    />
+        <result property="packageHeight"    column="package_height"    />
+        <result property="price"    column="price"    />
+        <result property="specialPrice"    column="special_price"    />
+        <result property="quantity"    column="quantity"    />
+        <result property="primaryCategory"    column="primary_category"    />
+        <result property="statusLa"    column="status_la"    />
+        <result property="colorFamily"    column="color_family"    />
+        <result property="fblLa"    column="fbl_la"    />
+        <result property="simage1"    column="simage1"    />
+        <result property="simage2"    column="simage2"    />
+        <result property="simage3"    column="simage3"    />
+        <result property="simage4"    column="simage4"    />
+        <result property="simage5"    column="simage5"    />
+        <result property="simage6"    column="simage6"    />
+        <result property="simage7"    column="simage7"    />
+        <result property="simage8"    column="simage8"    />
+        <result property="status"    column="status"    />
+        <result property="delFlag"    column="del_flag"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="remark"    column="remark"    />
+    </resultMap>
+
+    <sql id="selectErpProductDemoVo">
+        select id_product_la, sku_lazada, sku_eelic, sku_name_la, sku_name_la_id, sku_name_la_en, short_description, short_description_en, short_description_id, description, description_id, description_en, model, package_content, package_weight, package_length, package_width, package_height, price, special_price, quantity, primary_category, status_la, color_family, fbl_la, simage1, simage2, simage3, simage4, simage5, simage6, simage7, simage8, status, del_flag, create_by, create_time, update_by, update_time, remark from erp_product_demo
+    </sql>
+
+    <select id="selectErpProductDemoList" parameterType="ErpProductDemo" resultMap="ErpProductDemoResult">
+        <include refid="selectErpProductDemoVo"/>
+        <where>  
+            <if test="skuLazada != null  and skuLazada != ''"> and sku_lazada = #{skuLazada}</if>
+            <if test="skuEelic != null  and skuEelic != ''"> and sku_eelic = #{skuEelic}</if>
+            <if test="skuNameLa != null  and skuNameLa != ''"> and sku_name_la = #{skuNameLa}</if>
+            <if test="shortDescription != null  and shortDescription != ''"> and short_description = #{shortDescription}</if>
+            <if test="description != null  and description != ''"> and description = #{description}</if>
+            <if test="model != null  and model != ''"> and model = #{model}</if>
+            <if test="packageContent != null  and packageContent != ''"> and package_content = #{packageContent}</if>
+            <if test="packageWeight != null "> and package_weight = #{packageWeight}</if>
+            <if test="packageLength != null "> and package_length = #{packageLength}</if>
+            <if test="packageWidth != null "> and package_width = #{packageWidth}</if>
+            <if test="packageHeight != null "> and package_height = #{packageHeight}</if>
+            <if test="price != null "> and price = #{price}</if>
+            <if test="specialPrice != null "> and special_price = #{specialPrice}</if>
+            <if test="quantity != null "> and quantity = #{quantity}</if>
+            <if test="primaryCategory != null  and primaryCategory != ''"> and primary_category = #{primaryCategory}</if>
+            <if test="statusLa != null  and statusLa != ''"> and status_la = #{statusLa}</if>
+            <if test="colorFamily != null  and colorFamily != ''"> and color_family = #{colorFamily}</if>
+            <if test="fblLa != null "> and fbl_la = #{fblLa}</if>
+            <if test="simage1 != null  and simage1 != ''"> and simage1 = #{simage1}</if>
+            <if test="simage2 != null  and simage2 != ''"> and simage2 = #{simage2}</if>
+            <if test="simage3 != null  and simage3 != ''"> and simage3 = #{simage3}</if>
+            <if test="simage4 != null  and simage4 != ''"> and simage4 = #{simage4}</if>
+            <if test="simage5 != null  and simage5 != ''"> and simage5 = #{simage5}</if>
+            <if test="simage6 != null  and simage6 != ''"> and simage6 = #{simage6}</if>
+            <if test="simage7 != null  and simage7 != ''"> and simage7 = #{simage7}</if>
+            <if test="simage8 != null  and simage8 != ''"> and simage8 = #{simage8}</if>
+            <if test="status != null  and status != ''"> and status = #{status}</if>
+        </where>
+    </select>
+    
+    <select id="selectErpProductDemoByIdProductLa" parameterType="Long" resultMap="ErpProductDemoResult">
+    </select>
+        
+    <insert id="insertErpProductDemo" parameterType="ErpProductDemo" useGeneratedKeys="true" keyProperty="idProductLa">
+        insert into erp_product_demo
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="skuLazada != null">sku_lazada,</if>
+            <if test="skuEelic != null and skuEelic != ''">sku_eelic,</if>
+            <if test="skuNameLa != null">sku_name_la,</if>
+            <if test="skuNameLaId != null">sku_name_la_id,</if>
+            <if test="skuNameLaEn != null">sku_name_la_en,</if>
+            <if test="shortDescription != null">short_description,</if>
+            <if test="shortDescriptionEn != null">short_description_en,</if>
+            <if test="shortDescriptionId != null">short_description_id,</if>
+            <if test="description != null">description,</if>
+            <if test="descriptionId != null">description_id,</if>
+            <if test="descriptionEn != null">description_en,</if>
+            <if test="model != null">model,</if>
+            <if test="packageContent != null">package_content,</if>
+            <if test="packageWeight != null">package_weight,</if>
+            <if test="packageLength != null">package_length,</if>
+            <if test="packageWidth != null">package_width,</if>
+            <if test="packageHeight != null">package_height,</if>
+            <if test="price != null">price,</if>
+            <if test="specialPrice != null">special_price,</if>
+            <if test="quantity != null">quantity,</if>
+            <if test="primaryCategory != null">primary_category,</if>
+            <if test="statusLa != null">status_la,</if>
+            <if test="colorFamily != null">color_family,</if>
+            <if test="fblLa != null">fbl_la,</if>
+            <if test="simage1 != null">simage1,</if>
+            <if test="simage2 != null">simage2,</if>
+            <if test="simage3 != null">simage3,</if>
+            <if test="simage4 != null">simage4,</if>
+            <if test="simage5 != null">simage5,</if>
+            <if test="simage6 != null">simage6,</if>
+            <if test="simage7 != null">simage7,</if>
+            <if test="simage8 != null">simage8,</if>
+            <if test="status != null">status,</if>
+            <if test="delFlag != null">del_flag,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="remark != null">remark,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="skuLazada != null">#{skuLazada},</if>
+            <if test="skuEelic != null and skuEelic != ''">#{skuEelic},</if>
+            <if test="skuNameLa != null">#{skuNameLa},</if>
+            <if test="skuNameLaId != null">#{skuNameLaId},</if>
+            <if test="skuNameLaEn != null">#{skuNameLaEn},</if>
+            <if test="shortDescription != null">#{shortDescription},</if>
+            <if test="shortDescriptionEn != null">#{shortDescriptionEn},</if>
+            <if test="shortDescriptionId != null">#{shortDescriptionId},</if>
+            <if test="description != null">#{description},</if>
+            <if test="descriptionId != null">#{descriptionId},</if>
+            <if test="descriptionEn != null">#{descriptionEn},</if>
+            <if test="model != null">#{model},</if>
+            <if test="packageContent != null">#{packageContent},</if>
+            <if test="packageWeight != null">#{packageWeight},</if>
+            <if test="packageLength != null">#{packageLength},</if>
+            <if test="packageWidth != null">#{packageWidth},</if>
+            <if test="packageHeight != null">#{packageHeight},</if>
+            <if test="price != null">#{price},</if>
+            <if test="specialPrice != null">#{specialPrice},</if>
+            <if test="quantity != null">#{quantity},</if>
+            <if test="primaryCategory != null">#{primaryCategory},</if>
+            <if test="statusLa != null">#{statusLa},</if>
+            <if test="colorFamily != null">#{colorFamily},</if>
+            <if test="fblLa != null">#{fblLa},</if>
+            <if test="simage1 != null">#{simage1},</if>
+            <if test="simage2 != null">#{simage2},</if>
+            <if test="simage3 != null">#{simage3},</if>
+            <if test="simage4 != null">#{simage4},</if>
+            <if test="simage5 != null">#{simage5},</if>
+            <if test="simage6 != null">#{simage6},</if>
+            <if test="simage7 != null">#{simage7},</if>
+            <if test="simage8 != null">#{simage8},</if>
+            <if test="status != null">#{status},</if>
+            <if test="delFlag != null">#{delFlag},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="remark != null">#{remark},</if>
+         </trim>
+    </insert>
+
+    <update id="updateErpProductDemo" parameterType="ErpProductDemo">
+        update erp_product_demo
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="skuLazada != null">sku_lazada = #{skuLazada},</if>
+            <if test="skuEelic != null and skuEelic != ''">sku_eelic = #{skuEelic},</if>
+            <if test="skuNameLa != null">sku_name_la = #{skuNameLa},</if>
+            <if test="skuNameLaId != null">sku_name_la_id = #{skuNameLaId},</if>
+            <if test="skuNameLaEn != null">sku_name_la_en = #{skuNameLaEn},</if>
+            <if test="shortDescription != null">short_description = #{shortDescription},</if>
+            <if test="shortDescriptionEn != null">short_description_en = #{shortDescriptionEn},</if>
+            <if test="shortDescriptionId != null">short_description_id = #{shortDescriptionId},</if>
+            <if test="description != null">description = #{description},</if>
+            <if test="descriptionId != null">description_id = #{descriptionId},</if>
+            <if test="descriptionEn != null">description_en = #{descriptionEn},</if>
+            <if test="model != null">model = #{model},</if>
+            <if test="packageContent != null">package_content = #{packageContent},</if>
+            <if test="packageWeight != null">package_weight = #{packageWeight},</if>
+            <if test="packageLength != null">package_length = #{packageLength},</if>
+            <if test="packageWidth != null">package_width = #{packageWidth},</if>
+            <if test="packageHeight != null">package_height = #{packageHeight},</if>
+            <if test="price != null">price = #{price},</if>
+            <if test="specialPrice != null">special_price = #{specialPrice},</if>
+            <if test="quantity != null">quantity = #{quantity},</if>
+            <if test="primaryCategory != null">primary_category = #{primaryCategory},</if>
+            <if test="statusLa != null">status_la = #{statusLa},</if>
+            <if test="colorFamily != null">color_family = #{colorFamily},</if>
+            <if test="fblLa != null">fbl_la = #{fblLa},</if>
+            <if test="simage1 != null">simage1 = #{simage1},</if>
+            <if test="simage2 != null">simage2 = #{simage2},</if>
+            <if test="simage3 != null">simage3 = #{simage3},</if>
+            <if test="simage4 != null">simage4 = #{simage4},</if>
+            <if test="simage5 != null">simage5 = #{simage5},</if>
+            <if test="simage6 != null">simage6 = #{simage6},</if>
+            <if test="simage7 != null">simage7 = #{simage7},</if>
+            <if test="simage8 != null">simage8 = #{simage8},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="delFlag != null">del_flag = #{delFlag},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="remark != null">remark = #{remark},</if>
+        </trim>
+        where id_product_la = #{idProductLa}
+    </update>
+
+    <delete id="deleteErpProductDemoByIdProductLa" parameterType="Long">
+        delete from erp_product_demo where id_product_la = #{idProductLa}
+    </delete>
+
+    <delete id="deleteErpProductDemoByIdProductLas" parameterType="String">
+        delete from erp_product_demo where id_product_la in 
+        <foreach item="idProductLa" collection="array" open="(" separator="," close=")">
+            #{idProductLa}
+        </foreach>
+    </delete>
+</mapper>
