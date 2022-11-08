@@ -2,7 +2,7 @@ package com.eelic.project.tool.geni18n.util;
 
 import java.util.Arrays;
 import org.apache.commons.lang3.RegExUtils;
-import com.ruoyi.common.constant.GenConstants;
+import com.eelic.common.constant.GenI18nConstants;
 import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.framework.config.GenConfig;
 import com.eelic.project.tool.geni18n.domain.GenI18nTable;
@@ -41,40 +41,40 @@ public class GenUtils
         // 设置java字段名
         column.setJavaField(StringUtils.toCamelCase(columnName));
         // 设置默认类型
-        column.setJavaType(GenConstants.TYPE_STRING);
-        column.setQueryType(GenConstants.QUERY_EQ);
+        column.setJavaType(GenI18nConstants.TYPE_STRING);
+        column.setQueryType(GenI18nConstants.QUERY_EQ);
 
-        if (arraysContains(GenConstants.COLUMNTYPE_STR, dataType) || arraysContains(GenConstants.COLUMNTYPE_TEXT, dataType))
+        if (arraysContains(GenI18nConstants.COLUMNTYPE_STR, dataType) || arraysContains(GenI18nConstants.COLUMNTYPE_TEXT, dataType))
         {
             // 字符串长度超过500设置为文本域
             Integer columnLength = getColumnLength(column.getColumnType());
-            String htmlType = columnLength >= 500 || arraysContains(GenConstants.COLUMNTYPE_TEXT, dataType) ? GenConstants.HTML_TEXTAREA : GenConstants.HTML_INPUT;
+            String htmlType = columnLength >= 500 || arraysContains(GenI18nConstants.COLUMNTYPE_TEXT, dataType) ? GenI18nConstants.HTML_TEXTAREA : GenI18nConstants.HTML_INPUT;
             column.setHtmlType(htmlType);
         }
-        else if (arraysContains(GenConstants.COLUMNTYPE_TIME, dataType))
+        else if (arraysContains(GenI18nConstants.COLUMNTYPE_TIME, dataType))
         {
-            column.setJavaType(GenConstants.TYPE_DATE);
-            column.setHtmlType(GenConstants.HTML_DATETIME);
+            column.setJavaType(GenI18nConstants.TYPE_DATE);
+            column.setHtmlType(GenI18nConstants.HTML_DATETIME);
         }
-        else if (arraysContains(GenConstants.COLUMNTYPE_NUMBER, dataType))
+        else if (arraysContains(GenI18nConstants.COLUMNTYPE_NUMBER, dataType))
         {
-            column.setHtmlType(GenConstants.HTML_INPUT);
+            column.setHtmlType(GenI18nConstants.HTML_INPUT);
 
             // 如果是浮点型 统一用BigDecimal
             String[] str = StringUtils.split(StringUtils.substringBetween(column.getColumnType(), "(", ")"), ",");
             if (str != null && str.length == 2 && Integer.parseInt(str[1]) > 0)
             {
-                column.setJavaType(GenConstants.TYPE_BIGDECIMAL);
+                column.setJavaType(GenI18nConstants.TYPE_BIGDECIMAL);
             }
             // 如果是整形
             else if (str != null && str.length == 1 && Integer.parseInt(str[0]) <= 10)
             {
-                column.setJavaType(GenConstants.TYPE_INTEGER);
+                column.setJavaType(GenI18nConstants.TYPE_INTEGER);
             }
             // 长整形
             else
             {
-                column.setJavaType(GenConstants.TYPE_LONG);
+                column.setJavaType(GenI18nConstants.TYPE_LONG);
             }
         }
 
@@ -82,61 +82,61 @@ public class GenUtils
         if (StringUtils.endsWithIgnoreCase(columnName, "_en") || StringUtils.endsWithIgnoreCase(columnName, "_id") || StringUtils.endsWithIgnoreCase(columnName, "_tw"))
         {
                 if (!column.isPk() && !StringUtils.equals(columnName,"parent_id")) {
-                    column.setIsSubI18n(GenConstants.REQUIRE);
+                    column.setIsSubI18n(GenI18nConstants.REQUIRE);
                 }
         }
 
         // 插入字段（默认所有字段都需要插入）
         if (!column.isSubI18n()) {
-            column.setIsInsert(GenConstants.REQUIRE);
+            column.setIsInsert(GenI18nConstants.REQUIRE);
         }
 
         // 编辑字段
-        if (!arraysContains(GenConstants.COLUMNNAME_NOT_EDIT, columnName) && !column.isPk() && !column.isSubI18n())
+        if (!arraysContains(GenI18nConstants.COLUMNNAME_NOT_EDIT, columnName) && !column.isPk() && !column.isSubI18n())
         {
-            column.setIsEdit(GenConstants.REQUIRE);
+            column.setIsEdit(GenI18nConstants.REQUIRE);
         }
         // 列表字段
-        if (!arraysContains(GenConstants.COLUMNNAME_NOT_LIST, columnName) && !column.isPk() && !column.isSubI18n())
+        if (!arraysContains(GenI18nConstants.COLUMNNAME_NOT_LIST, columnName) && !column.isPk() && !column.isSubI18n())
         {
-            column.setIsList(GenConstants.REQUIRE);
+            column.setIsList(GenI18nConstants.REQUIRE);
         }
         // 查询字段
-        if (!arraysContains(GenConstants.COLUMNNAME_NOT_QUERY, columnName) && !column.isPk() && !column.isSubI18n())
+        if (!arraysContains(GenI18nConstants.COLUMNNAME_NOT_QUERY, columnName) && !column.isPk() && !column.isSubI18n())
         {
-            column.setIsQuery(GenConstants.REQUIRE);
+            column.setIsQuery(GenI18nConstants.REQUIRE);
         }
 
         // 查询字段类型
         if (StringUtils.endsWithIgnoreCase(columnName, "name") || column.isI18n())
         {
-            column.setQueryType(GenConstants.QUERY_LIKE);
+            column.setQueryType(GenI18nConstants.QUERY_LIKE);
         }
         // 状态字段设置单选框
         if (StringUtils.endsWithIgnoreCase(columnName, "status"))
         {
-            column.setHtmlType(GenConstants.HTML_RADIO);
+            column.setHtmlType(GenI18nConstants.HTML_RADIO);
         }
         // 类型&性别字段设置下拉框
         else if (StringUtils.endsWithIgnoreCase(columnName, "type")
                 || StringUtils.endsWithIgnoreCase(columnName, "sex"))
         {
-            column.setHtmlType(GenConstants.HTML_SELECT);
+            column.setHtmlType(GenI18nConstants.HTML_SELECT);
         }
         // 图片字段设置图片上传控件
         else if (StringUtils.endsWithIgnoreCase(columnName, "image"))
         {
-            column.setHtmlType(GenConstants.HTML_IMAGE_UPLOAD);
+            column.setHtmlType(GenI18nConstants.HTML_IMAGE_UPLOAD);
         }
         // 文件字段设置文件上传控件
         else if (StringUtils.endsWithIgnoreCase(columnName, "file"))
         {
-            column.setHtmlType(GenConstants.HTML_FILE_UPLOAD);
+            column.setHtmlType(GenI18nConstants.HTML_FILE_UPLOAD);
         }
         // 内容字段设置富文本控件
         else if (StringUtils.endsWithIgnoreCase(columnName, "content"))
         {
-            column.setHtmlType(GenConstants.HTML_EDITOR);
+            column.setHtmlType(GenI18nConstants.HTML_EDITOR);
         }
     }
 

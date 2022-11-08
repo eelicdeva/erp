@@ -1,3 +1,4 @@
+${businessName} : {
 ${ClassName} : {
  #foreach ($column in $columns)
  #set($parentheseIndex=$column.columnCommentEn.indexOf("（"))
@@ -15,5 +16,5 @@ ${ClassName} : {
         ${column.javaField}Placeholder : '${comment}'
     #end
  #end
-
  }
+}
