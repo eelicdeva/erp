@@ -140,15 +140,15 @@ public class VelocityUtils
         templates.add("vmi18n/js/api.js.vm");
         if (GenI18nConstants.TPL_CRUD.equals(tplCategory))
         {
-            templates.add("vmi18n/vue/index.vue.vm");
+            templates.add("vmi18n/vue/v3/index.vue.vm");
         }
         else if (GenI18nConstants.TPL_TREE.equals(tplCategory))
         {
-            templates.add("vmi18n/vue/index-tree.vue.vm");
+            templates.add("vmi18n/vue/v3/index-tree.vue.vm");
         }
         else if (GenI18nConstants.TPL_SUB.equals(tplCategory))
         {
-            templates.add("vmi18n/vue/index.vue.vm");
+            templates.add("vmi18n/vue/v3/index.vue.vm");
             templates.add("vmi18n/java/sub-domain.java.vm");
         }
         templates.add("vmi18n/vue/v3/statistics.vue.vm");

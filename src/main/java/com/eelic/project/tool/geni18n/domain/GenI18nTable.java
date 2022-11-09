@@ -5,7 +5,6 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import com.eelic.common.constant.GenI18nConstants;
 import org.apache.commons.lang3.ArrayUtils;
-import com.ruoyi.common.constant.GenConstants;
 import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.framework.web.domain.BaseEntity;
 
@@ -339,7 +338,7 @@ public class GenI18nTable extends BaseEntity
 
     public static boolean isSub(String tplCategory)
     {
-        return tplCategory != null && StringUtils.equals(GenConstants.TPL_SUB, tplCategory) || tplCategory != null && StringUtils.equals(GenI18nConstants.TPL_SUB, tplCategory);
+        return tplCategory != null && StringUtils.equals(GenI18nConstants.TPL_SUB, tplCategory);
     }
 
     public boolean isTree()
@@ -349,7 +348,7 @@ public class GenI18nTable extends BaseEntity
 
     public static boolean isTree(String tplCategory)
     {
-        return tplCategory != null && StringUtils.equals(GenConstants.TPL_TREE, tplCategory) || tplCategory != null && StringUtils.equals(GenI18nConstants.TPL_TREE, tplCategory);
+        return tplCategory != null && StringUtils.equals(GenI18nConstants.TPL_TREE, tplCategory);
     }
 
     public boolean isCrud()
@@ -359,7 +358,7 @@ public class GenI18nTable extends BaseEntity
 
     public static boolean isCrud(String tplCategory)
     {
-        return tplCategory != null && StringUtils.equals(GenConstants.TPL_CRUD, tplCategory) || tplCategory != null && StringUtils.equals(GenI18nConstants.TPL_CRUD, tplCategory);
+        return tplCategory != null && StringUtils.equals(GenI18nConstants.TPL_CRUD, tplCategory);
     }
 
     public boolean isSuperColumn(String javaField)
@@ -372,9 +371,9 @@ public class GenI18nTable extends BaseEntity
         if (isTree(tplCategory))
         {
             return StringUtils.equalsAnyIgnoreCase(javaField,
-                    ArrayUtils.addAll(GenConstants.TREE_ENTITY, GenConstants.BASE_ENTITY));
+                    ArrayUtils.addAll(GenI18nConstants.TREE_ENTITY, GenI18nConstants.BASE_ENTITY));
         }
-        return StringUtils.equalsAnyIgnoreCase(javaField, GenConstants.BASE_ENTITY);
+        return StringUtils.equalsAnyIgnoreCase(javaField, GenI18nConstants.BASE_ENTITY);
     }
 
     public String getChartType() {
