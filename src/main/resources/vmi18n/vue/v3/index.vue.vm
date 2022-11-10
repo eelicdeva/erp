@@ -311,7 +311,7 @@
             </template>
           </el-table-column>
 #elseif($column.list && ($column.htmlType == "select" || $column.htmlType == "radio") && "" != $column.dictType)
-          <el-table-column :label="$t(${businessName}.${ClassName}.${column.javaField}')" prop="${javaField}" width="150">
+          <el-table-column :label="$t('${businessName}.${ClassName}.${column.javaField}')" prop="${javaField}" width="150">
             <template #default="scope">
               <el-select v-model="scope.row.$javaField" :placeholder="$t('${businessName}.${ClassName}.${column.javaField}Placeholder')">
                 <el-option
