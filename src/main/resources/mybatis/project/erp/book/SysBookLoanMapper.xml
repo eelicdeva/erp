@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.eelic.project.erp.book.mapper.SysBookLoanMapper">
+    
+    <resultMap type="SysBookLoan" id="SysBookLoanResult">
+        <result property="loanId"    column="loan_id"    />
+        <result property="checkoutDate"    column="checkout_date"    />
+        <result property="returnDate"    column="return_date"    />
+        <result property="nameBorrower"    column="name_borrower"    />
+        <result property="bookTitle"    column="book_title"    />
+        <result property="bookTitleEn"    column="book_title_en"    />
+        <result property="bookTitleId"    column="book_title_id"    />
+        <result property="bookImage"    column="book_image"    />
+        <result property="isbn"    column="isbn"    />
+        <result property="bookId"    column="book_id"    />
+    </resultMap>
+
+    <sql id="case">
+        case (#{langUser})
+    </sql>
+
+    <sql id="selectBookTitle">
+        <include refid="case"/>
+        when "en" then (select book_title_en from sys_book_loan where loan_id = b.loan_id)
+        when "zh" then (select book_title from sys_book_loan where loan_id = b.loan_id)
+        when "id" then (select book_title_id from sys_book_loan where loan_id = b.loan_id)
+        end as book_title
+    </sql>
+
+    <sql id="selectSysBookLoanVo">
+        select loan_id, checkout_date, return_date, name_borrower, <include refid="selectBookTitle"/>, book_image, isbn, book_id from sys_book_loan b
+    </sql>
+    
+    <select id="countBookLoan" resultType="Integer">
+        select count(*) result from sys_book_loan group by checkout_date order by checkout_date asc;
+    </select>
+
+    <select id="selectCheckoutDateBookLoan" resultType="String">
+        select DATE_FORMAT(checkout_date, '%d/%m/%Y') from sys_book_loan group by checkout_date order by checkout_date asc;
+    </select>
+
+    <select id="selectSysBookLoanList" parameterType="SysBookLoan" resultMap="SysBookLoanResult">
+        <include refid="selectSysBookLoanVo"/>
+        <where>
+            <if test="BookLoan.checkoutDate != null "> and checkout_date = #{BookLoan.checkoutDate}</if>
+            <if test="BookLoan.returnDate != null "> and return_date = #{BookLoan.returnDate}</if>
+            <if test="BookLoan.nameBorrower != null  and BookLoan.nameBorrower != ''"> and name_borrower = #{BookLoan.nameBorrower}</if>
+            <if test="BookLoan.bookTitle != null  and BookLoan.bookTitle != ''">
+                and book_title like concat('%', #{BookLoan.bookTitle}, '%')
+                or book_title_en like concat('%', #{BookLoan.bookTitle}, '%')
+                or book_title_id like concat('%', #{BookLoan.bookTitle}, '%')
+            </if>
+            <if test="BookLoan.bookImage != null  and BookLoan.bookImage != ''">
+                and book_id in (select book_id from sys_book where category_id = #{BookLoan.bookImage})
+            </if>
+            <if test="BookLoan.isbn != null  and BookLoan.isbn != ''"> and isbn = #{BookLoan.isbn}</if>
+
+        </where>
+    </select>
+    
+    <select id="selectSysBookLoanByLoanId" parameterType="String" resultMap="SysBookLoanResult">
+        <include refid="selectSysBookLoanVo"/>
+        where loan_id = #{loanId}
+    </select>
+
+    <insert id="insertSysBookLoan" parameterType="SysBookLoan">
+        <selectKey keyProperty="loanId" resultType="String" order="BEFORE">
+            select REPLACE(UUID(),"-","")
+        </selectKey>
+
+        insert into sys_book_loan
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="loanId != null">loan_id,</if>
+            <if test="checkoutDate != null">checkout_date,</if>
+            <if test="returnDate != null">return_date,</if>
+            <if test="nameBorrower != null">name_borrower,</if>
+            <if test="bookTitle != null">book_title,</if>
+            <if test="bookTitleEn != null">book_title_en,</if>
+            <if test="bookTitleId != null">book_title_id,</if>
+            <if test="bookImage != null">book_image,</if>
+            <if test="isbn != null">isbn,</if>
+            <if test="bookId != null">book_id,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="loanId != null">#{loanId},</if>
+            <if test="checkoutDate != null">#{checkoutDate},</if>
+            <if test="returnDate != null">#{returnDate},</if>
+            <if test="nameBorrower != null">#{nameBorrower},</if>
+            <if test="bookTitle != null">#{bookTitle},</if>
+            <if test="bookTitleEn != null">#{bookTitleEn},</if>
+            <if test="bookTitleId != null">#{bookTitleId},</if>
+            <if test="bookImage != null">#{bookImage},</if>
+            <if test="isbn != null">#{isbn},</if>
+            <if test="bookId != null">#{bookId},</if>
+         </trim>
+    </insert>
+
+    <update id="updateSysBookLoan" parameterType="SysBookLoan">
+        update sys_book_loan
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="checkoutDate != null">checkout_date = #{checkoutDate},</if>
+            <if test="returnDate != null">return_date = #{returnDate},</if>
+            <if test="nameBorrower != null">name_borrower = #{nameBorrower},</if>
+            <if test="bookTitle != null">book_title = #{bookTitle},</if>
+            <if test="bookTitleEn != null">book_title_en = #{bookTitleEn},</if>
+            <if test="bookTitleId != null">book_title_id = #{bookTitleId},</if>
+            <if test="bookImage != null">book_image = #{bookImage},</if>
+            <if test="isbn != null">isbn = #{isbn},</if>
+            <if test="bookId != null">book_id = #{bookId},</if>
+        </trim>
+        where loan_id = #{loanId}
+    </update>
+
+    <delete id="deleteSysBookLoanByLoanId" parameterType="String">
+        delete from sys_book_loan where loan_id = #{loanId}
+    </delete>
+
+    <delete id="deleteSysBookLoanByLoanIds" parameterType="String">
+        delete from sys_book_loan where loan_id in 
+        <foreach item="loanId" collection="array" open="(" separator="," close=")">
+            #{loanId}
+        </foreach>
+    </delete>
+</mapper>
