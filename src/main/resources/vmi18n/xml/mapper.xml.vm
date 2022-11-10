@@ -129,9 +129,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 #set($param=$className + '.' + $column.javaField)
 #if($column.columnName != $pkColumn.columnName || !$pkColumn.increment)
 #if($column.isI18n)
-            <foreach item="$column.javaField" collection="$column.javaField" separator="," close="," >
-                <if test="$param != null#if($column.javaType == 'String' && $column.required) and $param != ''#end">#{$column.javaField}</if>
-            </foreach>
+            <if test="$param != null#if($column.javaType == 'String' && $column.required) and $param != ''#end">
+                <foreach item="$column.javaField" collection="$column.javaField" separator="," close="," >
+                    #{$column.javaField}
+                </foreach>
+            </if>
 #elseif(!$column.isSubI18n)
             <if test="$param != null#if($column.javaType == 'String' && $column.required) and $param != ''#end">#{$param},</if>
 #end

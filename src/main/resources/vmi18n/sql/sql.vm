@@ -1,22 +1,59 @@
--- 菜单 SQL
-insert into sys_menu (menu_name, parent_id, order_num, path, component, is_frame, is_cache, menu_type, visible, status, perms, icon, create_by, create_time, update_by, update_time, remark, menu_name_en, menu_name_id)
-values('${functionName}', '${parentMenuId}', '1', '${businessName}', '${moduleName}/${businessName}/index', 1, 0, 'C', '0', '0', '${permissionPrefix}:list', '#', 'admin', sysdate(), '', null, '${functionName}菜单', '${functionName}', '${functionName}');
 
--- 按钮父菜单ID
-SELECT @parentId := LAST_INSERT_ID();
+delimiter $$
 
--- 按钮 SQL
-insert into sys_menu (menu_name, parent_id, order_num, path, component, is_frame, is_cache, menu_type, visible, status, perms, icon, create_by, create_time, update_by, update_time, remark, menu_name_en, menu_name_id)
-values('${functionName}查询', @parentId, '1',  '#', '', 1, 0, 'F', '0', '0', '${permissionPrefix}:query',        '#', 'admin', sysdate(), '', null, '', '${functionName} query', 'kueri ${functionName}');
+DROP PROCEDURE IF EXISTS p_alter_sys_menu_table;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `p_alter_sys_menu_table`()
+BEGIN
 
-insert into sys_menu (menu_name, parent_id, order_num, path, component, is_frame, is_cache, menu_type, visible, status, perms, icon, create_by, create_time, update_by, update_time, remark, menu_name_en, menu_name_id)
-values('${functionName}新增', @parentId, '2',  '#', '', 1, 0, 'F', '0', '0', '${permissionPrefix}:add',          '#', 'admin', sysdate(), '', null, '', '${functionName} add', 'tambah ${functionName}');
+	-- Operate record `temp_oper_process`
+	DROP TABLE IF EXISTS `temp_oper_process`;
+	CREATE TEMPORARY TABLE IF NOT EXISTS `temp_oper_process`  (
+		`oper_id` int NOT NULL AUTO_INCREMENT,
+		`oper_name` varchar(100) ,
+		`oper_result` varchar(10) ,
+		`oper_remark` varchar(100) ,
+		PRIMARY KEY (`oper_id`)
+		);
 
-insert into sys_menu (menu_name, parent_id, order_num, path, component, is_frame, is_cache, menu_type, visible, status, perms, icon, create_by, create_time, update_by, update_time, remark, menu_name_en, menu_name_id)
-values('${functionName}修改', @parentId, '3',  '#', '', 1, 0, 'F', '0', '0', '${permissionPrefix}:edit',         '#', 'admin', sysdate(), '', null, '', '${functionName} edit', 'ubah ${functionName}');
+    IF NOT EXISTS(SELECT 1 FROM sys_menu WHERE parent_id = '${parentMenuId}' AND menu_name = '${functionName}')
+    THEN
 
-insert into sys_menu (menu_name, parent_id, order_num, path, component, is_frame, is_cache, menu_type, visible, status, perms, icon, create_by, create_time, update_by, update_time, remark, menu_name_en, menu_name_id)
-values('${functionName}删除', @parentId, '4',  '#', '', 1, 0, 'F', '0', '0', '${permissionPrefix}:remove',       '#', 'admin', sysdate(), '', null, '', '${functionName} delete', 'hapus ${functionName}');
+    -- 菜单 SQL
+    insert into sys_menu (menu_name, parent_id, order_num, path, component, is_frame, is_cache, menu_type, visible, status, perms, icon, create_by, create_time, update_by, update_time, remark, menu_name_en, menu_name_id)
+    values('${functionName}', '${parentMenuId}', '1', '${businessName}', '${moduleName}/${businessName}/index', 1, 0, 'C', '0', '0', '${permissionPrefix}:list', '#', 'admin', sysdate(), '', null, '${functionName}菜单', '${functionName}', '${functionName}');
 
-insert into sys_menu (menu_name, parent_id, order_num, path, component, is_frame, is_cache, menu_type, visible, status, perms, icon, create_by, create_time, update_by, update_time, remark, menu_name_en, menu_name_id)
-values('${functionName}导出', @parentId, '5',  '#', '', 1, 0, 'F', '0', '0', '${permissionPrefix}:export',       '#', 'admin', sysdate(), '', null, '', '${functionName} export', 'ekspor ${functionName}');
+    -- 按钮父菜单ID
+    SELECT @parentId := LAST_INSERT_ID();
+
+    -- 按钮 SQL
+    insert into sys_menu (menu_name, parent_id, order_num, path, component, is_frame, is_cache, menu_type, visible, status, perms, icon, create_by, create_time, update_by, update_time, remark, menu_name_en, menu_name_id)
+    values('${functionName}查询', @parentId, '1',  '#', '', 1, 0, 'F', '0', '0', '${permissionPrefix}:query',        '#', 'admin', sysdate(), '', null, '', '${functionName} query', 'kueri ${functionName}');
+
+    insert into sys_menu (menu_name, parent_id, order_num, path, component, is_frame, is_cache, menu_type, visible, status, perms, icon, create_by, create_time, update_by, update_time, remark, menu_name_en, menu_name_id)
+    values('${functionName}新增', @parentId, '2',  '#', '', 1, 0, 'F', '0', '0', '${permissionPrefix}:add',          '#', 'admin', sysdate(), '', null, '', '${functionName} add', 'tambah ${functionName}');
+
+    insert into sys_menu (menu_name, parent_id, order_num, path, component, is_frame, is_cache, menu_type, visible, status, perms, icon, create_by, create_time, update_by, update_time, remark, menu_name_en, menu_name_id)
+    values('${functionName}修改', @parentId, '3',  '#', '', 1, 0, 'F', '0', '0', '${permissionPrefix}:edit',         '#', 'admin', sysdate(), '', null, '', '${functionName} edit', 'ubah ${functionName}');
+
+    insert into sys_menu (menu_name, parent_id, order_num, path, component, is_frame, is_cache, menu_type, visible, status, perms, icon, create_by, create_time, update_by, update_time, remark, menu_name_en, menu_name_id)
+    values('${functionName}删除', @parentId, '4',  '#', '', 1, 0, 'F', '0', '0', '${permissionPrefix}:remove',       '#', 'admin', sysdate(), '', null, '', '${functionName} delete', 'hapus ${functionName}');
+
+    insert into sys_menu (menu_name, parent_id, order_num, path, component, is_frame, is_cache, menu_type, visible, status, perms, icon, create_by, create_time, update_by, update_time, remark, menu_name_en, menu_name_id)
+    values('${functionName}导出', @parentId, '5',  '#', '', 1, 0, 'F', '0', '0', '${permissionPrefix}:export',       '#', 'admin', sysdate(), '', null, '', '${functionName} export', 'ekspor ${functionName}');
+
+    INSERT INTO  `temp_oper_process` VALUES ('1100','Add data','OK','1100 add Done');
+
+    ELSE
+    	-- Oper Log
+    	INSERT INTO  `temp_oper_process` VALUES ('1100','Add data','Error','1100-ada data, add Failed');
+    END IF;
+
+    	-- SHOW oper  Log
+    	SELECT * FROM `temp_oper_process`;
+
+    END;
+    $$
+
+    delimiter ;
+
+    call p_alter_sys_menu_table();
