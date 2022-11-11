@@ -3,6 +3,7 @@ package com.ruoyi.project.system.controller;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
+import com.ruoyi.common.utils.RsaUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -100,5 +101,19 @@ public class SysLoginController
         Long userId = SecurityUtils.getUserId();
         List<SysMenu> menus = menuService.selectMenuTreeByUserId(userId, SecurityUtils.getLoginUser().getLangUser());
         return AjaxResult.success(menuService.buildMenus(menus));
+    }
+
+    /**
+     * 获取公钥 前端用来密码加密
+     *
+     * @return
+     */
+    @GetMapping("/publicKey")
+    public RsaUtils.RsaKeyPair publicKey() {
+        //便于测试 公私秘钥都传了 可改为只传公钥
+        //RsaUtils.RsaKeyPair rsaKeyPair = new RsaUtils.RsaKeyPair();
+        //rsaKeyPair.setPublicKey(RsaUtils.getPublicKey());
+        //return rsaKeyPair;
+        return RsaUtils.rsaKeyPair();
     }
 }

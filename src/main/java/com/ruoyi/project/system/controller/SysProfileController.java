@@ -1,5 +1,6 @@
 package com.ruoyi.project.system.controller;
 
+import com.ruoyi.common.utils.RsaUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -95,11 +96,12 @@ public class SysProfileController extends BaseController
      */
     @Log(title = "个人信息", businessType = BusinessType.UPDATE)
     @PutMapping("/updatePwd")
-    public AjaxResult updatePwd(String oldPassword, String newPassword)
-    {
+    public AjaxResult updatePwd(String oldPassword, String newPassword) throws Exception {
         LoginUser loginUser = getLoginUser();
         String userName = loginUser.getUsername();
         String password = loginUser.getPassword();
+        oldPassword = RsaUtils.decryptByPrivateKey(oldPassword);
+        newPassword = RsaUtils.decryptByPrivateKey(newPassword);
         if (!SecurityUtils.matchesPassword(oldPassword, password))
         {
             return AjaxResult.error("修改密码失败，旧密码错误");
