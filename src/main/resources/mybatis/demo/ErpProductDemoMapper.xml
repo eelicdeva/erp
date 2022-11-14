@@ -73,25 +73,25 @@
     <select id="selectErpProductDemoList" parameterType="ErpProductDemo" resultMap="ErpProductDemoResult">
         <include refid="selectErpProductDemoVo"/>
         <where>
-            <if test="erpProductDemo.skuLazada != null  and skuLazada != ''"> and sku_lazada = #{erpProductDemo.skuLazada}</if>
-            <if test="erpProductDemo.skuEelic != null  and skuEelic != ''"> and sku_eelic = #{erpProductDemo.skuEelic}</if>
-            <if test="erpProductDemo.skuNameLa != null  and skuNameLa != ''">
+            <if test="erpProductDemo.skuLazada != null  and erpProductDemo.skuLazada != ''"> and sku_lazada = #{erpProductDemo.skuLazada}</if>
+            <if test="erpProductDemo.skuEelic != null  and erpProductDemo.skuEelic != ''"> and sku_eelic = #{erpProductDemo.skuEelic}</if>
+            <if test="erpProductDemo.skuNameLa != null  and erpProductDemo.skuNameLa != ''">
                 and sku_name_la = #{erpProductDemo.skuNameLa}
                 or sku_name_la_en = #{erpProductDemo.skuNameLa}
                 or sku_name_la_id = #{erpProductDemo.skuNameLa}
             </if>
-            <if test="erpProductDemo.shortDescription != null  and shortDescription != ''">
+            <if test="erpProductDemo.shortDescription != null  and erpProductDemo.shortDescription != ''">
                 and short_description = #{erpProductDemo.shortDescription}
                 or short_description_en = #{erpProductDemo.shortDescription}
                 or short_description_id = #{erpProductDemo.shortDescription}
             </if>
-            <if test="erpProductDemo.description != null  and description != ''">
+            <if test="erpProductDemo.description != null  and erpProductDemo.description != ''">
                 and description = #{erpProductDemo.description}
                 or description_en = #{erpProductDemo.description}
                 or description_id = #{erpProductDemo.description}
             </if>
-            <if test="erpProductDemo.model != null  and model != ''"> and model = #{erpProductDemo.model}</if>
-            <if test="erpProductDemo.packageContent != null  and packageContent != ''"> and package_content = #{erpProductDemo.packageContent}</if>
+            <if test="erpProductDemo.model != null  and erpProductDemo.model != ''"> and model = #{erpProductDemo.model}</if>
+            <if test="erpProductDemo.packageContent != null  and erpProductDemo.packageContent != ''"> and package_content = #{erpProductDemo.packageContent}</if>
             <if test="erpProductDemo.packageWeight != null "> and package_weight = #{erpProductDemo.packageWeight}</if>
             <if test="erpProductDemo.packageLength != null "> and package_length = #{erpProductDemo.packageLength}</if>
             <if test="erpProductDemo.packageWidth != null "> and package_width = #{erpProductDemo.packageWidth}</if>
@@ -99,19 +99,19 @@
             <if test="erpProductDemo.price != null "> and price = #{erpProductDemo.price}</if>
             <if test="erpProductDemo.specialPrice != null "> and special_price = #{erpProductDemo.specialPrice}</if>
             <if test="erpProductDemo.quantity != null "> and quantity = #{erpProductDemo.quantity}</if>
-            <if test="erpProductDemo.primaryCategory != null  and primaryCategory != ''"> and primary_category = #{erpProductDemo.primaryCategory}</if>
-            <if test="erpProductDemo.statusLa != null  and statusLa != ''"> and status_la = #{erpProductDemo.statusLa}</if>
-            <if test="erpProductDemo.colorFamily != null  and colorFamily != ''"> and color_family = #{erpProductDemo.colorFamily}</if>
+            <if test="erpProductDemo.primaryCategory != null  and erpProductDemo.primaryCategory != ''"> and primary_category = #{erpProductDemo.primaryCategory}</if>
+            <if test="erpProductDemo.statusLa != null  and erpProductDemo.statusLa != ''"> and status_la = #{erpProductDemo.statusLa}</if>
+            <if test="erpProductDemo.colorFamily != null  and erpProductDemo.colorFamily != ''"> and color_family = #{erpProductDemo.colorFamily}</if>
             <if test="erpProductDemo.fblLa != null "> and fbl_la = #{erpProductDemo.fblLa}</if>
-            <if test="erpProductDemo.simage1 != null  and simage1 != ''"> and simage1 = #{erpProductDemo.simage1}</if>
-            <if test="erpProductDemo.simage2 != null  and simage2 != ''"> and simage2 = #{erpProductDemo.simage2}</if>
-            <if test="erpProductDemo.simage3 != null  and simage3 != ''"> and simage3 = #{erpProductDemo.simage3}</if>
-            <if test="erpProductDemo.simage4 != null  and simage4 != ''"> and simage4 = #{erpProductDemo.simage4}</if>
-            <if test="erpProductDemo.simage5 != null  and simage5 != ''"> and simage5 = #{erpProductDemo.simage5}</if>
-            <if test="erpProductDemo.simage6 != null  and simage6 != ''"> and simage6 = #{erpProductDemo.simage6}</if>
-            <if test="erpProductDemo.simage7 != null  and simage7 != ''"> and simage7 = #{erpProductDemo.simage7}</if>
-            <if test="erpProductDemo.simage8 != null  and simage8 != ''"> and simage8 = #{erpProductDemo.simage8}</if>
-            <if test="erpProductDemo.status != null  and status != ''"> and status = #{erpProductDemo.status}</if>
+            <if test="erpProductDemo.simage1 != null  and erpProductDemo.simage1 != ''"> and simage1 = #{erpProductDemo.simage1}</if>
+            <if test="erpProductDemo.simage2 != null  and erpProductDemo.simage2 != ''"> and simage2 = #{erpProductDemo.simage2}</if>
+            <if test="erpProductDemo.simage3 != null  and erpProductDemo.simage3 != ''"> and simage3 = #{erpProductDemo.simage3}</if>
+            <if test="erpProductDemo.simage4 != null  and erpProductDemo.simage4 != ''"> and simage4 = #{erpProductDemo.simage4}</if>
+            <if test="erpProductDemo.simage5 != null  and erpProductDemo.simage5 != ''"> and simage5 = #{erpProductDemo.simage5}</if>
+            <if test="erpProductDemo.simage6 != null  and erpProductDemo.simage6 != ''"> and simage6 = #{erpProductDemo.simage6}</if>
+            <if test="erpProductDemo.simage7 != null  and erpProductDemo.simage7 != ''"> and simage7 = #{erpProductDemo.simage7}</if>
+            <if test="erpProductDemo.simage8 != null  and erpProductDemo.simage8 != ''"> and simage8 = #{erpProductDemo.simage8}</if>
+            <if test="erpProductDemo.status != null  and erpProductDemo.status != ''"> and status = #{erpProductDemo.status}</if>
         </where>
     </select>
 
