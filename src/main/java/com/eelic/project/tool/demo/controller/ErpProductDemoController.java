@@ -43,7 +43,7 @@ public class ErpProductDemoController extends BaseController
     public TableDataInfo list(ErpProductDemo erpProductDemo)
     {
         startPage();
-        List<ErpProductDemo> list = erpProductDemoService.selectErpProductDemoList(erpProductDemo);
+        List<ErpProductDemo> list = erpProductDemoService.selectErpProductDemoList(erpProductDemo, getLoginUser().getLangUser());
         return getDataTable(list);
     }
 
@@ -55,7 +55,7 @@ public class ErpProductDemoController extends BaseController
     @PostMapping("/export")
     public void export(HttpServletResponse response, ErpProductDemo erpProductDemo)
     {
-        List<ErpProductDemo> list = erpProductDemoService.selectErpProductDemoList(erpProductDemo);
+        List<ErpProductDemo> list = erpProductDemoService.selectErpProductDemoList(erpProductDemo, getLoginUser().getLangUser());
         ExcelUtil<ErpProductDemo> util = new ExcelUtil<ErpProductDemo>(ErpProductDemo.class);
         util.exportExcel(response, list, "产品Demo数据");
     }
@@ -67,7 +67,7 @@ public class ErpProductDemoController extends BaseController
     @GetMapping(value = "/{idProductLa}")
     public AjaxResult getInfo(@PathVariable("idProductLa") Long idProductLa)
     {
-        return AjaxResult.success(erpProductDemoService.selectErpProductDemoByIdProductLa(idProductLa));
+        return AjaxResult.success(erpProductDemoService.selectErpProductDemoByIdProductLa(idProductLa, getLoginUser().getLangUser()));
     }
 
     /**
@@ -89,7 +89,7 @@ public class ErpProductDemoController extends BaseController
     @PutMapping
     public AjaxResult edit(@RequestBody ErpProductDemo erpProductDemo)
     {
-        return toAjax(erpProductDemoService.updateErpProductDemo(erpProductDemo));
+        return toAjax(erpProductDemoService.updateErpProductDemo(erpProductDemo, getLoginUser().getLangUser()));
     }
 
     /**

@@ -1,59 +1,62 @@
 package com.eelic.project.tool.demo.mapper;
 
 import java.util.List;
+import org.apache.ibatis.annotations.Param;
 import com.eelic.project.tool.demo.domain.ErpProductDemo;
 
+
 /**
- * 产品DemoMapper接口
- * 
+ * product demoMapper接口
+ *
  * @author eelic
- * @date 2022-11-07
+ * @date 2022-11-14
  */
-public interface ErpProductDemoMapper 
+public interface ErpProductDemoMapper
 {
     /**
-     * 查询产品Demo
-     * 
-     * @param idProductLa 产品Demo主键
-     * @return 产品Demo
+     * 查询product demo
+     *
+     * @param idProductLa product demo主键
+     * @return product demo
      */
-    public ErpProductDemo selectErpProductDemoByIdProductLa(Long idProductLa);
+    public ErpProductDemo selectErpProductDemoByIdProductLa(@Param("idProductLa") Long idProductLa, @Param("langUser") String langUser);
 
     /**
-     * 查询产品Demo列表
-     * 
-     * @param erpProductDemo 产品Demo
-     * @return 产品Demo集合
+     * 查询product demo列表
+     *
+     * @param erpProductDemo product demo
+     * @return product demo集合
      */
-    public List<ErpProductDemo> selectErpProductDemoList(ErpProductDemo erpProductDemo);
+    public List<ErpProductDemo> selectErpProductDemoList(@Param("erpProductDemo") ErpProductDemo erpProductDemo, @Param("langUser") String langUser);
 
     /**
-     * 新增产品Demo
-     * 
-     * @param erpProductDemo 产品Demo
+     * 新增product demo
+     *
+     * @param erpProductDemo product demo
      * @return 结果
      */
-    public int insertErpProductDemo(ErpProductDemo erpProductDemo);
+
+    public int insertErpProductDemo(@Param("erpProductDemo") ErpProductDemo erpProductDemo, @Param("skuNameLa") String[] skuNameLa, @Param("shortDescription") String[] shortDescription, @Param("description") String[] description);
 
     /**
-     * 修改产品Demo
-     * 
-     * @param erpProductDemo 产品Demo
+     * 修改product demo
+     *
+     * @param erpProductDemo product demo
      * @return 结果
      */
-    public int updateErpProductDemo(ErpProductDemo erpProductDemo);
+    public int updateErpProductDemo(@Param("erpProductDemo") ErpProductDemo erpProductDemo, @Param("langUser") String langUser);
 
     /**
-     * 删除产品Demo
-     * 
-     * @param idProductLa 产品Demo主键
+     * 删除product demo
+     *
+     * @param idProductLa product demo主键
      * @return 结果
      */
     public int deleteErpProductDemoByIdProductLa(Long idProductLa);
 
     /**
-     * 批量删除产品Demo
-     * 
+     * 批量删除product demo
+     *
      * @param idProductLas 需要删除的数据主键集合
      * @return 结果
      */

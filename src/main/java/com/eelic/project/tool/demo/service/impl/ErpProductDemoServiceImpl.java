@@ -1,6 +1,7 @@
 package com.eelic.project.tool.demo.service.impl;
 
 import java.util.List;
+import static com.ruoyi.common.translator.Translator.*;
 import com.ruoyi.common.utils.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -9,71 +10,79 @@ import com.eelic.project.tool.demo.domain.ErpProductDemo;
 import com.eelic.project.tool.demo.service.IErpProductDemoService;
 
 /**
- * 产品DemoService业务层处理
- * 
+ * product demoService业务层处理
+ *
  * @author eelic
- * @date 2022-11-07
+ * @date 2022-11-14
  */
 @Service
-public class ErpProductDemoServiceImpl implements IErpProductDemoService 
+public class ErpProductDemoServiceImpl implements IErpProductDemoService
 {
     @Autowired
     private ErpProductDemoMapper erpProductDemoMapper;
 
     /**
-     * 查询产品Demo
-     * 
-     * @param idProductLa 产品Demo主键
-     * @return 产品Demo
+     * 查询product demo
+     *
+     * @param idProductLa product demo主键
+     * @return product demo
      */
     @Override
-    public ErpProductDemo selectErpProductDemoByIdProductLa(Long idProductLa)
+    public ErpProductDemo selectErpProductDemoByIdProductLa(Long idProductLa, String langUser)
     {
-        return erpProductDemoMapper.selectErpProductDemoByIdProductLa(idProductLa);
+        return erpProductDemoMapper.selectErpProductDemoByIdProductLa(idProductLa, langUser);
     }
 
     /**
-     * 查询产品Demo列表
-     * 
-     * @param erpProductDemo 产品Demo
-     * @return 产品Demo
+     * 查询product demo列表
+     *
+     * @param erpProductDemo product demo
+     * @return product demo
      */
     @Override
-    public List<ErpProductDemo> selectErpProductDemoList(ErpProductDemo erpProductDemo)
+    public List<ErpProductDemo> selectErpProductDemoList(ErpProductDemo erpProductDemo, String langUser)
     {
-        return erpProductDemoMapper.selectErpProductDemoList(erpProductDemo);
+        return erpProductDemoMapper.selectErpProductDemoList(erpProductDemo, langUser);
     }
 
     /**
-     * 新增产品Demo
-     * 
-     * @param erpProductDemo 产品Demo
+     * 新增product demo
+     *
+     * @param erpProductDemo product demo
      * @return 结果
      */
     @Override
     public int insertErpProductDemo(ErpProductDemo erpProductDemo)
     {
         erpProductDemo.setCreateTime(DateUtils.getNowDate());
-        return erpProductDemoMapper.insertErpProductDemo(erpProductDemo);
+        try {
+            return erpProductDemoMapper.insertErpProductDemo(erpProductDemo,  translateAll(erpProductDemo.getSkuNameLa()),  translateAll(erpProductDemo.getShortDescription()),  translateAll(erpProductDemo.getDescription()));
+        } catch (Exception e) {
+            try{
+                return erpProductDemoMapper.insertErpProductDemo(erpProductDemo,  translateOffline(erpProductDemo.getSkuNameLa()),  translateOffline(erpProductDemo.getShortDescription()),  translateOffline(erpProductDemo.getDescription()));
+            } catch (Exception e2) {
+                throw new RuntimeException(e2);
+            }
+        }
     }
 
     /**
-     * 修改产品Demo
-     * 
-     * @param erpProductDemo 产品Demo
+     * 修改product demo
+     *
+     * @param erpProductDemo product demo
      * @return 结果
      */
     @Override
-    public int updateErpProductDemo(ErpProductDemo erpProductDemo)
+    public int updateErpProductDemo(ErpProductDemo erpProductDemo, String langUser)
     {
         erpProductDemo.setUpdateTime(DateUtils.getNowDate());
-        return erpProductDemoMapper.updateErpProductDemo(erpProductDemo);
+        return erpProductDemoMapper.updateErpProductDemo(erpProductDemo, langUser);
     }
 
     /**
-     * 批量删除产品Demo
-     * 
-     * @param idProductLas 需要删除的产品Demo主键
+     * 批量删除product demo
+     *
+     * @param idProductLas 需要删除的product demo主键
      * @return 结果
      */
     @Override
@@ -83,9 +92,9 @@ public class ErpProductDemoServiceImpl implements IErpProductDemoService
     }
 
     /**
-     * 删除产品Demo信息
-     * 
-     * @param idProductLa 产品Demo主键
+     * 删除product demo信息
+     *
+     * @param idProductLa product demo主键
      * @return 结果
      */
     @Override
