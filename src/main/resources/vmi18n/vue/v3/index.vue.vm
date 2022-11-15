@@ -387,7 +387,7 @@ const daterange${AttrName} = ref([]);
 const columns = ref([
 #set($key = 0)
 #foreach($column in $columns)
-    #if($column.list)
+    #if($column.list || $column.pk)
     { key : $key, label: t('${businessName}.${ClassName}.${column.javaField}'), visible: true },
     #set($key = $key + 1)
     #end
