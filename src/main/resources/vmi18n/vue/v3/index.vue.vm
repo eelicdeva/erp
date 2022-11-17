@@ -2,6 +2,18 @@
   <div class="app-container">
     <el-form :model="queryParams" ref="queryRef" :inline="true" v-show="showSearch" label-width="68px">
 #foreach($column in $columns)
+    #if($column.isColumn)
+        #set($isColumn = 1)
+        #break
+    #end
+#end
+#foreach($column in $columns)
+    #if($column.isSearch)
+        #set($isSearch = 1)
+        #break
+    #end
+#end
+#foreach($column in $columns)
 #if($column.query)
 #set($dictType=$column.dictType)
 #set($AttrName=$column.javaField.substring(0,1).toUpperCase() + ${column.javaField.substring(1)})
@@ -12,7 +24,7 @@
 #set($comment=$column.columnComment)
 #end
 #if($column.htmlType == "input")
-      <el-form-item :label="$t('${businessName}.${ClassName}.${column.javaField}')" prop="${column.javaField}">
+      <el-form-item :label="$t('${businessName}.${ClassName}.${column.javaField}')" prop="${column.javaField}" #if($column.isSearch)v-show="showExtend" #end>
         <el-input
           v-model="queryParams.${column.javaField}"
           :placeholder="$t('${businessName}.${ClassName}.${column.javaField}Placeholder')"
@@ -21,7 +33,7 @@
         />
       </el-form-item>
 #elseif(($column.htmlType == "select" || $column.htmlType == "radio") && "" != $dictType)
-      <el-form-item :label="$t('${businessName}.${ClassName}.${column.javaField}')" prop="${column.javaField}">
+      <el-form-item :label="$t('${businessName}.${ClassName}.${column.javaField}')" prop="${column.javaField}" #if($column.isSearch)v-show="showExtend" #end>
         <el-select v-model="queryParams.${column.javaField}" :placeholder="$t('${businessName}.${ClassName}.${column.javaField}Placeholder')" clearable>
           <el-option
             v-for="dict in ${dictType}"
@@ -32,13 +44,13 @@
         </el-select>
       </el-form-item>
 #elseif(($column.htmlType == "select" || $column.htmlType == "radio") && $dictType)
-      <el-form-item :label="$t('${businessName}.${ClassName}.${column.javaField}')" prop="${column.javaField}">
+      <el-form-item :label="$t('${businessName}.${ClassName}.${column.javaField}')" prop="${column.javaField}" #if($column.isSearch)v-show="showExtend" #end>
         <el-select v-model="queryParams.${column.javaField}" :placeholder="$t('${businessName}.${ClassName}.${column.javaField}Placeholder')" clearable>
           <el-option label="请选择字典生成" value="" />
         </el-select>
       </el-form-item>
 #elseif($column.htmlType == "datetime" && $column.queryType != "BETWEEN")
-      <el-form-item :label="$t('${businessName}.${ClassName}.${column.javaField}')" prop="${column.javaField}">
+      <el-form-item :label="$t('${businessName}.${ClassName}.${column.javaField}')" prop="${column.javaField}" #if($column.isSearch)v-show="showExtend" #end>
         <el-date-picker clearable
           v-model="queryParams.${column.javaField}"
           type="date"
@@ -47,7 +59,7 @@
         </el-date-picker>
       </el-form-item>
 #elseif($column.htmlType == "datetime" && $column.queryType == "BETWEEN")
-      <el-form-item :label="$t('${businessName}.${ClassName}.${column.javaField}')" style="width: 308px">
+      <el-form-item :label="$t('${businessName}.${ClassName}.${column.javaField}')" style="width: 308px" #if($column.isSearch)v-show="showExtend" #end>
         <el-date-picker
           v-model="daterange${AttrName}"
           value-format="YYYY-MM-DD"
@@ -61,6 +73,9 @@
 #end
 #end
       <el-form-item>
+        #if($isSearch)
+        <extend-toolbar v-model:showExtend="showExtend" ></extend-toolbar>
+        #end
         <el-button type="primary" icon="Search" @click="handleQuery">{{ $t('button.search') }}</el-button>
         <el-button icon="Refresh" @click="resetQuery">{{ $t('button.reset') }}</el-button>
       </el-form-item>
@@ -105,7 +120,7 @@
           v-hasPermi="['${moduleName}:${businessName}:export']"
         >{{ $t('button.export') }}</el-button>
       </el-col>
-      <right-toolbar v-model:showSearch="showSearch" @queryTable="getList" :columns="columns"></right-toolbar>
+      <right-toolbar v-model:showSearch="showSearch" @queryTable="getList" #if($isColumn):columns="columns"#end></right-toolbar>
     </el-row>
 
     <el-table v-loading="loading" :data="${businessName}List" @selection-change="handleSelectionChange">
@@ -120,24 +135,24 @@
 #set($comment=$column.columnComment)
 #end
 #if($column.pk)
-      <el-table-column :label="$t('${businessName}.${ClassName}.${column.javaField}')" align="center" prop="${javaField}" v-if="columns[$key].visible" />
+      <el-table-column :label="$t('${businessName}.${ClassName}.${column.javaField}')" align="center" prop="${javaField}" #if($isColumn)v-if="columns[$key].visible"#end />
       #set($key = $key + 1)
 #elseif($column.list && $column.htmlType == "datetime")
-      <el-table-column :label="$t('${businessName}.${ClassName}.${column.javaField}')" align="center" prop="${javaField}" v-if="columns[$key].visible" width="180">
+      <el-table-column :label="$t('${businessName}.${ClassName}.${column.javaField}')" align="center" prop="${javaField}" #if($isColumn)v-if="columns[$key].visible"#end width="180">
         <template #default="scope">
           <span>{{ parseTime(scope.row.${javaField}, '{y}-{m}-{d}') }}</span>
         </template>
       </el-table-column>
       #set($key = $key + 1)
 #elseif($column.list && $column.htmlType == "imageUpload")
-      <el-table-column :label="$t('${businessName}.${ClassName}.${column.javaField}')" align="center" prop="${javaField}" v-if="columns[$key].visible" width="100">
+      <el-table-column :label="$t('${businessName}.${ClassName}.${column.javaField}')" align="center" prop="${javaField}" #if($isColumn)v-if="columns[$key].visible"#end width="100">
         <template #default="scope">
           <image-preview :src="scope.row.${javaField}" :width="50" :height="50"/>
         </template>
       </el-table-column>
       #set($key = $key + 1)
 #elseif($column.list && "" != $column.dictType)
-      <el-table-column :label="$t('${businessName}.${ClassName}.${column.javaField}')" align="center" prop="${javaField}" v-if="columns[$key].visible" >
+      <el-table-column :label="$t('${businessName}.${ClassName}.${column.javaField}')" align="center" prop="${javaField}" #if($isColumn)v-if="columns[$key].visible"#end >
         <template #default="scope">
 #if($column.htmlType == "checkbox")
           <dict-tag :options="${column.dictType}" :value="scope.row.${javaField} ? scope.row.${javaField}.split(',') : []"/>
@@ -148,7 +163,7 @@
       </el-table-column>
       #set($key = $key + 1)
 #elseif($column.list && "" != $javaField)
-      <el-table-column :label="$t('${businessName}.${ClassName}.${column.javaField}')" align="center" prop="${javaField}" v-if="columns[$key].visible" />
+      <el-table-column :label="$t('${businessName}.${ClassName}.${column.javaField}')" align="center" prop="${javaField}" #if($isColumn)v-if="columns[$key].visible"#end />
       #set($key = $key + 1)
 #end
 #end
@@ -370,6 +385,9 @@ const ${subclassName}List = ref([]);
 const open = ref(false);
 const loading = ref(true);
 const showSearch = ref(true);
+#if($isSearch)
+const showExtend = ref(false);
+#end
 const ids = ref([]);
 #if($table.sub)
 const checked${subClassName} = ref([]);
@@ -384,15 +402,21 @@ const title = ref("");
 const daterange${AttrName} = ref([]);
 #end
 #end
+#if($isColumn)
 const columns = ref([
 #set($key = 0)
 #foreach($column in $columns)
     #if($column.list || $column.pk)
+    #if($column.isColumn)
     { key : $key, label: t('${businessName}.${ClassName}.${column.javaField}'), visible: true },
+    #else
+    { key : $key, label: t('${businessName}.${ClassName}.${column.javaField}'), visible: false },
+    #end
     #set($key = $key + 1)
     #end
 #end
 ]);
+#end
 
 const data = reactive({
   form: {},

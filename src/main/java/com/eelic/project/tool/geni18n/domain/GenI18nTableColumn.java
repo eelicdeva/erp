@@ -66,6 +66,10 @@ public class GenI18nTableColumn extends BaseEntity
 
     private String isSubI18n;
 
+    private String isSearch;
+
+    private String isColumn;
+
     /** 查询方式（EQ等于、NE不等于、GT大于、LT小于、LIKE模糊、BETWEEN范围） */
     private String queryType;
 
@@ -321,6 +325,7 @@ public class GenI18nTableColumn extends BaseEntity
     {
         return isI18n(this.isI18n);
     }
+
     public boolean isI18n(String isI18n)
     {
         return isI18n != null && StringUtils.equals("1", isI18n);
@@ -338,9 +343,46 @@ public class GenI18nTableColumn extends BaseEntity
     {
         return isSubI18n(this.isSubI18n);
     }
+
     public boolean isSubI18n(String isSubI18n)
     {
         return isSubI18n != null && StringUtils.equals("1", isSubI18n);
+    }
+
+    public String getIsSearch() {
+        return isSearch;
+    }
+
+    public void setIsSearch(String isSearch) {
+        this.isSearch = isSearch;
+    }
+
+    public boolean isSearch()
+    {
+        return isSearch(this.isSearch);
+    }
+
+    public boolean isSearch(String isSearch)
+    {
+        return isSearch != null && StringUtils.equals("1", isSearch);
+    }
+
+    public String getIsColumn() {
+        return isColumn;
+    }
+
+    public void setIsColumn(String isColumn) {
+        this.isColumn = isColumn;
+    }
+
+    public boolean isColumn()
+    {
+        return isColumn(this.isColumn);
+    }
+
+    public boolean isColumn(String isColumn)
+    {
+        return isColumn != null && StringUtils.equals("1", isColumn);
     }
 
     public void setQueryType(String queryType)
