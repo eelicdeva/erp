@@ -70,6 +70,8 @@ public class GenI18nTableColumn extends BaseEntity
 
     private String isColumn;
 
+    private String isSortable;
+
     /** 查询方式（EQ等于、NE不等于、GT大于、LT小于、LIKE模糊、BETWEEN范围） */
     private String queryType;
 
@@ -383,6 +385,24 @@ public class GenI18nTableColumn extends BaseEntity
     public boolean isColumn(String isColumn)
     {
         return isColumn != null && StringUtils.equals("1", isColumn);
+    }
+
+    public String getIsSortable() {
+        return isSortable;
+    }
+
+    public void setIsSortable(String isSortable) {
+        this.isSortable = isSortable;
+    }
+
+    public boolean isSortable()
+    {
+        return isSortable(this.isSortable);
+    }
+
+    public boolean isSortable(String isSortable)
+    {
+        return isSortable != null && StringUtils.equals("1", isSortable);
     }
 
     public void setQueryType(String queryType)
