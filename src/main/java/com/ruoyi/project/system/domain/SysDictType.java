@@ -27,10 +27,6 @@ public class SysDictType extends BaseEntity
     @Excel(name = "字典名称")
     private String dictName;
 
-    private String dictNameEn;
-
-    private String dictNameId;
-
     /** 字典类型 */
     @Excel(name = "字典类型")
     private String dictType;
@@ -59,22 +55,6 @@ public class SysDictType extends BaseEntity
     public void setDictName(String dictName)
     {
         this.dictName = dictName;
-    }
-
-    public String getDictNameEn() {
-        return dictNameEn;
-    }
-
-    public void setDictNameEn(String dictNameEn) {
-        this.dictNameEn = dictNameEn;
-    }
-
-    public String getDictNameId() {
-        return dictNameId;
-    }
-
-    public void setDictNameId(String dictNameId) {
-        this.dictNameId = dictNameId;
     }
 
     @NotBlank(message = "字典类型不能为空")

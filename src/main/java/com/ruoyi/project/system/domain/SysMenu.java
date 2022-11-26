@@ -25,12 +25,6 @@ public class SysMenu extends BaseEntity
     /** 菜单名称 */
     private String menuName;
 
-    /** menu name english*/
-    private String menuNameEn;
-
-    /** menu name indonesia*/
-    private String menuNameId;
-
     /** 父菜单名称 */
     private String parentName;
 
@@ -95,22 +89,6 @@ public class SysMenu extends BaseEntity
     public void setMenuName(String menuName)
     {
         this.menuName = menuName;
-    }
-
-    public String getMenuNameEn() {
-        return menuNameEn;
-    }
-
-    public void setMenuNameEn(String menuNameEn) {
-        this.menuNameEn = menuNameEn;
-    }
-
-    public String getMenuNameId() {
-        return menuNameId;
-    }
-
-    public void setMenuNameId(String menuNameId) {
-        this.menuNameId = menuNameId;
     }
 
     public String getParentName()

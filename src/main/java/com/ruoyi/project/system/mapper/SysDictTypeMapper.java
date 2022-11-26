@@ -67,7 +67,7 @@ public interface SysDictTypeMapper
      * @param dictType 字典类型信息
      * @return 结果
      */
-    public int insertDictType(SysDictType dictType);
+    public int insertDictType(@Param("dict")SysDictType dictType, @Param("dictNameCat")String[] dictNameCat);
 
     /**
      * 修改字典类型信息

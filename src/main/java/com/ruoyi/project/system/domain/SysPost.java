@@ -30,10 +30,6 @@ public class SysPost extends BaseEntity
     @Excel(name = "岗位名称")
     private String postName;
 
-    private String postNameEn;
-
-    private String postNameId;
-
     /** 岗位排序 */
     @Excel(name = "岗位排序")
     private String postSort;
@@ -77,22 +73,6 @@ public class SysPost extends BaseEntity
     public void setPostName(String postName)
     {
         this.postName = postName;
-    }
-
-    public String getPostNameEn() {
-        return postNameEn;
-    }
-
-    public void setPostNameEn(String postNameEn) {
-        this.postNameEn = postNameEn;
-    }
-
-    public String getPostNameId() {
-        return postNameId;
-    }
-
-    public void setPostNameId(String postNameId) {
-        this.postNameId = postNameId;
     }
 
     @NotBlank(message = "显示顺序不能为空")

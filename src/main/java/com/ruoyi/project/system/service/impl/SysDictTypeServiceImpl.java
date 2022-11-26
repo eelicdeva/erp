@@ -20,7 +20,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import static com.ruoyi.common.translator.Translator.translate;
+import static com.ruoyi.common.translator.Translator.*;
 
 /**
  * 字典 业务层处理
@@ -179,19 +179,24 @@ public class SysDictTypeServiceImpl implements ISysDictTypeService
     public int insertDictType(SysDictType dict)
     {
         try {
-            dict.setDictNameId(translate("auto", "id",dict.getDictName()));
-            dict.setDictNameEn(translate("auto", "en",dict.getDictName()));
-            dict.setDictName(translate("auto", "zh-CN",dict.getDictName()));
-
+            int row = dictTypeMapper.insertDictType(dict, translateAll(dict.getDictName()));
+            if (row > 0)
+            {
+                DictUtils.setDictCache(dict.getDictType(), null);
+            }
+            return row;
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            try{
+                int row = dictTypeMapper.insertDictType(dict, translateOffline(dict.getDictName()));
+                if (row > 0)
+                {
+                    DictUtils.setDictCache(dict.getDictType(), null);
+                }
+                return row;
+            } catch (Exception e2) {
+                throw new RuntimeException(e2);
+            }
         }
-        int row = dictTypeMapper.insertDictType(dict);
-        if (row > 0)
-        {
-            DictUtils.setDictCache(dict.getDictType(), null);
-        }
-        return row;
     }
 
     /**

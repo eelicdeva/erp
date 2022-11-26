@@ -110,22 +110,22 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
  	
  	<insert id="insertDictType" parameterType="SysDictType">
  		insert into sys_dict_type(
- 			<if test="dictName != null and dictName != ''">dict_name,</if>
-			<if test="dictNameEn != null and dictNameEn != ''">dict_name_en,</if>
-			<if test="dictNameId != null and dictNameId != ''">dict_name_id,</if>
- 			<if test="dictType != null and dictType != ''">dict_type,</if>
- 			<if test="status != null">status,</if>
- 			<if test="remark != null and remark != ''">remark,</if>
- 			<if test="createBy != null and createBy != ''">create_by,</if>
+ 			<if test="dict.dictName != null and dict.dictName != ''">dict_name,</if>
+			<if test="dict.dictName != null and dict.dictName != ''">dict_name_en,</if>
+			<if test="dict.dictName != null and dict.dictName != ''">dict_name_id,</if>
+ 			<if test="dict.dictType != null and dict.dictType != ''">dict_type,</if>
+ 			<if test="dict.status != null">status,</if>
+ 			<if test="dict.remark != null and dict.remark != ''">remark,</if>
+ 			<if test="dict.createBy != null and dict.createBy != ''">create_by,</if>
  			create_time
  		)values(
- 			<if test="dictName != null and dictName != ''">#{dictName},</if>
-			<if test="dictNameEn != null and dictNameEn != ''">#{dictNameEn},</if>
-			<if test="dictNameId != null and dictNameId != ''">#{dictNameId},</if>
- 			<if test="dictType != null and dictType != ''">#{dictType},</if>
- 			<if test="status != null">#{status},</if>
- 			<if test="remark != null and remark != ''">#{remark},</if>
- 			<if test="createBy != null and createBy != ''">#{createBy},</if>
+			<foreach item="dictNameCat" collection="dictNameCat" separator="," close="," >
+				<if test="dict.dictName != null and dict.dictName != ''">#{dictNameCat}</if>
+			</foreach>
+ 			<if test="dict.dictType != null and dict.dictType != ''">#{dict.dictType},</if>
+ 			<if test="dict.status != null">#{dict.status},</if>
+ 			<if test="dict.remark != null and dict.remark != ''">#{dict.remark},</if>
+ 			<if test="dict.createBy != null and dict.createBy != ''">#{dict.createBy},</if>
  			sysdate()
  		)
 	</insert>

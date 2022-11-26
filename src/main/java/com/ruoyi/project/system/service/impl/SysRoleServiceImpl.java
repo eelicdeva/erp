@@ -18,7 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 
-import static com.ruoyi.common.translator.Translator.translate;
+import static com.ruoyi.common.translator.Translator.*;
 
 /**
  * 角色 业务层处理
@@ -228,17 +228,16 @@ public class SysRoleServiceImpl implements ISysRoleService
     {
 
         try {
-            role.setRoleNameId(translate("auto", "id",role.getRoleName()));
-            role.setRoleNameEn(translate("auto", "en",role.getRoleName()));
-            role.setRoleName(translate("auto", "zh-CN",role.getRoleName()));
+            roleMapper.insertRole(role, translateAll(role.getRoleName()));
+            return insertRoleMenu(role);
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            try{
+                roleMapper.insertRole(role, translateOffline(role.getRoleName()));
+                return insertRoleMenu(role);
+            } catch (Exception e2) {
+                throw new RuntimeException(e2);
+            }
         }
-
-
-        // 新增角色信息
-        roleMapper.insertRole(role);
-        return insertRoleMenu(role);
     }
 
     /**

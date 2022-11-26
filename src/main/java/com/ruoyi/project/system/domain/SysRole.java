@@ -26,10 +26,6 @@ public class SysRole extends BaseEntity
     @Excel(name = "角色名称")
     private String roleName;
 
-    private String roleNameEn;
-
-    private String roleNameId;
-
     /** 角色权限 */
     @Excel(name = "角色权限")
     private String roleKey;
@@ -107,22 +103,6 @@ public class SysRole extends BaseEntity
     public void setRoleName(String roleName)
     {
         this.roleName = roleName;
-    }
-
-    public String getRoleNameEn() {
-        return roleNameEn;
-    }
-
-    public void setRoleNameEn(String roleNameEn) {
-        this.roleNameEn = roleNameEn;
-    }
-
-    public String getRoleNameId() {
-        return roleNameId;
-    }
-
-    public void setRoleNameId(String roleNameId) {
-        this.roleNameId = roleNameId;
     }
 
     @NotBlank(message = "权限字符不能为空")

@@ -90,7 +90,7 @@ public interface SysRoleMapper
      * @param role 角色信息
      * @return 结果
      */
-    public int insertRole(SysRole role);
+    public int insertRole(@Param("role")SysRole role, @Param("roleNameCat")String[] roleNameCat);
 
     /**
      * 通过角色ID删除角色
