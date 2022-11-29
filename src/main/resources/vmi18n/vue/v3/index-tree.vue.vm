@@ -159,22 +159,25 @@
       <el-table-column :label="$t('user.operate')" align="center" class-name="small-padding fixed-width">
         <template #default="scope">
           <el-button
-            type="text"
+            type="primary"
             icon="Edit"
             @click="handleUpdate(scope.row)"
             v-hasPermi="['${moduleName}:${businessName}:edit']"
+            link
           >{{ $t('button.edit') }}</el-button>
           <el-button
-            type="text"
+            type="primary"
             icon="Plus"
             @click="handleAdd(scope.row)"
             v-hasPermi="['${moduleName}:${businessName}:add']"
+            link
           >{{ $t('button.add') }}</el-button>
           <el-button
-            type="text"
+            type="primary"
             icon="Delete"
             @click="handleDelete(scope.row)"
             v-hasPermi="['${moduleName}:${businessName}:remove']"
+            link
           >{{ $t('button.delete') }}</el-button>
         </template>
       </el-table-column>
