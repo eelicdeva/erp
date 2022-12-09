@@ -1,0 +1,289 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.eelic.project.system.sysLang.mapper.SysLangMapper">
+    
+    <resultMap type="SysLang" id="SysLangResult">
+        <result property="langId"       column="lang_id"    />
+        <result property="zhCn"         column="zh_cn"    />
+        <result property="enUs"         column="en_us"    />
+        <result property="idId"         column="id_id"    />
+        <result property="langIdx"      column="lang_idx"    />
+        <result property="langKey"      column="lang_key"    />
+        <result property="langTb"       column="lang_tb"    />
+        <result property="langFn"       column="lang_fn"    />
+        <result property="status"       column="status"    />
+        <result property="createBy"     column="createBy"    />
+        <result property="createTime"   column="createTime"    />
+        <result property="updateBy"     column="updateBy"    />
+        <result property="updateTime"   column="updateTime"    />
+        <result property="remark"       column="remark"    />
+    </resultMap>
+
+    <sql id="selectSysLangVo">
+        select * from
+        (select REPLACE(UUID(),"-","") as lang_id, "sys_book" as lang_tb, 'book_title' as lang_fn, book_title as lang_key, book_title as zh_cn, book_title_en as en_us, book_title_id as id_id, book_id as lang_idx from sys_book where del_flag = '0'
+        union
+        select REPLACE(UUID(),"-","") as lang_id, "sys_book" as lang_tb, 'synopsis' as lang_fn, synopsis as lang_key, synopsis as zh_cn, synopsis_en as en_us, synopsis_id as id_id, book_id as lang_idx from sys_book where del_flag = '0'
+        union
+        select REPLACE(UUID(),"-","") as lang_id, "sys_book_category" as lang_tb, 'category_name' as lang_fn, category_name as lang_key, category_name as zh_cn, category_name_en as en_us, category_name_id as id_id, category_id as lang_idx from sys_book_category where del_flag = '0'
+        union
+        select REPLACE(UUID(),"-","") as lang_id, 'sys_notice' as lang_tb, 'notice_title' as lang_fn, notice_title as lang_key, notice_title as zh_cn, notice_title_en as en_us, notice_title_id as id_id, notice_id as lang_idx from sys_notice
+        union
+        select REPLACE(UUID(),"-","") as lang_id, 'sys_menu' as lang_tb, 'menu_name' as lang_fn, menu_name as lang_key, menu_name as zh_ch, menu_name_en as en_us, menu_name_id as id_id, menu_id as lang_idx from sys_menu
+        union
+        select REPLACE(UUID(),"-","") as lang_id, 'sys_config' as lang_tb, 'config_name' as lang_fn, config_name as lang_key,  config_name as zh_ch, config_name_en as en_us, config_name_id as id_id, config_id as lang_idx from sys_config
+        union
+        select REPLACE(UUID(),"-","") as lang_id, 'sys_dept' as lang_tb, 'dept_name' as lang_fn, dept_name as lang_key ,dept_name as zh_ch, dept_name_en as en_us, dept_name_id as id_id, dept_id as lang_idx from sys_dept where del_flag = '0'
+        union
+        select REPLACE(UUID(),"-","") as lang_id, 'sys_dict_data' as lang_tb, 'dict_label' as lang_fn, dict_label as lang_key, dict_label as zh_cn, dict_label_en as en_us, dict_label_id as id_id, dict_code as lang_idx from sys_dict_data
+        union
+        select REPLACE(UUID(),"-","") as lang_id, 'sys_dict_type' as lang_tb, 'dict_name' as lang_fn, dict_name as lang_key, dict_name as zh_cn, dict_name_en as en_us, dict_name_id as id_id, dict_id as lang_idx from sys_dict_type
+        union
+        select REPLACE(UUID(),"-","") as lang_id, 'sys_job' as lang_tb, 'job_name' as lang_fn, job_name as lang_key, job_name as zh_cn, job_name_en as en_us, job_name_id as id_id, job_id as lang_idx from sys_job
+        union
+        select REPLACE(UUID(),"-","") as lang_id, 'sys_post' as lang_tb, 'post_name' as lang_fn, post_name as lang_key, post_name as zh_ch, post_name_en as en_us, post_name_id as id_id, post_id as lang_idx from sys_post
+        union
+        select REPLACE(UUID(),"-","") as lang_id, 'sys_role' as lang_tb, 'role_name' as lang_fn, role_name as lang_key, role_name as zh_ch, role_name as en_us, role_name_id as id_id, role_id as lang_idx from sys_role where del_flag = '0') as sys_lang
+    </sql>
+
+    <sql id="selectI18nRecordVo">
+        select lang_id, zh_cn, en_us, id_id, lang_idx, lang_key, lang_tb, lang_fn, status, create_by, create_time, update_by, update_time, remark from sys_lang
+    </sql>
+
+    <select id="selectSysLangList" parameterType="SysLang" resultMap="SysLangResult">
+        <include refid="selectSysLangVo"/>
+        <where>
+        <if test="zhCn != null  and zhCn != ''"> and zh_cn like concat('%', #{zhCn}, '%') </if>
+        <if test="enUs != null  and enUs != ''"> and en_us like concat('%', #{enUs}, '%') </if>
+        <if test="idId != null  and idId != ''"> and id_id like concat('%', #{idId}, '%') </if>
+        <if test="langIdx != null  and langIdx != ''"> and lang_idx like concat('%', #{langIdx}, '%')</if>
+        <if test="langKey != null  and langKey != ''"> and lang_key like concat('%', #{langKey}, '%') </if>
+        <if test="langTb != null  and langTb != ''"> and lang_tb like concat('%', #{langTb}, '%')</if>
+        <if test="langFn != null  and langFn != ''"> and lang_fn like concat('%', #{langFn}, '%')</if>
+        <if test="status != null  and status != ''"> and status = #{status}</if>
+        </where>
+    </select>
+
+    <select id="selectI18nRecord" parameterType="SysLang" resultMap="SysLangResult">
+        <include refid="selectI18nRecordVo"/>
+        <where>
+            <if test="zhCn != null  and zhCn != ''"> and zh_cn like concat('%', #{zhCn}, '%')</if>
+            <if test="enUs != null  and enUs != ''"> and en_us like concat('%', #{enUs}, '%')</if>
+            <if test="langIdx != null  and langIdx != ''"> and lang_idx like concat('%', #{langIdx}, '%')</if>
+            <if test="langKey != null  and langKey != ''"> and lang_key like concat('%', #{langKey}, '%')</if>
+            <if test="langTb != null  and langTb != ''"> and lang_tb like concat('%', #{langTb}, '%')</if>
+            <if test="langFn != null  and langFn != ''"> and lang_fn like concat('%', #{langFn}, '%')</if>
+            <if test="status != null  and status != ''"> and status like concat('%', #{status}, '%')</if>
+        </where>
+    </select>
+    
+    <select id="selectSysLangByLangId" resultMap="SysLangResult">
+        <include refid="selectSysLangVo"/>
+        where lang_id = #{langId}
+    </select>
+
+    <insert id="insertSysLang" parameterType="SysLang">
+        <selectKey keyProperty="langId" resultType="String" order="BEFORE">
+            select REPLACE(UUID(),"-","")
+        </selectKey>
+        insert into sys_lang
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="langId != null">lang_id,</if>
+            <if test="zhCn != null">zh_cn,</if>
+            <if test="enUs != null">en_us,</if>
+            <if test="idId != null">id_id,</if>
+            <if test="langIdx != null">lang_idx,</if>
+            <if test="langKey != null">lang_key,</if>
+            <if test="langTb != null">lang_tb,</if>
+            <if test="langFn != null">lang_fn,</if>
+            <if test="status != null">status,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="remark != null">remark,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="langId != null">#{langId},</if>
+            <if test="zhCn != null">#{zhCn},</if>
+            <if test="enUs != null">#{enUs},</if>
+            <if test="idId != null">#{idId},</if>
+            <if test="langIdx != null">#{langIdx},</if>
+            <if test="langKey != null">#{langKey},</if>
+            <if test="langTb != null">#{langTb},</if>
+            <if test="langFn != null">#{langFn},</if>
+            <if test="status != null">#{status},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="remark != null">#{remark},</if>
+        </trim>
+    </insert>
+
+    <update id="updateBookTitle" parameterType="SysLang">
+        update sys_book
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="zhCn != null">book_title = #{zhCn},</if>
+            <if test="enUs != null">book_title_en = #{enUs},</if>
+            <if test="idId != null">book_title_id = #{idId},</if>
+        </trim>
+        where book_id = #{langIdx}
+    </update>
+
+    <update id="updateSynopsis" parameterType="SysLang">
+        update sys_book
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="zhCn != null">synopsis = #{zhCn},</if>
+            <if test="enUs != null">synopsis_en = #{enUs},</if>
+            <if test="idId != null">synopsis_id = #{idId},</if>
+        </trim>
+        where book_id = #{langIdx}
+    </update>
+
+    <update id="updateCategoryName" parameterType="SysLang">
+        update sys_book_category
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="zhCn != null">category_name = #{zhCn},</if>
+            <if test="enUs != null">category_name_en = #{enUs},</if>
+            <if test="idId != null">category_name_id = #{idId},</if>
+        </trim>
+        where category_id = #{langIdx}
+    </update>
+
+    <update id="updateNoticeTitle" parameterType="SysLang">
+        update sys_notice
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="zhCn != null">notice_title = #{zhCn},</if>
+            <if test="enUs != null">notice_title_en = #{enUs},</if>
+            <if test="idId != null">notice_title_id = #{idId},</if>
+        </trim>
+        where notice_id = #{langIdx}
+    </update>
+
+    <update id="updateMenuName" parameterType="SysLang">
+        update sys_menu
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="zhCn != null">menu_name = #{zhCn},</if>
+            <if test="enUs != null">menu_name_en = #{enUs},</if>
+            <if test="idId != null">menu_name_id = #{idId},</if>
+        </trim>
+        where menu_id = #{langIdx}
+    </update>
+
+    <update id="updateConfigName" parameterType="SysLang">
+        update sys_config
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="zhCn != null">config_name = #{zhCn},</if>
+            <if test="enUs != null">config_name_en = #{enUs},</if>
+            <if test="idId != null">config_name_id = #{idId},</if>
+        </trim>
+        where config_id = #{langIdx}
+    </update>
+
+    <update id="updateDeptName" parameterType="SysLang">
+        update sys_dept
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="zhCn != null">dept_name = #{zhCn},</if>
+            <if test="enUs != null">dept_name_en = #{enUs},</if>
+            <if test="idId != null">dept_name_id = #{idId},</if>
+        </trim>
+        where dept_id = #{langIdx}
+    </update>
+
+    <update id="updateDictLabel" parameterType="SysLang">
+        update sys_dict_data
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="zhCn != null">dict_label = #{zhCn},</if>
+            <if test="enUs != null">dict_label_en = #{enUs},</if>
+            <if test="idId != null">dict_label_id = #{idId},</if>
+        </trim>
+        where dict_code = #{langIdx}
+    </update>
+
+    <update id="updateDictName" parameterType="SysLang">
+        update sys_dict_type
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="zhCn != null">dict_name = #{zhCn},</if>
+            <if test="enUs != null">dict_name_en = #{enUs},</if>
+            <if test="idId != null">dict_name_id = #{idId},</if>
+        </trim>
+        where dict_id = #{langIdx}
+    </update>
+
+    <update id="updateJobName" parameterType="SysLang">
+        update sys_job
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="zhCn != null">job_name = #{zhCn},</if>
+            <if test="enUs != null">job_name_en = #{enUs},</if>
+            <if test="idId != null">job_name_id = #{idId},</if>
+        </trim>
+        where job_id = #{langIdx}
+    </update>
+
+    <update id="updatePostName" parameterType="SysLang">
+        update sys_post
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="zhCn != null">post_name = #{zhCn},</if>
+            <if test="enUs != null">post_name_en = #{enUs},</if>
+            <if test="idId != null">post_name_id = #{idId},</if>
+        </trim>
+        where post_id = #{langIdx}
+    </update>
+
+    <update id="updateRoleName" parameterType="SysLang">
+        update sys_role
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="zhCn != null">role_name = #{zhCn},</if>
+            <if test="enUs != null">role_name_en = #{enUs},</if>
+            <if test="idId != null">role_name_id = #{idId},</if>
+        </trim>
+        where role_id = #{langIdx}
+    </update>
+
+    <update id="updateSysLang" parameterType="SysLang">
+        update #{langTb}
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="zhCn != null">#{langFld} = #{zhCn},</if>
+            <if test="enUs != null">#{langFld}_en = #{enUs},</if>
+            <if test="idId != null">#{langFld}_id = #{idId},</if>
+        </trim>
+        where #{langFldId} = #{langIdx}
+    </update>
+
+<!--    <update id="updateSysLang" parameterType="SysLang">-->
+<!--        update sys_lang-->
+<!--        <trim prefix="SET" suffixOverrides=",">-->
+<!--            <if test="sysLang.zhCn != null">zh_cn = #{sysLang.zhCn},</if>-->
+<!--            <if test="sysLang.enUs != null">en_us = #{sysLang.enUs},</if>-->
+<!--            <if test="sysLang.idId != null">id_id = #{sysLang.idId},</if>-->
+<!--            <if test="sysLang.langIdx != null">lang_idx = #{sysLang.langIdx},</if>-->
+<!--            <if test="sysLang.langKey != null">lang_key = #{sysLang.langKey},</if>-->
+<!--            <if test="sysLang.langTb != null">lang_tb = #{sysLang.langTb},</if>-->
+<!--            <if test="sysLang.status != null">status = #{sysLang.status},</if>-->
+<!--            <if test="sysLang.createBy != null">create_by = #{sysLang.createBy},</if>-->
+<!--            <if test="sysLang.createTime != null">create_time = #{sysLang.createTime},</if>-->
+<!--            <if test="sysLang.updateBy != null">update_by = #{sysLang.updateBy},</if>-->
+<!--            <if test="sysLang.updateTime != null">update_time = #{sysLang.updateTime},</if>-->
+<!--            <if test="sysLang.remark != null">remark = #{sysLang.remark},</if>-->
+<!--        </trim>-->
+<!--        where lang_id = #{sysLang.langIdx}-->
+<!--    </update>-->
+
+    <delete id="deleteSysLangByLangId" parameterType="String">
+        delete from sys_lang where lang_id = #{langId}
+    </delete>
+
+    <delete id="deleteSysLangByLangIds" parameterType="String">
+        delete from sys_lang where lang_id in 
+        <foreach item="langId" collection="array" open="(" separator="," close=")">
+            #{langId}
+        </foreach>
+    </delete>
+
+    <update id="cleanLangRecord">
+        truncate table sys_lang
+    </update>
+</mapper>
