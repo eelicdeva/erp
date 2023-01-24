@@ -32,7 +32,7 @@ public class SysPost extends BaseEntity
 
     /** 岗位排序 */
     @Excel(name = "岗位排序")
-    private String postSort;
+    private Integer postSort;
 
     /** 状态（0正常 1停用） */
     @Excel(name = "状态", readConverterExp = "0=正常,1=停用")
