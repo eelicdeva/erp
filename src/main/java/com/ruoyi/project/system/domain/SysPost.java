@@ -76,12 +76,12 @@ public class SysPost extends BaseEntity
     }
 
     @NotBlank(message = "显示顺序不能为空")
-    public String getPostSort()
+    public Integer getPostSort()
     {
         return postSort;
     }
 
-    public void setPostSort(String postSort)
+    public void setPostSort(Integer postSort)
     {
         this.postSort = postSort;
     }
