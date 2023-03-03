@@ -137,7 +137,7 @@ public class VelocityUtils
         templates.add("vmi18n/java/controller.java.vm");
         templates.add("vmi18n/xml/mapper.xml.vm");
         templates.add("vmi18n/sql/sql.vm");
-        templates.add("vmi18n/js/api.js.vm");
+        templates.add("vmi18n/ts/api.ts.vm");
         if (GenI18nConstants.TPL_CRUD.equals(tplCategory))
         {
             templates.add("vmi18n/vue/v3/index.vue.vm");
@@ -152,9 +152,9 @@ public class VelocityUtils
             templates.add("vmi18n/java/sub-domain.java.vm");
         }
         templates.add("vmi18n/vue/v3/statistics.vue.vm");
-        templates.add("vmi18n/lang/en.js.vm");
-        templates.add("vmi18n/lang/id.js.vm");
-        templates.add("vmi18n/lang/zh.js.vm");
+        templates.add("vmi18n/lang/en.ts.vm");
+        templates.add("vmi18n/lang/id.ts.vm");
+        templates.add("vmi18n/lang/zh.ts.vm");
         return templates;
     }
 
@@ -210,9 +210,9 @@ public class VelocityUtils
         {
             fileName = businessName + "Menu.sql";
         }
-        else if (template.contains("api.js.vm"))
+        else if (template.contains("api.ts.vm"))
         {
-            fileName = StringUtils.format("{}/api/{}/{}.js", vuePath, moduleName, businessName);
+            fileName = StringUtils.format("{}/api/{}/{}.ts", vuePath, moduleName, businessName);
         }
         else if (template.contains("index.vue.vm"))
         {
@@ -226,17 +226,17 @@ public class VelocityUtils
         {
             fileName = StringUtils.format("{}/views/{}/{}/statistics.vue", vuePath, moduleName, businessName);
         }
-        else if (template.contains("en.js.vm"))
+        else if (template.contains("en.ts.vm"))
         {
-            fileName = StringUtils.format("{}/lang/en.js", vuePath);
+            fileName = StringUtils.format("{}/lang/en.ts", vuePath);
         }
-        else if (template.contains("id.js.vm"))
+        else if (template.contains("id.ts.vm"))
         {
-            fileName = StringUtils.format("{}/lang/id.js", vuePath);
+            fileName = StringUtils.format("{}/lang/id.ts", vuePath);
         }
-        else if (template.contains("zh.js.vm"))
+        else if (template.contains("zh.ts.vm"))
         {
-            fileName = StringUtils.format("{}/lang/zh.js", vuePath);
+            fileName = StringUtils.format("{}/lang/zh.ts", vuePath);
         }
         return fileName;
     }

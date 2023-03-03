@@ -1,0 +1,74 @@
+import request from '@/utils/request'
+
+export interface QueryParams {
+  pageNum: number
+  pageSize: number
+#foreach($column in $columns)
+#if($column.query)
+ #if($column.javaType == "Integer" || $column.javaType == "Long" || $column.javaType == "Double" || $column.javaType == "BigDecimal" )
+  ${column.javaField}?: number | null
+ #elseif($column.javaType == "String" || $column.javaType == "Date")
+  ${column.javaField}?: string | null
+ #elseif($column.javaType == "Boolean")
+  ${column.javaField}?: boolean | null
+ #end
+#end
+#end
+}
+
+export interface AddParams {
+#foreach($column in $columns)
+#if($column.insert || $column.isSubI18n )
+ #if($column.javaType == "Integer" || $column.javaType == "Long" || $column.javaType == "Double" || $column.javaType == "BigDecimal" )
+  ${column.javaField}?: number | null
+ #elseif($column.javaType == "String" || $column.javaType == "Date")
+  ${column.javaField}?: string | null
+ #elseif($column.javaType == "Boolean")
+  ${column.javaField}?: boolean | null
+ #end
+#end
+#end
+}
+
+// 查询${functionName}列表
+export function list${BusinessName}(query: QueryParams) {
+  return request({
+    url: '/${moduleName}/${businessName}/list',
+    method: 'get',
+    params: query
+  })
+}
+
+// 查询${functionName}详细
+export function get${BusinessName}(${pkColumn.javaField}) {
+  return request({
+    url: '/${moduleName}/${businessName}/' + ${pkColumn.javaField},
+    method: 'get'
+  })
+}
+
+// 新增${functionName}
+export function add${BusinessName}(data: AddParams) {
+  return request({
+    url: '/${moduleName}/${businessName}',
+    method: 'post',
+    data: data
+  })
+}
+
+// 修改${functionName}
+export function update${BusinessName}(data: AddParams) {
+  return request({
+    url: '/${moduleName}/${businessName}',
+    method: 'put',
+    data: data
+  })
+}
+
+// 删除${functionName}
+export function del${BusinessName}(${pkColumn.javaField}) {
+  return request({
+    url: '/${moduleName}/${businessName}/' + ${pkColumn.javaField},
+    method: 'delete'
+  })
+}

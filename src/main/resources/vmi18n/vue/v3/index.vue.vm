@@ -369,12 +369,16 @@
   </div>
 </template>
 
-<script setup name="${BusinessName}">
+<script lang="ts" setup name="${BusinessName}">
 import { list${BusinessName}, get${BusinessName}, del${BusinessName}, add${BusinessName}, update${BusinessName} } from "@/api/${moduleName}/${businessName}";
+import type { QueryParams, AddParams } from "@/api/${moduleName}/${businessName}";
 import i18n from '@/lang/index';
+import { ComponentInternalInstance, getCurrentInstance, reactive, ref, toRefs } from "vue";
+import type { ElForm } from "element-plus";
+import { parseTime } from "@/utils/ruoyi";
 
 const {t} = i18n.global;
-const { proxy } = getCurrentInstance();
+const { proxy } = getCurrentInstance() as ComponentInternalInstance;
 #if(${dicts} != '')
 #set($dictsNoSymbol=$dicts.replace("'", ""))
 const { ${dictsNoSymbol} } = proxy.useDict(${dicts});
@@ -398,6 +402,8 @@ const single = ref(true);
 const multiple = ref(true);
 const total = ref(0);
 const title = ref("");
+const queryRef = ref<InstanceType<typeof ElForm>>();
+const ${businessName}Ref = ref<InstanceType<typeof ElForm>>();
 #foreach ($column in $columns)
 #if($column.htmlType == "datetime" && $column.queryType == "BETWEEN")
 #set($AttrName=$column.javaField.substring(0,1).toUpperCase() + ${column.javaField.substring(1)})
@@ -420,7 +426,23 @@ const columns = ref([
 ]);
 #end
 
-const data = reactive({
+interface Data {
+    form: AddParams
+    queryParams: QueryParams
+    rules:{
+    #foreach ($column in $columns)
+    #if($column.required)
+        $column.javaField: [{
+           required: boolean
+           message: string
+           trigger: string
+        }]
+    #end
+    #end
+    }
+}
+
+const data: Data  = reactive({
   form: {},
   queryParams: {
     pageNum: 1,
@@ -497,7 +519,7 @@ function reset() {
 #if($table.sub)
   ${subclassName}List.value = [];
 #end
-  proxy.resetForm("${businessName}Ref");
+  ${businessName}Ref.value?.resetFields();
 }
 
 /** 搜索按钮操作 */
@@ -514,7 +536,7 @@ function resetQuery() {
   daterange${AttrName}.value = [];
 #end
 #end
-  proxy.resetForm("queryRef");
+  queryRef.value?.resetFields();
   handleQuery();
 }
 
@@ -553,7 +575,7 @@ function handleUpdate(row) {
 
 /** 提交按钮 */
 function submitForm() {
-  proxy.#[[$]]#refs["${businessName}Ref"].validate(valid => {
+  ${businessName}Ref.value?.validate(valid => {
     if (valid) {
 #foreach ($column in $columns)
 #if($column.htmlType == "checkbox")
@@ -565,13 +587,13 @@ function submitForm() {
 #end
       if (form.value.${pkColumn.javaField} != null) {
         update${BusinessName}(form.value).then(response => {
-          proxy.#[[$modal]]#.msgSuccess(t('button.successModify'));
+          proxy?.#[[$modal]]#.msgSuccess(t('button.successModify'));
           open.value = false;
           getList();
         });
       } else {
         add${BusinessName}(form.value).then(response => {
-          proxy.#[[$modal]]#.msgSuccess(t('button.AddSuccess'));
+          proxy?.#[[$modal]]#.msgSuccess(t('button.AddSuccess'));
           open.value = false;
           getList();
         });
@@ -583,7 +605,7 @@ function submitForm() {
 /** 删除按钮操作 */
 function handleDelete(row) {
   const _${pkColumn.javaField}s = row.${pkColumn.javaField} || ids.value;
-  proxy.#[[$modal]]#.confirm('是否确认删除${functionName}编号为"' + _${pkColumn.javaField}s + '"的数据项？').then(function() {
+  proxy?.#[[$modal]]#.confirm('是否确认删除${functionName}编号为"' + _${pkColumn.javaField}s + '"的数据项？').then(function() {
     return del${BusinessName}(_${pkColumn.javaField}s);
   }).then(() => {
     getList();
@@ -612,7 +634,7 @@ function handleAdd${subClassName}() {
 /** ${subTable.functionName}删除按钮操作 */
 function handleDelete${subClassName}() {
   if (checked${subClassName}.value.length == 0) {
-    proxy.#[[$modal]]#.msgError("请先选择要删除的${subTable.functionName}数据");
+    proxy?.#[[$modal]]#.msgError("请先选择要删除的${subTable.functionName}数据");
   } else {
     const ${subclassName}s = ${subclassName}List.value;
     const checked${subClassName}s = checked${subClassName}.value;
@@ -630,7 +652,7 @@ function handle${subClassName}SelectionChange(selection) {
 #end
 /** 导出按钮操作 */
 function handleExport() {
-  proxy.download('${moduleName}/${businessName}/export', {
+  proxy?.#[[$download]]#('${moduleName}/${businessName}/export', {
     ...queryParams.value
   }, `${businessName}_#[[${new Date().getTime()}]]#.xlsx`)
 }
