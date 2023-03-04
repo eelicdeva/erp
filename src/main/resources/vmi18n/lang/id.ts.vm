@@ -7,13 +7,13 @@ ${ClassName} : {
  #else
  #set($comment=$column.columnCommentId)
  #end
-    ${column.javaField} : ${comment}
+    ${column.javaField} : '${comment}',
     #if($column.htmlType == "input")
-        ${column.javaField}Placeholder : ${comment}
+    ${column.javaField}Placeholder : '${comment}',
     #elseif($column.htmlType == "datetime")
-        ${column.javaField}Placeholder : ${comment}
+    ${column.javaField}Placeholder : '${comment}',
     #else
-        ${column.javaField}Placeholder : ${comment}
+    ${column.javaField}Placeholder : '${comment}',
     #end
  #end
  }

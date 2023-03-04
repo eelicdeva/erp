@@ -7,13 +7,13 @@ ${ClassName} : {
  #else
  #set($comment=$column.columnComment)
  #end
-    ${column.javaField} : ${comment}
+    ${column.javaField} : '${comment}',
     #if($column.htmlType == "input")
-        ${column.javaField}Placeholder : 请输入${comment}
+    ${column.javaField}Placeholder : '请输入${comment}',
     #elseif($column.htmlType == "datetime")
-        ${column.javaField}Placeholder : 选择${comment}
+    ${column.javaField}Placeholder : '选择${comment}',
     #else
-        ${column.javaField}Placeholder : 请选择${comment}
+    ${column.javaField}Placeholder : '请选择${comment}',
     #end
  #end
  }
