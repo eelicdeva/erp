@@ -103,9 +103,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     #set($param=$className + '.' + $pkColumn.javaField)
     <insert id="insert${ClassName}" parameterType="${ClassName}"#if($pkColumn.increment) useGeneratedKeys="true" keyProperty="$param"#end>
         #if($pkColumn.javaType == 'String' && !$pkColumn.increment)
-            <selectKey keyProperty="$pkColumn.javaField" resultType="String" order="BEFORE">
-                select REPLACE(UUID(),"-","")
-            </selectKey>
+        <selectKey keyProperty="$param" resultType="String" order="BEFORE">
+            select REPLACE(UUID(),"-","")
+        </selectKey>
         #end
         insert into ${tableName}
         <trim prefix="(" suffix=")" suffixOverrides=",">
