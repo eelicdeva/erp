@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.eelic.project.erp.hr.staff.mapper.HrStaffMapper">
+    
+    <resultMap type="HrStaff" id="HrStaffResult">
+        <result property="staffId"    column="staff_id"    />
+        <result property="staffNo"    column="staff_no"    />
+        <result property="staffName"    column="staff_name"    />
+        <result property="birth"    column="birth"    />
+        <result property="sex"    column="sex"    />
+        <result property="dateIn"    column="date_in"    />
+        <result property="dateOut"    column="date_out"    />
+        <result property="nik"    column="NIK"    />
+        <result property="maritalStatus"    column="marital_status"    />
+        <result property="nationality"    column="nationality"    />
+        <result property="blood"    column="blood"    />
+        <result property="religion"    column="religion"    />
+        <result property="tel"    column="tel"    />
+        <result property="tel1"    column="tel1"    />
+        <result property="zip"    column="ZIP"    />
+        <result property="email"    column="email"    />
+        <result property="address"    column="address"    />
+        <result property="addressIdCard"    column="address_id_card"    />
+        <result property="education"    column="education"    />
+        <result property="eduGrade"    column="edu_grade"    />
+        <result property="staffImage"    column="staff_image"    />
+        <result property="eduImage"    column="edu_image"    />
+        <result property="idCardImage"    column="id_card_image"    />
+        <result property="form1Image"    column="form1_image"    />
+        <result property="form2Image"    column="form2_image"    />
+        <result property="otherImage"    column="other_image"    />
+        <result property="memo"    column="memo"    />
+        <result property="roleId"    column="role_id"    />
+        <result property="deptId"    column="dept_id"    />
+    </resultMap>
+
+    <sql id="case">
+            case (#{langUser})
+    </sql>
+
+    <sql id="selectHrStaffVo">
+        select staff_id , staff_no , staff_name , birth , sex , date_in , date_out , NIK , marital_status , nationality , blood , religion , tel , tel1 , ZIP , email , address , address_id_card , education , edu_grade , staff_image , edu_image , id_card_image , form1_image , form2_image , other_image , memo , role_id , dept_id  from hr_staff a
+    </sql>
+
+    <select id="selectHrStaffList" parameterType="HrStaff" resultMap="HrStaffResult">
+        <include refid="selectHrStaffVo"/>
+        <where>
+        <if test="hrStaff.staffNo != null  and hrStaff.staffNo != ''"> and staff_no = #{hrStaff.staffNo}</if>
+        <if test="hrStaff.staffName != null  and hrStaff.staffName != ''"> and staff_name like concat('%', #{hrStaff.staffName}, '%')</if>
+        <if test="hrStaff.birth != null "> and birth = #{hrStaff.birth}</if>
+        <if test="hrStaff.sex != null  and hrStaff.sex != ''"> and sex = #{hrStaff.sex}</if>
+        <if test="hrStaff.dateIn != null "> and date_in = #{hrStaff.dateIn}</if>
+        <if test="hrStaff.dateOut != null "> and date_out = #{hrStaff.dateOut}</if>
+        <if test="hrStaff.nik != null  and hrStaff.nik != ''"> and NIK = #{hrStaff.nik}</if>
+        <if test="hrStaff.maritalStatus != null  and hrStaff.maritalStatus != ''"> and marital_status = #{hrStaff.maritalStatus}</if>
+        <if test="hrStaff.nationality != null  and hrStaff.nationality != ''"> and nationality = #{hrStaff.nationality}</if>
+        <if test="hrStaff.blood != null  and hrStaff.blood != ''"> and blood = #{hrStaff.blood}</if>
+        <if test="hrStaff.religion != null  and hrStaff.religion != ''"> and religion = #{hrStaff.religion}</if>
+        <if test="hrStaff.tel != null  and hrStaff.tel != ''"> and tel = #{hrStaff.tel}</if>
+        <if test="hrStaff.tel1 != null  and hrStaff.tel1 != ''"> and tel1 = #{hrStaff.tel1}</if>
+        <if test="hrStaff.zip != null  and hrStaff.zip != ''"> and ZIP = #{hrStaff.zip}</if>
+        <if test="hrStaff.email != null  and hrStaff.email != ''"> and email = #{hrStaff.email}</if>
+        <if test="hrStaff.address != null  and hrStaff.address != ''"> and address = #{hrStaff.address}</if>
+        <if test="hrStaff.addressIdCard != null  and hrStaff.addressIdCard != ''"> and address_id_card = #{hrStaff.addressIdCard}</if>
+        <if test="hrStaff.education != null  and hrStaff.education != ''"> and education = #{hrStaff.education}</if>
+        <if test="hrStaff.eduGrade != null  and hrStaff.eduGrade != ''"> and edu_grade = #{hrStaff.eduGrade}</if>
+        <if test="hrStaff.staffImage != null  and hrStaff.staffImage != ''"> and staff_image = #{hrStaff.staffImage}</if>
+        <if test="hrStaff.eduImage != null  and hrStaff.eduImage != ''"> and edu_image = #{hrStaff.eduImage}</if>
+        <if test="hrStaff.idCardImage != null  and hrStaff.idCardImage != ''"> and id_card_image = #{hrStaff.idCardImage}</if>
+        <if test="hrStaff.form1Image != null  and hrStaff.form1Image != ''"> and form1_image = #{hrStaff.form1Image}</if>
+        <if test="hrStaff.form2Image != null  and hrStaff.form2Image != ''"> and form2_image = #{hrStaff.form2Image}</if>
+        <if test="hrStaff.otherImage != null  and hrStaff.otherImage != ''"> and other_image = #{hrStaff.otherImage}</if>
+        <if test="hrStaff.memo != null  and hrStaff.memo != ''"> and memo = #{hrStaff.memo}</if>
+        </where>
+    </select>
+    
+    <select id="selectHrStaffByStaffId" resultMap="HrStaffResult">
+        <include refid="selectHrStaffVo"/>
+        where staff_id = #{staffId}
+    </select>
+    <insert id="insertHrStaff" parameterType="HrStaff">
+        <selectKey keyProperty="hrStaff.staffId" resultType="String" order="BEFORE">
+            select REPLACE(UUID(),"-","")
+        </selectKey>
+        insert into hr_staff
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="hrStaff.staffId != null">staff_id,</if>
+            <if test="hrStaff.staffNo != null">staff_no,</if>
+            <if test="hrStaff.staffName != null">staff_name,</if>
+            <if test="hrStaff.birth != null">birth,</if>
+            <if test="hrStaff.sex != null">sex,</if>
+            <if test="hrStaff.dateIn != null">date_in,</if>
+            <if test="hrStaff.dateOut != null">date_out,</if>
+            <if test="hrStaff.nik != null">NIK,</if>
+            <if test="hrStaff.maritalStatus != null">marital_status,</if>
+            <if test="hrStaff.nationality != null">nationality,</if>
+            <if test="hrStaff.blood != null">blood,</if>
+            <if test="hrStaff.religion != null">religion,</if>
+            <if test="hrStaff.tel != null">tel,</if>
+            <if test="hrStaff.tel1 != null">tel1,</if>
+            <if test="hrStaff.zip != null">ZIP,</if>
+            <if test="hrStaff.email != null">email,</if>
+            <if test="hrStaff.address != null">address,</if>
+            <if test="hrStaff.addressIdCard != null">address_id_card,</if>
+            <if test="hrStaff.education != null">education,</if>
+            <if test="hrStaff.eduGrade != null">edu_grade,</if>
+            <if test="hrStaff.staffImage != null">staff_image,</if>
+            <if test="hrStaff.eduImage != null">edu_image,</if>
+            <if test="hrStaff.idCardImage != null">id_card_image,</if>
+            <if test="hrStaff.form1Image != null">form1_image,</if>
+            <if test="hrStaff.form2Image != null">form2_image,</if>
+            <if test="hrStaff.otherImage != null">other_image,</if>
+            <if test="hrStaff.memo != null">memo,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="hrStaff.staffId != null">#{hrStaff.staffId},</if>
+            <if test="hrStaff.staffNo != null">#{hrStaff.staffNo},</if>
+            <if test="hrStaff.staffName != null">#{hrStaff.staffName},</if>
+            <if test="hrStaff.birth != null">#{hrStaff.birth},</if>
+            <if test="hrStaff.sex != null">#{hrStaff.sex},</if>
+            <if test="hrStaff.dateIn != null">#{hrStaff.dateIn},</if>
+            <if test="hrStaff.dateOut != null">#{hrStaff.dateOut},</if>
+            <if test="hrStaff.nik != null">#{hrStaff.nik},</if>
+            <if test="hrStaff.maritalStatus != null">#{hrStaff.maritalStatus},</if>
+            <if test="hrStaff.nationality != null">#{hrStaff.nationality},</if>
+            <if test="hrStaff.blood != null">#{hrStaff.blood},</if>
+            <if test="hrStaff.religion != null">#{hrStaff.religion},</if>
+            <if test="hrStaff.tel != null">#{hrStaff.tel},</if>
+            <if test="hrStaff.tel1 != null">#{hrStaff.tel1},</if>
+            <if test="hrStaff.zip != null">#{hrStaff.zip},</if>
+            <if test="hrStaff.email != null">#{hrStaff.email},</if>
+            <if test="hrStaff.address != null">#{hrStaff.address},</if>
+            <if test="hrStaff.addressIdCard != null">#{hrStaff.addressIdCard},</if>
+            <if test="hrStaff.education != null">#{hrStaff.education},</if>
+            <if test="hrStaff.eduGrade != null">#{hrStaff.eduGrade},</if>
+            <if test="hrStaff.staffImage != null">#{hrStaff.staffImage},</if>
+            <if test="hrStaff.eduImage != null">#{hrStaff.eduImage},</if>
+            <if test="hrStaff.idCardImage != null">#{hrStaff.idCardImage},</if>
+            <if test="hrStaff.form1Image != null">#{hrStaff.form1Image},</if>
+            <if test="hrStaff.form2Image != null">#{hrStaff.form2Image},</if>
+            <if test="hrStaff.otherImage != null">#{hrStaff.otherImage},</if>
+            <if test="hrStaff.memo != null">#{hrStaff.memo},</if>
+         </trim>
+    </insert>
+
+    <update id="updateHrStaff" parameterType="HrStaff">
+        update hr_staff
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="hrStaff.staffNo != null">staff_no = #{hrStaff.staffNo},</if>
+            <if test="hrStaff.staffName != null">staff_name = #{hrStaff.staffName},</if>
+            <if test="hrStaff.birth != null">birth = #{hrStaff.birth},</if>
+            <if test="hrStaff.sex != null">sex = #{hrStaff.sex},</if>
+            <if test="hrStaff.dateIn != null">date_in = #{hrStaff.dateIn},</if>
+            <if test="hrStaff.dateOut != null">date_out = #{hrStaff.dateOut},</if>
+            <if test="hrStaff.nik != null">NIK = #{hrStaff.nik},</if>
+            <if test="hrStaff.maritalStatus != null">marital_status = #{hrStaff.maritalStatus},</if>
+            <if test="hrStaff.nationality != null">nationality = #{hrStaff.nationality},</if>
+            <if test="hrStaff.blood != null">blood = #{hrStaff.blood},</if>
+            <if test="hrStaff.religion != null">religion = #{hrStaff.religion},</if>
+            <if test="hrStaff.tel != null">tel = #{hrStaff.tel},</if>
+            <if test="hrStaff.tel1 != null">tel1 = #{hrStaff.tel1},</if>
+            <if test="hrStaff.zip != null">ZIP = #{hrStaff.zip},</if>
+            <if test="hrStaff.email != null">email = #{hrStaff.email},</if>
+            <if test="hrStaff.address != null">address = #{hrStaff.address},</if>
+            <if test="hrStaff.addressIdCard != null">address_id_card = #{hrStaff.addressIdCard},</if>
+            <if test="hrStaff.education != null">education = #{hrStaff.education},</if>
+            <if test="hrStaff.eduGrade != null">edu_grade = #{hrStaff.eduGrade},</if>
+            <if test="hrStaff.staffImage != null">staff_image = #{hrStaff.staffImage},</if>
+            <if test="hrStaff.eduImage != null">edu_image = #{hrStaff.eduImage},</if>
+            <if test="hrStaff.idCardImage != null">id_card_image = #{hrStaff.idCardImage},</if>
+            <if test="hrStaff.form1Image != null">form1_image = #{hrStaff.form1Image},</if>
+            <if test="hrStaff.form2Image != null">form2_image = #{hrStaff.form2Image},</if>
+            <if test="hrStaff.otherImage != null">other_image = #{hrStaff.otherImage},</if>
+            <if test="hrStaff.memo != null">memo = #{hrStaff.memo},</if>
+        </trim>
+        where staff_id = #{hrStaff.staffId}
+    </update>
+
+    <delete id="deleteHrStaffByStaffId" parameterType="String">
+        delete from hr_staff where staff_id = #{staffId}
+    </delete>
+
+    <delete id="deleteHrStaffByStaffIds" parameterType="String">
+        delete from hr_staff where staff_id in 
+        <foreach item="staffId" collection="array" open="(" separator="," close=")">
+            #{staffId}
+        </foreach>
+    </delete>
+</mapper>
